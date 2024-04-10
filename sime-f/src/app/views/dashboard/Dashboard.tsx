@@ -1,6 +1,10 @@
+import SideMenu from "../../components/SideMenu/sideMenu";
+import "./Dashboard.scss";
+
 const Dashboard = () => {
+
   return (
-    <div>
+    <div className="Dashboard">
       <h1>Dashboard</h1>
     </div>
   );
