@@ -16,7 +16,6 @@ interface User {
 
 export function AppRouter() {
   const { user }: Context = useContext(AuthContext);
-  console.log(user);
   const getPrivateRoute = (route: IRoute) => {
     return user?.loggedIn ? (
       <Route key={route.title} path={route.path} element={createElement(route.element)} />
