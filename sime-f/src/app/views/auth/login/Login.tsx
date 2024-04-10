@@ -29,9 +29,12 @@ const Login = () => {
     setUser({ ...user, [e.target.id]: e.target.value });
   };
 
+  const [showPassword, setShowPassword] = useState(false);
+
   return (
       <div className="form">
         <form>
+          <h1>SIME Login</h1>
           <div className="form-group">
             <label htmlFor="email">Email address</label>
             <input
@@ -45,13 +48,17 @@ const Login = () => {
           </div>
           <div className="form-group">
             <label htmlFor="password">Password</label>
-            <input
-              type="password"
-              className="form-control"
-              id="password"
-              placeholder="Password"
-              onChange={handleChanges}
-            />
+            <div className="input-wrapper">
+              <input
+                type={showPassword ? "text" : "password"}
+                className="form-control"
+                id="password"
+                placeholder="Password"
+                onChange={handleChanges}
+              />
+              {/* <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} className="see-pass" onClick={() => setShowPassword(!showPassword)} /> */}
+              <i className={`bi ${showPassword ? "bi-eye-slash" : "bi-eye"} see-pass`} onClick={() => setShowPassword(!showPassword)}></i>
+            </div>
           </div>
         </form>
         <button className="btn btn-primary" onClick={handleSubmit}>
