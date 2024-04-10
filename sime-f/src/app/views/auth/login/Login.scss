@@ -1,23 +1,14 @@
-html {
-    background-color: #9aafd4;
-    height: 100%;
-    width: 100%;
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-body {
-    background-color: #9aafd4;
-    border-radius: 5px;
-}
-.form{
+.login{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  .login-form{
     width: 25rem;
     padding: 20px;
     border: 1px solid #333;
     border-radius: 5px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
-    
     form{
         display: flex;
         flex-direction: column;
@@ -37,31 +28,32 @@ body {
                 cursor: pointer;
             }
         }
+
+        .input-wrapper {
+          display: flex;
+          align-items: center;
+        }
+
+        .see-pass {
+          margin-left: 10px;
+          color: #ccc;
+          font-size: 16px;
+        }
+
+        .form input {
+          position: relative;
+          padding-left: 30px;
+
+          ::before {
+            content: "\f023";
+            font-family: FontAwesome;
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 16px;
+          }
+        }
     }
-}
-
-.input-wrapper {
-  display: flex;
-  align-items: center;
-}
-
-.see-pass {
-  margin-left: 10px;
-  color: #ccc;
-  font-size: 16px;
-}
-
-.form input {
-  position: relative;
-  padding-left: 30px;
-
-  ::before {
-    content: "\f023";
-    font-family: FontAwesome;
-    position: absolute;
-    left: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 16px;
   }
 }

@@ -14,7 +14,7 @@ export const routesConfig: IRoute[] = [
   // Private Routes
 
   {title: 'teacher_register', path: '/auth/register/teacher', element: TeacherRegister, private: true},
-  {title : "student_register", path: "/auth/register/student", element: StudentRegister, private: true},
+  {title: "student_register", path: "/auth/register/student", element: StudentRegister, private: true},
   {title: 'group_register', path: '/auth/register/group', element: ScholarGroupRegister, private: true},
 
   {title: 'dashboard', path: '/dashboard', element: Dashboard, private: true},

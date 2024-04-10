@@ -79,10 +79,10 @@ function App() {
     <div className="app">
       <AuthContext.Provider value={{ user, dispatchUser }}>
         <div className="sime">
-          {getSidebar()}
+          {user ? getSidebar() : null}
 
           <div className="content">
-            {getFloatingButton()}
+            {user ? getFloatingButton() : null}
             <AppRouter />
           </div>
         </div>

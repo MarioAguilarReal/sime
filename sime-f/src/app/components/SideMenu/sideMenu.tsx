@@ -1,11 +1,23 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './sideMenu.scss';
+import { AuthService } from '../../services/auth/AuthService';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../Global/Context/globalContext';
 
 const SideMenu = () =>{
+  const { dispatchUser }: any = useContext(AuthContext);
 
-  const logout = () => {
-    console.log("logout");
+  const navigate = useNavigate();
+
+  const logout = async () => {
+    const resp = await AuthService.logout();
+    if (resp.status === 200) {
+      dispatchUser({ type: 'LOGOUT' });
+      navigate('/');
+    } else {
+      console.log(resp.message);
+    }
   }
 
   useEffect(() => {

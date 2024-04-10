@@ -19,20 +19,21 @@ export class AuthService{
 
   }
 
-  public static async logout():Promise<ApiResponse>{
-    let resp: ApiResponse; // Initialize resp with an empty object of type ApiResponse
-
+  public static async logout():Promise<any>{
+    let resp;
     if(!localStorage.getItem('token')){
-      resp = {data: [], success: false, status: 401, message: 'Unauthorized'};
+      return resp = {data: [], success: false, status: 401, message: 'Token not found'} as ApiResponse;
+
     } else {
-      try {
-        resp = await SimeService.post('/logout', {}, { Authorization: 'Bearer ' + localStorage.getItem('token') });
+      resp = await SimeService.post('/logout', {}, { Authorization: 'Bearer ' + localStorage.getItem('token') });
+      console.log(resp);
+      if (resp.status === 200){
         localStorage.removeItem('token');
-      } catch (error) {
-        resp = { data: [], success: false, status: 401, message: 'Unauthorized'};
+        return resp.data;
+      }else{
+        return resp.data;
       }
     }
-    return resp;
   }
 
   public static async me():Promise<ApiResponse>{

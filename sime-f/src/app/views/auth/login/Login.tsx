@@ -16,8 +16,8 @@ const Login = () => {
 
     if (resp.status === 200) {
       dispatchUser({ type: "LOGIN", payload: resp.user });
-      navigate('/dashboard');
-    }else{
+      navigate("/dashboard");
+    } else {
       // we can use a toast library to show the message
       console.log(resp.message);
     }
@@ -32,7 +32,8 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-      <div className="form">
+    <div className="login">
+      <div className="login-form">
         <form>
           <h1>SIME Login</h1>
           <div className="form-group">
@@ -57,7 +58,12 @@ const Login = () => {
                 onChange={handleChanges}
               />
               {/* <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} className="see-pass" onClick={() => setShowPassword(!showPassword)} /> */}
-              <i className={`bi ${showPassword ? "bi-eye-slash" : "bi-eye"} see-pass`} onClick={() => setShowPassword(!showPassword)}></i>
+              <i
+                className={`bi ${
+                  showPassword ? "bi-eye-slash" : "bi-eye"
+                } see-pass`}
+                onClick={() => setShowPassword(!showPassword)}
+              ></i>
             </div>
           </div>
         </form>
@@ -65,6 +71,7 @@ const Login = () => {
           Submit
         </button>
       </div>
+    </div>
   );
 };
 
