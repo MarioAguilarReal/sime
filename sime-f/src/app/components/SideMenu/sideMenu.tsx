@@ -1,30 +1,32 @@
-import React, { useContext, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import './sideMenu.scss';
-import { AuthService } from '../../services/auth/AuthService';
-import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../../Global/Context/globalContext';
+import React, { useContext, useEffect } from "react";
+import { Link } from "react-router-dom";
+import "./sideMenu.scss";
+import { AuthService } from "../../services/auth/AuthService";
+import { useNavigate } from "react-router-dom";
+import { AuthContext, useLoader } from "../../Global/Context/globalContext";
+import { ThreeDots } from "react-loader-spinner";
 
-const SideMenu = () =>{
+const SideMenu = () => {
   const { dispatchUser }: any = useContext(AuthContext);
+  const { setLoading } = useLoader();
 
   const navigate = useNavigate();
 
   const logout = async () => {
+    setLoading(true);
     const resp = await AuthService.logout();
     if (resp.status === 200) {
-      dispatchUser({ type: 'LOGOUT' });
-      navigate('/');
+      dispatchUser({ type: "LOGOUT" });
+      navigate("/");
     } else {
       console.log(resp.message);
     }
-  }
+    setLoading(false);
+  };
 
-  useEffect(() => {
+  useEffect(() => {}, []);
 
-  }, []);
-
-  return(
+  return (
     <div className="sideMenu d-flex flex-column flex-shrink-0 p-3 bg-dark slide-menu">
       <Link
         to={"/"}
@@ -68,14 +70,7 @@ const SideMenu = () =>{
           data-bs-toggle="dropdown"
           aria-expanded="false"
         >
-          <img
-
-
-            alt=""
-            width="32"
-            height="32"
-            className="rounded-circle me-2"
-          />
+          <img alt="" width="32" height="32" className="rounded-circle me-2" />
           <strong>Admin</strong>
         </a>
         <ul
@@ -83,15 +78,19 @@ const SideMenu = () =>{
           aria-labelledby="dropdownUser2"
         >
           <li>
-            <Link to={"/"} className="nav-link">Back to Home</Link>
+            <Link to={"/"} className="nav-link">
+              Back to Home
+            </Link>
           </li>
           <li>
-            <button className="nav-link" onClick={logout}>Logout</button>
+            <button className="nav-link" onClick={logout}>
+              Logout
+            </button>
           </li>
         </ul>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default SideMenu;

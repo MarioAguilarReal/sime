@@ -1,17 +1,31 @@
-import { useContext, useState } from "react";
-import { AuthContext } from "../../../Global/Context/globalContext";
+import { useContext, useEffect, useState } from "react";
+import { AuthContext, useLoader } from "../../../Global/Context/globalContext";
 import { User } from "./../../../interfaces/user/User";
 import { AuthService } from "../../../services/auth/AuthService";
 import { useNavigate } from "react-router-dom";
 import "./Login.scss";
+import { useForm } from "react-hook-form";
+
+interface login {
+  email: string;
+  password: string;
+}
 
 const Login = () => {
   const { dispatchUser }: any = useContext(AuthContext);
+  const { setLoading } = useLoader();
+
+  const [showPassword, setShowPassword] = useState(false);
   const [user, setUser] = useState({} as User);
+  const [canLogin, setCanLogin] = useState(false);
+
+  const {register, handleSubmit, watch, formState: {errors}, } = useForm<login>();
 
   const navigate = useNavigate();
 
-  const handleSubmit = async () => {
+  const handleLogin = async () => {
+    setLoading(true);
+
     const resp = await AuthService.login(user);
 
     if (resp.status === 200) {
@@ -21,15 +35,23 @@ const Login = () => {
       // we can use a toast library to show the message
       console.log(resp.message);
     }
+    setLoading(false);
   };
 
-  const handleChanges = (
-    e: React.ChangeEvent<HTMLFormElement | HTMLInputElement>
-  ) => {
-    setUser({ ...user, [e.target.id]: e.target.value });
-  };
+  useEffect(() => {
+    setUser({
+      email: watch("email"),
+      password: watch("password"),
+    });
 
-  const [showPassword, setShowPassword] = useState(false);
+    if (watch("email") && watch("password")) {
+      setCanLogin(true);
+    } else {
+      setCanLogin(false);
+    }
+
+  }, [watch("email"), watch("password")]);
+
 
   return (
     <div className="login">
@@ -44,7 +66,7 @@ const Login = () => {
               id="email"
               aria-describedby="emailHelp"
               placeholder="Enter email"
-              onChange={handleChanges}
+              {...register("email", {required: true})}
             />
           </div>
           <div className="form-group">
@@ -55,7 +77,7 @@ const Login = () => {
                 className="form-control"
                 id="password"
                 placeholder="Password"
-                onChange={handleChanges}
+                {...register("password", {required: true})}
               />
               {/* <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} className="see-pass" onClick={() => setShowPassword(!showPassword)} /> */}
               <i
@@ -67,7 +89,7 @@ const Login = () => {
             </div>
           </div>
         </form>
-        <button className="btn btn-primary" onClick={handleSubmit}>
+        <button className="btn btn-primary" onClick={handleSubmit(handleLogin)} disabled={!canLogin}>
           Submit
         </button>
       </div>
