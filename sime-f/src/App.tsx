@@ -1,11 +1,12 @@
 import { useReducer } from "react";
 import "./App.scss";
 import { authReducer } from "./app/Global/reducers/authReducers";
-import { AuthContext } from "./app/Global/Context/globalContext";
+import { AuthContext, LoaderProvider } from "./app/Global/Context/globalContext";
 import { AppRouter } from "./app/routes/app.router";
 import { useLocation } from "react-router-dom";
 import SideMenu from "./app/components/SideMenu/sideMenu";
 import "./app/components/SideMenu/sideMenu.scss";
+import Loader from "./app/components/shared/Loader/Loader";
 
 const init = () => {
   let sessionUser: any = sessionStorage.getItem("user");
@@ -78,6 +79,8 @@ function App() {
   return (
     <div className="app">
       <AuthContext.Provider value={{ user, dispatchUser }}>
+        <LoaderProvider>
+        <Loader />
         <div className="sime">
           {user ? getSidebar() : null}
 
@@ -86,6 +89,7 @@ function App() {
             <AppRouter />
           </div>
         </div>
+        </LoaderProvider>
       </AuthContext.Provider>
     </div>
   );

@@ -6,7 +6,6 @@ export interface Action{
 const isAuthenticated = { loggedIn: false };
 
 export const authReducer = (state = isAuthenticated, action: Action) => {
-  console.log(action);
   switch (action.type) {
     case 'LOGIN':
       return { ...action.payload, loggedIn: true};
@@ -17,3 +16,4 @@ export const authReducer = (state = isAuthenticated, action: Action) => {
       return state;
   }
 };
+
