@@ -1,0 +1,11 @@
+.user-overview{
+  display: flex;
+  .data{
+    flex: 8;
+    background-color: blue;
+  }
+  .info{
+    flex: 2;
+    background-color: red;
+  }
+}

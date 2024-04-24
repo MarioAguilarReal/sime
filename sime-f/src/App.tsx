@@ -7,6 +7,7 @@ import { useLocation } from "react-router-dom";
 import SideMenu from "./app/components/SideMenu/sideMenu";
 import "./app/components/SideMenu/sideMenu.scss";
 import Loader from "./app/components/shared/Loader/Loader";
+import 'react-toastify/dist/ReactToastify.css';
 
 const init = () => {
   let sessionUser: any = sessionStorage.getItem("user");
