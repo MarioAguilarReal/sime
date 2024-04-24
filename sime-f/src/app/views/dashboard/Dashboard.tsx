@@ -1,4 +1,3 @@
-import SideMenu from "../../components/SideMenu/sideMenu";
 import "./Dashboard.scss";
 
 const Dashboard = () => {

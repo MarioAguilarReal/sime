@@ -1,7 +1,6 @@
-import { createElement, useContext, useEffect } from "react";
+import { createElement, useContext } from "react";
 import { AuthContext } from "../Global/Context/globalContext";
 import { Navigate, Route, Routes } from "react-router-dom";
-import Login from "../views/auth/login/Login";
 import { routesConfig } from "./app.routes";
 import { IRoute } from "../interfaces/IRoute";
 

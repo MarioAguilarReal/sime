@@ -1,22 +1,15 @@
 import { ApiResponse } from "../../interfaces/response/ApiResponse";
-import { User } from "../../interfaces/user/User";
 import { SimeService } from "../SIMEService";
 
 export class AuthService{
 
-  public static async login(obj: User):Promise<any>{
+  public static async login(obj: any):Promise<any>{
       let resp = await SimeService.post('/login', obj);
       if(resp.status === 200){
         localStorage.setItem('token', resp.data.token);
         sessionStorage.setItem('user', JSON.stringify(resp.data.user));
       }
       return resp.data;
-  }
-
-  public static async register(obj: User):Promise<ApiResponse>{
-
-    return (await SimeService.post('/register', obj)).data;
-
   }
 
   public static async logout():Promise<any>{
@@ -26,7 +19,6 @@ export class AuthService{
 
     } else {
       resp = await SimeService.post('/logout', {}, { Authorization: 'Bearer ' + localStorage.getItem('token') });
-      console.log(resp);
       if (resp.status === 200){
         localStorage.removeItem('token');
         return resp.data;
@@ -36,7 +28,7 @@ export class AuthService{
     }
   }
 
-  public static async me():Promise<ApiResponse>{
+  public static async me():Promise<any>{
     let resp: ApiResponse;
 
     if(!localStorage.getItem('token')){
@@ -48,6 +40,6 @@ export class AuthService{
         resp = { data: [], success: false, status: 401, message: 'Unauthorized'};
       }
     }
-    return resp;
+    return resp.data;
   }
 }

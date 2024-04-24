@@ -1,10 +1,10 @@
 import { useContext, useEffect, useState } from "react";
 import { AuthContext, useLoader } from "../../../Global/Context/globalContext";
-import { User } from "./../../../interfaces/user/User";
 import { AuthService } from "../../../services/auth/AuthService";
 import { useNavigate } from "react-router-dom";
 import "./Login.scss";
 import { useForm } from "react-hook-form";
+import { ToastContainer, toast } from "react-toastify";
 
 interface login {
   email: string;
@@ -14,44 +14,35 @@ interface login {
 const Login = () => {
   const { dispatchUser }: any = useContext(AuthContext);
   const { setLoading } = useLoader();
-
-  const [showPassword, setShowPassword] = useState(false);
-  const [user, setUser] = useState({} as User);
-  const [canLogin, setCanLogin] = useState(false);
-
+  const navigate = useNavigate();
   const {register, handleSubmit, watch, formState: {errors}, } = useForm<login>();
 
-  const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+  const [canLogin, setCanLogin] = useState(false);
+  let email = watch("email");
+  let password = watch("password");
 
-  const handleLogin = async () => {
+
+  const handleLogin = async (data: login) => {
     setLoading(true);
 
-    const resp = await AuthService.login(user);
-
+    const resp = await AuthService.login(data);
     if (resp.status === 200) {
       dispatchUser({ type: "LOGIN", payload: resp.user });
       navigate("/dashboard");
     } else {
-      // we can use a toast library to show the message
-      console.log(resp.message);
+      toast.error(resp.message);
     }
     setLoading(false);
   };
 
   useEffect(() => {
-    setUser({
-      email: watch("email"),
-      password: watch("password"),
-    });
-
-    if (watch("email") && watch("password")) {
+    if (email && password) {
       setCanLogin(true);
     } else {
       setCanLogin(false);
     }
-
-  }, [watch("email"), watch("password")]);
-
+  }, [email, password]);
 
   return (
     <div className="login">
@@ -66,8 +57,14 @@ const Login = () => {
               id="email"
               aria-describedby="emailHelp"
               placeholder="Enter email"
-              {...register("email", {required: true})}
+              {...register("email", {
+                required: true,
+                pattern: {
+                  value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+                  message: "Invalid email address",
+                }})}
             />
+            {errors.email && <span className="error">*{errors.email.message}</span>}
           </div>
           <div className="form-group">
             <label htmlFor="password">Password</label>
@@ -89,9 +86,10 @@ const Login = () => {
             </div>
           </div>
         </form>
-        <button className="btn btn-primary" onClick={handleSubmit(handleLogin)} disabled={!canLogin}>
+        <button className="btn btn-primary" onClick={handleSubmit((data) => handleLogin(data))} disabled={!canLogin}>
           Submit
         </button>
+        <ToastContainer />
       </div>
     </div>
   );

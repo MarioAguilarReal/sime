@@ -25,12 +25,19 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 //Public Routes
 Route::post('/login', [ApiAuthController::class, 'login']);
-Route::post('/register', [ApiAuthController::class, 'register']);
 
 //Private Routes
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/me', [ApiAuthController::class, 'me']);
     Route::post('/logout', [ApiAuthController::class, 'logout']);
+
+    Route::prefix('/user')->group(function () {
+        Route::get('/all', [ApiAuthController::class, 'all']);
+        Route::post('/register', [ApiAuthController::class, 'register']);
+        Route::patch('/update/{id}', [ApiAuthController::class, 'update']);
+        Route::get('/{id}', [ApiAuthController::class, 'show']);
+        Route::delete('/delete/{id}', [ApiAuthController::class, 'delete']);
+    });
 });
 
 
