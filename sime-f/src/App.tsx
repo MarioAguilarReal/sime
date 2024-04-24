@@ -42,7 +42,7 @@ function App() {
     } else {
       return (
         <div className="sideMenu hideMenu" id="collapseSideMenu">
-          <SideMenu />
+          <SideMenu {...user}/>
         </div>
       );
     }

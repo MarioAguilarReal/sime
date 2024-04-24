@@ -1,0 +1,37 @@
+.card-data{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  .groups-table{
+    flex:5;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+    margin: 10px;
+    width: 100%;
+    padding: 0;
+  }
+  .classes-table{
+    flex:5;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+    margin: 10px;
+    padding: 0;
+    width: 100%;
+  }
+
+
+  .header-data{
+    padding: 10px;
+    background-color: #7a7a7a;
+    color: white;
+    border-radius: 4px 4px 0 0;
+    .title{
+      font-size: 1.9rem;
+    }
+  }
+}

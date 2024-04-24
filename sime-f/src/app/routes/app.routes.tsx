@@ -13,13 +13,14 @@ export const routesConfig: IRoute[] = [
 
   // Private Routes
 
-  {title: "student_register", path: "/register/student", element: StudentRegister, private: true},
 
-  {title: 'student_all', path: "/all/student", element: StudentAll, private: true},
 
   {title: 'dashboard', path: '/dashboard', element: Dashboard, private: true},
 
   {title: 'register-user', path: '/register/user', element: RegisterUser, private: true},
   {title: 'list-users', path: '/list/users', element: UsersTable, private: true},
   {title: 'user-overview', path: '/user/overview/:id', element: UserOverview, private: true},
+
+  {title: "student_register", path: "/register/student", element: StudentRegister, private: true},
+  {title: 'student_all', path: "/list/students", element: StudentAll, private: true},
 ]

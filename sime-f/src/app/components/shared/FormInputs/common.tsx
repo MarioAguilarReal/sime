@@ -6,7 +6,7 @@ export const getErrorElement = (content: any) =>{
   return <p className="invalid-input-error">* {content}</p>
 }
 
-export const getValidationErrors = (errors: any, field: string, label: string, rules: any, requiredError = "is required") => {
+export const getValidationErrors = (errors: any, field: string, label: string, rules: any, requiredError = "es requerido") => {
   const error = getDescendent(errors, field);
   if (error) {
     return error.message;
