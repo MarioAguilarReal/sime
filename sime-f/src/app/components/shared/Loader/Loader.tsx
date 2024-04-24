@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { ThreeDots } from "react-loader-spinner";
 import "./Loader.scss";
 import { useLoader } from "../../../Global/Context/globalContext";

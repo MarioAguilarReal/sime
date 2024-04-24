@@ -53,24 +53,181 @@ class ApiAuthController extends Controller
 
     public function me(Request $request)
     {
-        return response()->json(auth()->user(), 200);
+        $response = [
+            'status' => 200,
+            'message' => 'User found',
+            'user' => auth()->user()
+        ];
+        return response()->json($response, 200);
     }
 
     public function register(Request $request)
     {
+        $response = [
+            'status' => 0,
+            'message' => '',
+            'user' => ''
+        ];
+
         $request->validate([
-            'name' => 'required',
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'birth_date' => 'required|date',
+            'age' => 'required',
+            'gender' => 'required',
+            // 'photo' => 'required',
+            'address' => 'required',
+            'phone' => 'required',
+            'civil_status' => 'required',
             'email' => 'required|email',
             'password' => 'required'
         ]);
-
         $user = User::create([
-            'name' => $request->name,
+            'first_name' => $request->first_name,
+            'last_name' =>  $request->last_name,
+            'birth_date' => $request->birth_date,
+            'age' => $request->age,
+            'gender' => $request->gender,
+            'photo' => 'default.jpg',
+            'address' => $request->address,
+            'phone' => $request->phone,
+            'civil_status' => $request->civil_status,
+            'is_teacher' => $request->is_teacher,
+            'is_tutor' => $request->is_tutor,
+            'is_admin' => $request->is_admin,
             'email' => $request->email,
             'password' => bcrypt($request->password)
+
         ]);
 
-        $token = $user->createToken('authToken')->plainTextToken;
-        return response()->json(['token' => $token], 200);
+        $response['status'] = 200;
+        $response['message'] = 'User created successfully';
+        $response['user'] = $user;
+
+        return response()->json($response, 200);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $response = [
+            'status' => 0,
+            'message' => '',
+            'user' => ''
+        ];
+
+        $request->validate([
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'birth_date' => 'required|date',
+            'age' => 'required',
+            'gender' => 'required',
+            'address' => 'required',
+            'phone' => 'required',
+            'civil_status' => 'required',
+        ]);
+
+        $user = User::find($id);
+
+        if ($user) {
+            $user->first_name = $request->first_name;
+            $user->last_name = $request->last_name;
+            $user->birth_date = $request->birth_date;
+            $user->age = $request->age;
+            $user->gender = $request->gender;
+            $user->address = $request->address;
+            $user->phone = $request->phone;
+            $user->civil_status = $request->civil_status;
+
+            if ($request->has('photo')) {
+                $user->photo = $request->photo;
+            }
+            if ($request->has('is_teacher')) {
+                $user->is_teacher = $request->is_teacher;
+            }
+            if ($request->has('is_tutor')) {
+                $user->is_tutor = $request->is_tutor;
+            }
+            if ($request->has('is_admin')) {
+                $user->is_admin = $request->is_admin;
+            }
+
+            $user->save();
+
+
+        } else {
+            $response['status'] = 201;
+            $response['message'] = 'User not found';
+        }
+
+        $response['status'] = 200;
+        $response['message'] = 'User updated successfully';
+        $response['user'] = $user;
+
+        return response()->json($response, 200);
+    }
+
+    public function show($id)
+    {
+        $response = [
+            'status' => 0,
+            'message' => '',
+            'user' => ''
+        ];
+
+        $user = User::find($id);
+
+        if ($user) {
+            $response['status'] = 200;
+            $response['message'] = 'User found';
+            $response['user'] = $user;
+        } else {
+            $response['status'] = 201;
+            $response['message'] = 'User not found';
+        }
+
+        return response()->json($response, $response['status']);
+    }
+
+
+    public function delete($id)
+    {
+        $response = [
+            'status' => 0,
+            'message' => ''
+        ];
+
+        $user = User::find($id);
+
+        if ($user) {
+            $user->delete();
+            $response['status'] = 200;
+            $response['message'] = 'User deleted successfully';
+        } else {
+            $response['status'] = 201;
+            $response['message'] = 'User not found';
+        }
+
+        return response()->json($response, $response['status']);
+    }
+
+    public function all(Request $request)
+    {
+        $response = [
+            'status' => 0,
+            'message' => '',
+            'users' => ''
+        ];
+
+        $users = User::all();
+        if ($users) {
+            $response['status'] = 200;
+            $response['message'] = 'Users found';
+            $response['users'] = $users;
+        } else {
+            $response['status'] = 201;
+            $response['message'] = 'Users not found';
+        }
+
+        return response()->json($response, $response['status']);
     }
 }

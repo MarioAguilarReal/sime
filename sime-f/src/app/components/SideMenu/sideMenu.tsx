@@ -1,16 +1,16 @@
 import React, { useContext, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import "./sideMenu.scss";
 import { AuthService } from "../../services/auth/AuthService";
 import { useNavigate } from "react-router-dom";
 import { AuthContext, useLoader } from "../../Global/Context/globalContext";
-import { ThreeDots } from "react-loader-spinner";
 
 const SideMenu = () => {
   const { dispatchUser }: any = useContext(AuthContext);
   const { setLoading } = useLoader();
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   const logout = async () => {
     setLoading(true);
@@ -37,27 +37,27 @@ const SideMenu = () => {
       <hr />
       <ul className="nav nav-pills flex-column mb-auto">
         <li className="nav-item">
-          <Link to={"users"} className="nav-link link-light">
+          <Link to={"/list/users"} className={`nav-link link-light ${location.pathname == '/list/users' ? 'active' : ''}`} >
             <i className="fa fa-user" />
             &nbsp; Users
           </Link>
         </li>
         <li className="nav-item">
-          <Link to={"new-user"} className="nav-link link-light">
+          <Link to={"/register/user/"} className={`nav-link link-light ${location.pathname == '/register/user/' ? 'active' : ''}`}>
             <i className="fa fa-user" />
             &nbsp; New User
           </Link>
         </li>
         <li className="nav-item">
-          <Link to={"properties"} className="nav-link link-light">
+          <Link to={"/list/students/"} className="nav-link link-light">
             <i className="fa fa-home" />
-            &nbsp; Properties
+            &nbsp; Students
           </Link>
         </li>
         <li className="nav-item">
-          <Link to={"dashboard"} className="nav-link link-light">
+          <Link to={"/register/student/"} className="nav-link link-light">
             <i className="fa fa-home" />
-            &nbsp; New Property
+            &nbsp; New Student
           </Link>
         </li>
       </ul>
