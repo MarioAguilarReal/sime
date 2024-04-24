@@ -30,10 +30,10 @@ return new class extends Migration
             $table->string('cognitive_skills')->nulleable();
             $table->string('alternative_skills')->nulleable();
             $table->foreignId('student_academic_data_id')->constrained()->nulleable();
-            $table->foreignId('learning_type_id')->constrained()->nulleable();
-            $table->foreignId('special_needs_id')->constrained()->nulleable();
-            $table->foreignId('social_skills_id')->constrained()->nulleable();
-            $table->foreignId('planning_skills_id')->constrained()->nulleable();
+            $table->foreignId('student_learning_type_id')->constrained()->nulleable();
+            $table->foreignId('student_special_needs_id')->constrained()->nulleable();
+            $table->foreignId('student_social_skills_id')->constrained()->nulleable();
+            $table->foreignId('student_planning_skills_id')->constrained()->nulleable();
             $table->timestamps();
         });
     }
