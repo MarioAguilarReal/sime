@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ApiAuthController;
 use App\Http\Controllers\ApiController;
+use App\Http\Controllers\ApiStudentsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,8 +36,8 @@ Route::prefix('students')->group(function () {
 
 //Private Routes
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/me', [ApiAuthController::class, 'me']);
     Route::post('/logout', [ApiAuthController::class, 'logout']);
+    Route::get('/me', [ApiAuthController::class, 'me']);
 
     Route::prefix('/user')->group(function () {
         Route::get('/all', [ApiAuthController::class, 'all']);

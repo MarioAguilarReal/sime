@@ -6,6 +6,7 @@ import StudentAll from "../views/student/StudentAll";
 import RegisterUser from "../views/Users/Register/RegisterUser";
 import UsersTable from "../views/Users/UsersTable/UsersTable";
 import UserOverview from "../views/Users/Overview/UserOverview";
+import EditUser from "../views/Users/Edit/EditUser";
 
 export const routesConfig: IRoute[] = [
   // Public Routes
@@ -18,6 +19,7 @@ export const routesConfig: IRoute[] = [
   {title: 'dashboard', path: '/dashboard', element: Dashboard, private: true},
 
   {title: 'register-user', path: '/register/user', element: RegisterUser, private: true},
+  {title: 'edit-user', path: '/edit/user/:id', element: EditUser, private: true},
   {title: 'list-users', path: '/list/users', element: UsersTable, private: true},
   {title: 'user-overview', path: '/user/overview/:id', element: UserOverview, private: true},
 

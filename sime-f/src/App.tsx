@@ -1,4 +1,4 @@
-import { useReducer } from "react";
+import { useEffect, useReducer } from "react";
 import "./App.scss";
 import { authReducer } from "./app/Global/reducers/authReducers";
 import { AuthContext, LoaderProvider } from "./app/Global/Context/globalContext";
@@ -8,6 +8,7 @@ import SideMenu from "./app/components/SideMenu/sideMenu";
 import "./app/components/SideMenu/sideMenu.scss";
 import Loader from "./app/components/shared/Loader/Loader";
 import 'react-toastify/dist/ReactToastify.css';
+import { AuthService } from "./app/services/auth/AuthService";
 
 const init = () => {
   let sessionUser: any = sessionStorage.getItem("user");
@@ -24,7 +25,6 @@ const init = () => {
 function App() {
   const [user, dispatchUser] = useReducer(authReducer, {}, init);
   let location = useLocation();
-
 
   const getSharedContent = () => {
     if (
@@ -64,7 +64,7 @@ function App() {
         </div>
       );
     }
-  }
+  };
 
   const handleCollapse = () => {
     document.querySelector(".sideMenu")?.classList.toggle("noShow");
@@ -76,6 +76,31 @@ function App() {
       document.querySelector(".bi")?.classList.add("bi-chevron-right");
     }
   };
+
+  const checkIfUserIsLoggedIn = async () => {
+    let resp = await AuthService.me();
+    if (resp.status === 200) {
+      dispatchUser({
+        type: "LOGIN",
+        payload: {
+          ...resp.user,
+          loggedIn: true,
+        },
+      });
+    } else {
+      dispatchUser({
+        type: "LOGOUT",
+        payload: null, // Add an empty payload property
+      });
+      sessionStorage.removeItem("user");
+      localStorage.removeItem("token");
+    }
+
+  }
+
+  useEffect(() => {
+    checkIfUserIsLoggedIn();
+  }, []);
 
   return (
     <div className="app">
