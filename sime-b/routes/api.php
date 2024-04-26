@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ApiAuthController;
 use App\Http\Controllers\ApiController;
+use App\Http\Controllers\ApiStudentsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,17 +28,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('/login', [ApiAuthController::class, 'login']);
 
 
-//Students Routes
-Route::prefix('students')->group(function () {
-    Route::get('/all',[ApiStudentsController::class, 'all']);
-});
 
 
 //Private Routes
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/me', [ApiAuthController::class, 'me']);
     Route::post('/logout', [ApiAuthController::class, 'logout']);
-
+    
     Route::prefix('/user')->group(function () {
         Route::get('/all', [ApiAuthController::class, 'all']);
         Route::post('/register', [ApiAuthController::class, 'register']);
@@ -45,6 +42,16 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/{id}', [ApiAuthController::class, 'show']);
         Route::delete('/delete/{id}', [ApiAuthController::class, 'delete']);
     });
+    
+    //Students Routes
+    Route::prefix('students')->group(function () {
+        Route::get('/all',[ApiStudentsController::class, 'all']);
+        Route::post('/register',[ApiStudentsController::class, 'register']);
+        Route::get('/{id}',[ApiStudentsController::class, 'show']);
+        Route::patch('/update/{id}',[ApiStudentsController::class, 'update']);
+        Route::delete('/delete/{id}',[ApiStudentsController::class, 'delete']);
+    });
+
 });
 
 

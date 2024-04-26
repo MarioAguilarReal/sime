@@ -3,20 +3,60 @@ import { SimeService } from "../SIMEService";
 
 export class StudentService{
     public static async register(obj: Student):Promise<any>{
-        return obj;
+        let resp;
+        if (!localStorage.getItem('token')){
+            return  resp = {data: [], success: false, status: 401, message: "Token not found"};
+        } else {
+            resp = await SimeService.post('/students/register', obj, { Authorization: 'Bearer ' + localStorage.getItem('token') });
+            console.log(resp);
+            if (resp.status === 200){
+                return resp.data;
+            } else {
+                return resp.data;
+            }
+        }
     }
     
     public static async update(obj: Student):Promise<any>{
-        return obj;
+        let resp;
+        if(!localStorage.getItem('token')){
+            return resp = {data: [], success: false, status: 401, message: 'Token not found'};
+        } else {
+            resp = await SimeService.put('students/update/' + obj.id, obj, { Authorization: 'Bearer ' + localStorage.getItem('token') });
+            if (resp.status === 200){
+                return resp.data;
+            } else{
+                return resp.data;
+            }
+        }
     }
     
     public static async delete(id: number):Promise<any>{
-        return id;
+        let resp;
+        if(!localStorage.getItem('token')){
+            return resp = {data: [], success: false, status: 401, message: 'Token not found'};
+        }else{
+            resp = await SimeService.delete('/students/delete/' + id, { Authorization: 'Bearer ' + localStorage.getItem('token') });
+            if(resp === 200){
+                return resp.data;
+            } else {
+                return resp.data;
+            }
+        }
     }
     
     public static async getStudent(id: number):Promise<any>{
-
-        return id;
+        let resp;
+        if(!localStorage.getItem('token')){
+            return resp = {data: [], success: false, status: 401, message: 'Token not found'};
+        } else {
+            resp = await SimeService.get('/students/' + id, { Authorization: 'Bearer ' + localStorage.getItem('token') });
+            if (resp.status === 200){
+                return resp.data;
+            } else {
+                return resp.data;
+            }
+        }
     }
     
     public static async getAll():Promise<any>{
@@ -24,7 +64,7 @@ export class StudentService{
         if(!localStorage.getItem('token')){
             return resp = {data: [], success: false, status: 401, message: 'Token not found'};
         } else {
-            resp = await SimeService.get('/students/all', { Authorization: 'Bearer ' + localStorage.getItem('token') });
+            resp = await SimeService.get('/students/all/', { Authorization: 'Bearer ' + localStorage.getItem('token') });
             if (resp.status === 200){
                 return resp.data;
             } else {
