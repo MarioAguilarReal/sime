@@ -4,12 +4,12 @@ import { SimeService } from "../SIMEService";
 
 export class UsersService {
 
-  public static async register(obj: User):Promise<any>{
+  public static async register(obj: FormData):Promise<any>{
     let resp;
     if(!localStorage.getItem('token')){
       return resp = {data: [], success: false, status: 401, message: 'Token not found'} as ApiResponse;
     }else{
-      resp = await SimeService.post('/user/register', obj, { Authorization: 'Bearer ' + localStorage.getItem('token') });
+      resp = await SimeService.post('/user/register/', obj, { Authorization: 'Bearer ' + localStorage.getItem('token'), 'Content-Type': 'multipart/form-data'});
       if (resp.status === 200){
         return resp.data;
       }else{
@@ -19,12 +19,12 @@ export class UsersService {
 
   }
 
-  public static async update(obj: User):Promise<any>{
+  public static async update(obj: FormData, id: number):Promise<any>{
     let resp;
     if(!localStorage.getItem('token')){
       return resp = {data: [], success: false, status: 401, message: 'Token not found'} as ApiResponse;
     }else{
-      resp = await SimeService.put('/user/update/' + obj.id, obj, { Authorization: 'Bearer ' + localStorage.getItem('token') });
+      resp = await SimeService.put('/user/update/' + id, obj, { Authorization: 'Bearer ' + localStorage.getItem('token') });
       if (resp.status === 200){
         return resp.data;
       }else{
@@ -38,6 +38,7 @@ export class UsersService {
     if(!localStorage.getItem('token')){
       return resp = {data: [], success: false, status: 401, message: 'Token not found'} as ApiResponse;
     }else{
+      console.log('delete user id: ', id)
       resp = await SimeService.delete('/user/delete/' + id, { Authorization: 'Bearer ' + localStorage.getItem('token') });
       if (resp.status === 200){
         return resp.data;

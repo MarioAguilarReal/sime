@@ -55,9 +55,18 @@ class ApiAuthController extends Controller
     {
         $response = [
             'status' => 200,
-            'message' => 'User found',
-            'user' => auth()->user()
+            'message' => '',
+            'user' => ''
         ];
+        if (auth()->user()) {
+            $response['message'] = 'User found';
+            $response['user'] = auth()->user();
+        } else {
+            $response['message'] = 'User not found';
+            $response['status'] = 201;
+            $response['user'] = null;
+        }
+
         return response()->json($response, 200);
     }
 
@@ -82,13 +91,13 @@ class ApiAuthController extends Controller
             'email' => 'required|email',
             'password' => 'required'
         ]);
+
         $user = User::create([
             'first_name' => $request->first_name,
             'last_name' =>  $request->last_name,
             'birth_date' => $request->birth_date,
             'age' => $request->age,
             'gender' => $request->gender,
-            'photo' => 'default.jpg',
             'address' => $request->address,
             'phone' => $request->phone,
             'civil_status' => $request->civil_status,
@@ -97,8 +106,18 @@ class ApiAuthController extends Controller
             'is_admin' => $request->is_admin,
             'email' => $request->email,
             'password' => bcrypt($request->password)
-
         ]);
+
+        if ($request->has('photo')) {
+            // save photo to storage
+            // $imageName = time().$request->first_name.'_profile.'.$request->photo->extension();
+            $baseURL = url('/');
+            $imageName = $baseURL.'/images/users/profile/'.time().$request->first_name.'_profile.'.$request->photo->extension();
+            $request->photo->move(public_path('images/users/profile/'), $imageName);
+            $user->photo = $imageName;
+        }
+
+        $user->save();
 
         $response['status'] = 200;
         $response['message'] = 'User created successfully';
@@ -199,6 +218,17 @@ class ApiAuthController extends Controller
         $user = User::find($id);
 
         if ($user) {
+            $user->tokens()->delete();
+            //delete photo
+            if ($user->photo) {
+                $photo = explode('/', $user->photo);
+                $photo = end($photo);
+                $path = public_path('images/users/profile/'.$photo);
+                if (file_exists($path)) {
+                    unlink($path);
+                }
+            }
+
             $user->delete();
             $response['status'] = 200;
             $response['message'] = 'User deleted successfully';

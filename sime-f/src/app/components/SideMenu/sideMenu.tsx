@@ -4,8 +4,9 @@ import "./sideMenu.scss";
 import { AuthService } from "../../services/auth/AuthService";
 import { useNavigate } from "react-router-dom";
 import { AuthContext, useLoader } from "../../Global/Context/globalContext";
+import { User } from "../../interfaces/user/User";
 
-const SideMenu = () => {
+const SideMenu = (user : User) => {
   const { dispatchUser }: any = useContext(AuthContext);
   const { setLoading } = useLoader();
 
@@ -34,34 +35,36 @@ const SideMenu = () => {
       >
         <span className="fs-4">Dashboard</span>
       </Link>
-      <hr />
+      <hr className="border border-secondary border-1 opacity-75" />
       <ul className="nav nav-pills flex-column mb-auto">
         <li className="nav-item">
-          <Link to={"/list/users"} className={`nav-link link-light ${location.pathname == '/list/users' ? 'active' : ''}`} >
-            <i className="fa fa-user" />
-            &nbsp; Users
+          <Link to={"/list/users"} className={`nav-link link-light ${location.pathname === '/list/users' ? 'active' : ''}`} >
+            <i className="bi bi-people" />
+            &nbsp; Usuarios
           </Link>
         </li>
         <li className="nav-item">
-          <Link to={"/register/user/"} className={`nav-link link-light ${location.pathname == '/register/user/' ? 'active' : ''}`}>
-            <i className="fa fa-user" />
-            &nbsp; New User
+          <Link to={"/register/user/"} className={`nav-link link-light ${location.pathname === '/register/user/' ? 'active' : ''}`}>
+            <i className="bi bi-plus" />
+            &nbsp; Nuevo Usuario
+          </Link>
+          <hr className="border border-secondary border-1 opacity-75" />
+        </li>
+        <li className="nav-item">
+          <Link to={"/list/students/"} className={`nav-link link-light ${location.pathname === '/list/students/' ? 'active' : ''}`} >
+            <i className="bi bi-book" />
+            &nbsp; Estudiantes
           </Link>
         </li>
         <li className="nav-item">
-          <Link to={"/list/students/"} className="nav-link link-light">
-            <i className="fa fa-home" />
-            &nbsp; Students
+          <Link to={"/register/student/"} className={`nav-link link-light ${location.pathname === '/register/student/' ? 'active' : ''}`} >
+            <i className="bi bi-plus" />
+            &nbsp; Nuevo Estudiante
           </Link>
-        </li>
-        <li className="nav-item">
-          <Link to={"/register/student/"} className="nav-link link-light">
-            <i className="fa fa-home" />
-            &nbsp; New Student
-          </Link>
+          <hr className="border border-secondary border-1 opacity-75" />
         </li>
       </ul>
-      <hr />
+      <hr className="border border-secondary border-1 opacity-75" />
       <div className="dropdown">
         <a
           href="#"
@@ -70,20 +73,23 @@ const SideMenu = () => {
           data-bs-toggle="dropdown"
           aria-expanded="false"
         >
-          <img alt="" width="32" height="32" className="rounded-circle me-2" />
-          <strong>Admin</strong>
+          <img src="https://scx2.b-cdn.net/gfx/news/hires/2018/1-detectingfak.jpg" alt="" width="32" height="32" className="rounded-circle me-2" />
+          <strong>{user.first_name + " " + user.last_name}</strong>
         </a>
         <ul
           className="dropdown-menu text-small shadow"
           aria-labelledby="dropdownUser2"
         >
           <li>
+            {/* Todo - create user profile page and here the link */}
             <Link to={"/"} className="nav-link">
-              Back to Home
+              <i className="bi bi-person"/>
+              Perfil
             </Link>
           </li>
           <li>
             <button className="nav-link" onClick={logout}>
+              <i className="bi bi-box-arrow-left"/>
               Logout
             </button>
           </li>

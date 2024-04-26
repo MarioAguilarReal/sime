@@ -32,9 +32,9 @@ Route::post('/login', [ApiAuthController::class, 'login']);
 
 //Private Routes
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/me', [ApiAuthController::class, 'me']);
     Route::post('/logout', [ApiAuthController::class, 'logout']);
-    
+    Route::get('/me', [ApiAuthController::class, 'me']);
+
     Route::prefix('/user')->group(function () {
         Route::get('/all', [ApiAuthController::class, 'all']);
         Route::post('/register', [ApiAuthController::class, 'register']);

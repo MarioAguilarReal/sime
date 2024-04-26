@@ -4,6 +4,7 @@ import { useLoader } from "../../../Global/Context/globalContext";
 import { UsersService } from "../../../services/users/UsersService";
 import { AuthService } from "../../../services/auth/AuthService";
 import { useNavigate } from "react-router-dom";
+import "./UsersTable.scss";
 
 const UsersTable = () => {
   const [users, setUsers] = useState<User[]>([]);
@@ -28,10 +29,8 @@ const UsersTable = () => {
 
   const formatDate = (date: Date) => {
     let d = new Date(date);
-    return d.getDate() + '-' + ((d.getMonth() + 1) < 10 ? `0${d.getMonth()+1}`: d.getMonth()+1) + '-' + d.getFullYear();
+    return (d.getDate() < 10 ? `0${d.getDate()}` : d.getDate()) + '-' + ((d.getMonth() + 1) < 10 ? `0${d.getMonth()+1}`: d.getMonth()+1) + '-' + d.getFullYear();
   };
-
-
 
   useEffect(() => {
     loadData();
@@ -41,6 +40,9 @@ const UsersTable = () => {
   return (
     <div className="users-table">
       <div className="container">
+        <div className="divider">
+          <h1 className="title">USUARIOS</h1>
+        </div>
         <div className="row">
           <div className="col-12">
             <table className="table table-striped">

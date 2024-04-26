@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import "./Login.scss";
 import { useForm } from "react-hook-form";
 import { ToastContainer, toast } from "react-toastify";
+import { PATTERNS } from "../../../components/shared/FormInputs/patterns";
 
 interface login {
   email: string;
@@ -60,7 +61,7 @@ const Login = () => {
               {...register("email", {
                 required: true,
                 pattern: {
-                  value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+                  value: PATTERNS.emailRegEx,
                   message: "Invalid email address",
                 }})}
             />
