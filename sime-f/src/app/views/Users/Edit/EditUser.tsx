@@ -1,18 +1,18 @@
-import "./RegisterUser.scss";
-import { User } from "../../../interfaces/user/User";
-import { set, useForm } from "react-hook-form";
-import TextField from "../../../components/shared/FormInputs/TextField";
-import SelectField from "../../../components/shared/FormInputs/SelectFIeld";
-import { CheckboxList } from "../../../components/shared/FormInputs/CheckBox";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { UsersService } from "../../../services/users/UsersService";
 import { ToastContainer, toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
-import { PATTERNS } from "../../../components/shared/FormInputs/patterns";
-import { generalData } from "../../../common/generalData";
+import { CheckboxList } from "../../../components/shared/FormInputs/CheckBox";
+import TextField from "../../../components/shared/FormInputs/TextField";
+import SelectField from "../../../components/shared/FormInputs/SelectFIeld";
+import { useForm } from "react-hook-form";
+import { User } from "../../../interfaces/user/User";
 import { useLoader } from "../../../Global/Context/globalContext";
-import { useState } from "react";
+import { generalData } from "../../../common/generalData";
+import { PATTERNS } from "../../../components/shared/FormInputs/patterns";
 
-const RegisterUser = () => {
+const EditUser = () => {
+  const { id } = useParams<{ id: string }>();
   const {
     register,
     handleSubmit,
@@ -20,22 +20,37 @@ const RegisterUser = () => {
     control,
     getValues,
     watch,
+    setValue,
   } = useForm<User>();
   const navigate = useNavigate();
 
   const { setLoading } = useLoader();
 
   const [photo, setPhoto] = useState<File | null>(null);
+  const [user, setUser] = useState<User>();
 
   const handlePhotoChange = (e: any) => {
     const selectedPhoto = e.target.files[0];
     setPhoto(selectedPhoto);
   }
 
-  const handleNewUser = async (data: User) => {
+
+
+
+  const loadData = async (userId: number) => {
+    setLoading(true);
+    let resp = await UsersService.getUser(userId);
+    if (resp.status === 200) {
+      setUser(resp.user);
+    }else{
+      toast.error(resp.message);
+    }
+    setLoading(false);
+  };
+
+  const handleUpdateUser = async (data: User) => {
     setLoading(true);
     const formData = new FormData();
-    console.log(data);
     formData.append("first_name", data.first_name);
     formData.append("last_name", data.last_name);
     formData.append("birth_date", data.birth_date.toString());
@@ -55,8 +70,7 @@ const RegisterUser = () => {
       formData.append("photo", photo);
     }
     //print the form data
-    const resp = await UsersService.register(formData);
-    console.log(resp);
+    const resp = await UsersService.update(formData, user?.id || 0);
     if (resp.status === 200) {
       toast.success(resp.message);
       navigate("/user/overview/" + resp.user.id);
@@ -65,6 +79,32 @@ const RegisterUser = () => {
     }
     setLoading(false);
   };
+
+
+  useEffect(() => {
+    if (!id) return;
+    let userId = parseInt(id);
+    loadData(userId);
+  }, [id]);
+
+  useEffect(() => {
+    if (user) {
+      setValue("first_name", user.first_name);
+      setValue("last_name", user.last_name);
+      setValue("birth_date", user.birth_date);
+      setValue("age", user.age);
+      setValue("gender", user.gender);
+      setValue("address", user.address);
+      setValue("phone", user.phone);
+      setValue("civil_status", user.civil_status);
+      setValue("email", user.email);
+      setValue("is_teacher", user.is_teacher);
+      setValue("is_tutor", user.is_tutor);
+      setValue("is_admin", user.is_admin);
+    }
+  }
+  , [user]);
+  // if (!user) return null;
 
   return (
     <div className="User-Register">
@@ -133,7 +173,7 @@ const RegisterUser = () => {
             <h2>Información de Contacto:</h2>
             <hr className="border border-secondary border-1 opacity-75" />
           </div>
-          <div className="row mb-4">
+          <div className="row">
             <div className="col-4">
               <TextField
                 label="Dirección"
@@ -165,56 +205,6 @@ const RegisterUser = () => {
               />
             </div>
           </div>
-          <div className="row">
-            <h2>Información de Cuenta:</h2>
-            <hr className="border border-secondary border-1 opacity-75" />
-          </div>
-          <div className="row mb-2">
-            <div className="col-4">
-              <TextField
-                label="Correo Electronico"
-                field="email"
-                type="email"
-                register={register}
-                rules={{
-                  required: "Este campo es requerido",
-                  pattern: {
-                    value: PATTERNS.emailRegEx,
-                    message: "Invalid email address",
-                  },
-                }}
-                errors={errors}
-              />
-            </div>
-            <div className="col-4">
-              <TextField
-                label="Contraseña"
-                field="password"
-                type="password"
-                register={register}
-                rules={{ required: "Este campo es requerido" }}
-                errors={errors}
-              />
-            </div>
-            <div className="col-4">
-              <TextField
-                label="Confirmar Contraseña"
-                field="confirm_password"
-                type="password"
-                register={register}
-                rules={{
-                  required: "Este campo es requerido",
-                  validate: (val: any) => {
-                    return (
-                      val === watch("password") || "Las contraseñas no coinciden"
-                    );
-                  },
-                }}
-                errors={errors}
-              />
-              <p className="text-danger">{errors.confirm_password?.message}</p>
-            </div>
-          </div>
           <div className="row mb-4">
             <div className="col-4">
               <label htmlFor="">Photo</label>
@@ -228,7 +218,7 @@ const RegisterUser = () => {
             <div className="col-4">
               <p>Photo Preview</p>
               <img
-                src={photo ? URL.createObjectURL(photo) : 'https://via.placeholder.com/150'}
+                src={photo ? URL.createObjectURL(photo) : user?.photo || 'https://via.placeholder.com/150'}
                 alt="student"
                 className="user-photo"
               />
@@ -260,7 +250,7 @@ const RegisterUser = () => {
             <div className="col-8">
               <button
                 className="btn btn-primary xl"
-                onClick={handleSubmit((data) => handleNewUser(data))}
+                onClick={handleSubmit((data) => handleUpdateUser(data))}
               >
                 Registrar
               </button>
@@ -271,6 +261,7 @@ const RegisterUser = () => {
       <ToastContainer />
     </div>
   );
-};
 
-export default RegisterUser;
+}
+
+export default EditUser;

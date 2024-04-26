@@ -6,6 +6,7 @@ import './UserOverview.scss';
 import { useLoader } from '../../../Global/Context/globalContext';
 import { UsersService } from '../../../services/users/UsersService';
 import { useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const UserOverview = () => {
 
@@ -32,11 +33,23 @@ const UserOverview = () => {
 
   return (
     <div className="user-overview">
-      <div className="data">
-        <UserData {...user} />
+      <div className="header">
+        <h1 className="title">
+          <i className="bi bi-person" />
+          Información del Usuario: {user.first_name} {user.last_name}
+        </h1>
+        <Link to="/list/users" className="btn btn-primary">
+          <i className="bi bi-chevron-left" />
+          Volver
+        </Link>
       </div>
-      <div className="info">
-        <UserCard {...user}/>
+      <div className="user-content">
+        <div className="data">
+          <UserData {...user} />
+        </div>
+        <div className="info">
+          <UserCard {...user}/>
+        </div>
       </div>
     </div>
   );

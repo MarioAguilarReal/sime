@@ -25,9 +25,13 @@ class Student extends Model
         'tutor_age',
         'tutor_address',
         'tutor_email',
+        'cognitive_skills',
+        'alternative_skills',
         'student_academic_data_id',
         'learning_type_id',
         'special_needs_id',
+        'social_skills_id',
+        'planning_skills_id',
     ];
 
     public function studentAcademicData()
@@ -45,5 +49,14 @@ class Student extends Model
         return $this->hasOne(SpecialNeeds::class);
     }
 
+    public function socialSkills()
+    {
+        return $this->hasOne(SocialSkills::class);
+    }
+
+    public function planningSkills()
+    {
+        return $this->hasOne(PlanningSkills::class);
+    }
 
 }

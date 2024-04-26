@@ -18,7 +18,7 @@ return new class extends Migration
             $table->date('birth_date');
             $table->integer('age');
             $table->integer('gender');
-            $table->string('photo');
+            $table->string('photo')->nullable();
             $table->string('address');
             $table->string('phone');
             $table->integer('civil_status');

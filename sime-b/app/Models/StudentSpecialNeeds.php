@@ -5,15 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class LearningType extends Model
+class StudentSpecialNeeds extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'name',
+        'usaer_id',
+        'learning_problems',
+        'diseases',
     ];
 
-    //belongsto student
     public function student()
     {
         return $this->belongsTo(Student::class);

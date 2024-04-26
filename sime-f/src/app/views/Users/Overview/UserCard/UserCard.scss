@@ -1,0 +1,22 @@
+.student-card{
+  // i wanna do scroll
+  overflow-y: auto;
+  height: 100%;
+  .image{
+    width: 150px;
+    height: 150px;
+    margin: 0 auto 10px auto;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 1px solid #ccc;
+    img{
+      width: 100%;
+      height: 100%;
+      object-fit: scale-down;
+    }
+  }
+  .u-info{
+    font-size: 1.1rem;
+    font-weight: 400;
+  }
+}
