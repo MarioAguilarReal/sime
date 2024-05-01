@@ -1,4 +1,4 @@
-import { createElement, useContext } from "react";
+import { createElement, useContext, useEffect, useState } from "react";
 import { AuthContext } from "../Global/Context/globalContext";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { routesConfig } from "./app.routes";
@@ -15,6 +15,14 @@ interface User {
 
 export function AppRouter() {
   const { user }: Context = useContext(AuthContext);
+  const [authChecked, setAuthChecked] = useState(false);
+
+  useEffect(() => {
+      setAuthChecked(true);
+  }, [user]);
+
+  const redirectPath = !user?.loggedIn ? '/auth/login' : '/dashboard';
+
   const getPrivateRoute = (route: IRoute) => {
     return user?.loggedIn ? (
       <Route key={route.title} path={route.path} element={createElement(route.element)} />
@@ -33,9 +41,13 @@ export function AppRouter() {
   };
 
   return (
+    authChecked ? (
     <Routes>
       {routesConfig.map((route) => getRoute(route))}
-      {user?.loggedIn ? <Route path="/*" element={<Navigate to="/dashboard" />} /> : <Route path="/*" element={<Navigate to="/auth/login" />} />}
+      {redirectPath && <Route key="redirect" path="/*" element={<Navigate to={redirectPath} />} />}
     </Routes>
+    ) : (
+      null
+    )
   );
 }

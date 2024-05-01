@@ -16,13 +16,17 @@ const Login = () => {
   const { dispatchUser }: any = useContext(AuthContext);
   const { setLoading } = useLoader();
   const navigate = useNavigate();
-  const {register, handleSubmit, watch, formState: {errors}, } = useForm<login>();
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<login>();
 
   const [showPassword, setShowPassword] = useState(false);
   const [canLogin, setCanLogin] = useState(false);
   let email = watch("email");
   let password = watch("password");
-
 
   const handleLogin = async (data: login) => {
     setLoading(true);
@@ -47,50 +51,59 @@ const Login = () => {
 
   return (
     <div className="login">
-      <div className="login-form">
-        <form>
-          <h1>SIME Login</h1>
-          <div className="form-group">
-            <label htmlFor="email">Email address</label>
-            <input
-              type="email"
-              className="form-control"
-              id="email"
-              aria-describedby="emailHelp"
-              placeholder="Enter email"
-              {...register("email", {
-                required: true,
-                pattern: {
-                  value: PATTERNS.emailRegEx,
-                  message: "Invalid email address",
-                }})}
-            />
-            {errors.email && <span className="error">*{errors.email.message}</span>}
-          </div>
-          <div className="form-group">
-            <label htmlFor="password">Password</label>
-            <div className="input-wrapper">
+      <div className="login-wrapper">
+        <div className="login-image"></div>
+        <div className="login-form">
+          <h1>Iniciar Sesión</h1>
+          <form>
+            <div className="form-group">
+              <label htmlFor="email">Email address</label>
               <input
-                type={showPassword ? "text" : "password"}
+                type="email"
                 className="form-control"
-                id="password"
-                placeholder="Password"
-                {...register("password", {required: true})}
+                id="email"
+                aria-describedby="emailHelp"
+                placeholder="Enter email"
+                {...register("email", {
+                  required: true,
+                  pattern: {
+                    value: PATTERNS.emailRegEx,
+                    message: "Invalid email address",
+                  },
+                })}
               />
-              {/* <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} className="see-pass" onClick={() => setShowPassword(!showPassword)} /> */}
-              <i
-                className={`bi ${
-                  showPassword ? "bi-eye-slash" : "bi-eye"
-                } see-pass`}
-                onClick={() => setShowPassword(!showPassword)}
-              ></i>
+              {errors.email && (
+                <span className="error">*{errors.email.message}</span>
+              )}
             </div>
-          </div>
-        </form>
-        <button className="btn btn-primary" onClick={handleSubmit((data) => handleLogin(data))} disabled={!canLogin}>
-          Submit
-        </button>
-        <ToastContainer />
+            <div className="form-group">
+              <label htmlFor="password">Password</label>
+              <div className="input-wrapper">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  className="form-control"
+                  id="password"
+                  placeholder="Password"
+                  {...register("password", { required: true })}
+                />
+                <i
+                  className={`bi ${
+                    showPassword ? "bi-eye-slash" : "bi-eye"
+                  } see-pass`}
+                  onClick={() => setShowPassword(!showPassword)}
+                ></i>
+              </div>
+            </div>
+          </form>
+          <button
+            className="btn-xl"
+            onClick={handleSubmit((data) => handleLogin(data))}
+            disabled={!canLogin}
+          >
+            Iniciar Sesión <i className="bi bi-box-arrow-in-right"></i>
+          </button>
+          <ToastContainer />
+        </div>
       </div>
     </div>
   );

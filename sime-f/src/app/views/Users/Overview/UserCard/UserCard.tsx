@@ -88,8 +88,8 @@ const UserCard = (user: User) => {
       </p>
       <p className="u-info">
         <i className="bi bi-person-circle" /> &nbsp;
-        {user.is_teacher ? "Profesor" : ""}, &nbsp;
-        {user.is_tutor ? "Tutor" : ""}, &nbsp;
+        {user.is_teacher ? "Profesor " : ""}
+        {user.is_tutor ? "Tutor " : ""}
         {user.is_admin ? "Administrador" : ""}
       </p>
       <p className="u-info">
@@ -97,7 +97,7 @@ const UserCard = (user: User) => {
         {getCivilStatus(user.civil_status)}
       </p>
       <hr className="border border-secondary border-1 opacity-75" />
-      <button className="btn btn-primary me-2">Editar Usuario</button>
+      <button className="btn btn-primary me-2" onClick={() => navigate(`/edit/user/${user?.id}`)}>Editar Usuario</button>
       <button className="btn btn-danger" onClick={() => setShowDeleteModal(true)}>Eliminar Usuario</button>
     </div>
   );

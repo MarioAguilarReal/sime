@@ -9,21 +9,62 @@ import "./app/components/SideMenu/sideMenu.scss";
 import Loader from "./app/components/shared/Loader/Loader";
 import 'react-toastify/dist/ReactToastify.css';
 import { AuthService } from "./app/services/auth/AuthService";
+import { ToastContainer } from "react-toastify";
 
-const init = () => {
-  let sessionUser: any = sessionStorage.getItem("user");
-  let user: any;
-  if (!sessionUser) {
-    user = null;
-  } else {
-    user = JSON.parse(sessionUser);
-    user = { ...user, loggedIn: true };
+function initializeUser() {
+  const sessionUser = sessionStorage.getItem("user");
+  if (!sessionUser) return null;
+  return { ...JSON.parse(sessionUser), loggedIn: true };
+}
+
+function getSidebar(user: any, getSharedContent: () => boolean){
+  if (!getSharedContent()) return null;
+  return (
+    <div className="sideMenu hideMenu" id="collapseSideMenu">
+      <SideMenu {...user} />
+    </div>
+  );
+}
+// const getSidebar = () => {
+//   if (!getSharedContent()) {
+//     return null;
+//   } else {
+//     return (
+//       <div className="sideMenu hideMenu" id="collapseSideMenu">
+//         <SideMenu {...user}/>
+//       </div>
+//     );
+//   }
+// };
+
+async function checkIfUserIsLoggedIn(dispatchUser: any) {
+  try {
+    const resp = await AuthService.me();
+    if (resp.status === 200) {
+      dispatchUser({ type: "LOGIN", payload: { ...resp.user, loggedIn: true } });
+    } else {
+      dispatchUser({ type: "LOGOUT", payload: null });
+      sessionStorage.removeItem("user");
+      localStorage.removeItem("token");
+    }
+  } catch (error) {
+    console.error("Error checking user login status:", error);
   }
-  return user;
-};
+}
+
+function getFloatingButton(user: any, handleCollapse: () => void, getSharedContent: () => boolean){
+  if (!getSharedContent()) return null;
+  return (
+    <div className="floatingButton">
+      <button className="coll-btn" type="button" onClick={handleCollapse}>
+        <i className="bi bi-chevron-left"></i>
+      </button>
+    </div>
+  );
+}
 
 function App() {
-  const [user, dispatchUser] = useReducer(authReducer, {}, init);
+  const [user, dispatchUser] = useReducer(authReducer, {}, initializeUser);
   let location = useLocation();
 
   const getSharedContent = () => {
@@ -36,71 +77,19 @@ function App() {
     return true;
   };
 
-  const getSidebar = () => {
-    if (!getSharedContent()) {
-      return null;
-    } else {
-      return (
-        <div className="sideMenu hideMenu" id="collapseSideMenu">
-          <SideMenu {...user}/>
-        </div>
-      );
-    }
-  };
-
-  const getFloatingButton = () => {
-    if (!getSharedContent()) {
-      return null;
-    } else {
-      return (
-        <div className="floatingButton">
-          <button
-            className="coll-btn"
-            type="button"
-            onClick={handleCollapse}
-          >
-            <i className="bi bi-chevron-left"></i>
-          </button>
-        </div>
-      );
-    }
-  };
+  useEffect(() => {
+    checkIfUserIsLoggedIn(dispatchUser);
+  }, []);
 
   const handleCollapse = () => {
-    document.querySelector(".sideMenu")?.classList.toggle("noShow");
-    if (!document.querySelector(".sideMenu")?.classList.contains("noShow")) {
-      document.querySelector(".bi")?.classList.remove("bi-chevron-right");
-      document.querySelector(".bi")?.classList.add("bi-chevron-left");
-    } else {
-      document.querySelector(".bi")?.classList.remove("bi-chevron-left");
-      document.querySelector(".bi")?.classList.add("bi-chevron-right");
-    }
-  };
-
-  const checkIfUserIsLoggedIn = async () => {
-    let resp = await AuthService.me();
-    if (resp.status === 200) {
-      dispatchUser({
-        type: "LOGIN",
-        payload: {
-          ...resp.user,
-          loggedIn: true,
-        },
-      });
-    } else {
-      dispatchUser({
-        type: "LOGOUT",
-        payload: null, // Add an empty payload property
-      });
-      sessionStorage.removeItem("user");
-      localStorage.removeItem("token");
-    }
-
+    const sideMenu = document.querySelector(".sideMenu");
+    if (!sideMenu) return;
+    sideMenu.classList.toggle("noShow");
+    const icon = document.querySelector(".bi");
+    if (!icon) return;
+    icon.classList.toggle("bi-chevron-right");
+    icon.classList.toggle("bi-chevron-left");
   }
-
-  useEffect(() => {
-    checkIfUserIsLoggedIn();
-  }, []);
 
   return (
     <div className="app">
@@ -108,13 +97,13 @@ function App() {
         <LoaderProvider>
         <Loader />
         <div className="sime">
-          {user ? getSidebar() : null}
-
+          {getSidebar(user, getSharedContent)}
           <div className="content">
-            {user ? getFloatingButton() : null}
+            {getFloatingButton(user, handleCollapse, getSharedContent)}
             <AppRouter />
           </div>
         </div>
+        <ToastContainer />
         </LoaderProvider>
       </AuthContext.Provider>
     </div>

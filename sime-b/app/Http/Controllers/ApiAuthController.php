@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Cache;
+
 class ApiAuthController extends Controller
 {
     public function login(Request $request)
@@ -126,28 +128,30 @@ class ApiAuthController extends Controller
         return response()->json($response, 200);
     }
 
-    public function update(Request $request, $id)
+    public function edit(Request $request,  $id)
     {
+
         $response = [
             'status' => 0,
             'message' => '',
             'user' => ''
         ];
 
-        $request->validate([
-            'first_name' => 'required',
-            'last_name' => 'required',
-            'birth_date' => 'required|date',
-            'age' => 'required',
-            'gender' => 'required',
-            'address' => 'required',
-            'phone' => 'required',
-            'civil_status' => 'required',
-        ]);
-
         $user = User::find($id);
 
         if ($user) {
+            $request->validate([
+                'first_name' => 'required',
+                'last_name' => 'required',
+                'birth_date' => 'required|date',
+                'age' => 'required',
+                'gender' => 'required',
+                'address' => 'required',
+                'phone' => 'required',
+                'civil_status' => 'required',
+
+            ]);
+
             $user->first_name = $request->first_name;
             $user->last_name = $request->last_name;
             $user->birth_date = $request->birth_date;
@@ -156,34 +160,41 @@ class ApiAuthController extends Controller
             $user->address = $request->address;
             $user->phone = $request->phone;
             $user->civil_status = $request->civil_status;
+            $user->is_teacher = $request->is_teacher;
+            $user->is_tutor = $request->is_tutor;
+            $user->is_admin = $request->is_admin;
 
             if ($request->has('photo')) {
-                $user->photo = $request->photo;
-            }
-            if ($request->has('is_teacher')) {
-                $user->is_teacher = $request->is_teacher;
-            }
-            if ($request->has('is_tutor')) {
-                $user->is_tutor = $request->is_tutor;
-            }
-            if ($request->has('is_admin')) {
-                $user->is_admin = $request->is_admin;
+                //delete old photo
+                if ($user->photo) {
+                    $photo = explode('/', $user->photo);
+                    $photo = end($photo);
+                    $path = public_path('images/users/profile/'.$photo);
+                    if (file_exists($path)) {
+                        unlink($path);
+                    }
+                }
+                // save photo to storage
+                // $imageName = time().$request->first_name.'_profile.'.$request->photo->extension();
+                $baseURL = url('/');
+                $imageName = $baseURL.'/images/users/profile/'.time().$request->first_name.'_profile.'.$request->photo->extension();
+                $request->photo->move(public_path('images/users/profile/'), $imageName);
+                $user->photo = $imageName;
             }
 
             $user->save();
 
-
+            $response['status'] = 200;
+            $response['message'] = 'User updated successfully';
+            $response['user'] = $user;
         } else {
             $response['status'] = 201;
             $response['message'] = 'User not found';
         }
 
-        $response['status'] = 200;
-        $response['message'] = 'User updated successfully';
-        $response['user'] = $user;
-
-        return response()->json($response, 200);
+        return response()->json($response, $response['status']);
     }
+
 
     public function show($id)
     {
@@ -256,6 +267,43 @@ class ApiAuthController extends Controller
         } else {
             $response['status'] = 201;
             $response['message'] = 'Users not found';
+        }
+
+        return response()->json($response, $response['status']);
+    }
+
+
+    public function changePassword(Request $request)
+    {
+        $response = [
+            'status' => 0,
+            'message' => ''
+        ];
+
+        $request->validate([
+            'currentPassword' => 'required',
+            'newPassword' => 'required',
+            'confirmPassword' => 'required|same:newPassword',
+            'email' => 'required|email',
+            'token' => 'required'
+        ]);
+
+        if (Cache::get('password_reset_token'. $request->email) != $request->token) {
+            $response['status'] = 201;
+            $response['message'] = 'Invalid token';
+            return response()->json($response, $response['status']);
+        }
+
+        $user = auth()->user();
+
+        if (password_verify($request->currentPassword, $user->password)) {
+            $user->password = bcrypt($request->newPassword);
+            $user->save();
+            $response['status'] = 200;
+            $response['message'] = 'Password changed successfully';
+        } else {
+            $response['status'] = 201;
+            $response['message'] = 'Invalid current password';
         }
 
         return response()->json($response, $response['status']);
