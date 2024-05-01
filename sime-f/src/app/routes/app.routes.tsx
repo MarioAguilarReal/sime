@@ -7,14 +7,17 @@ import RegisterUser from "../views/Users/Register/RegisterUser";
 import UsersTable from "../views/Users/UsersTable/UsersTable";
 import UserOverview from "../views/Users/Overview/UserOverview";
 import EditUser from "../views/Users/Edit/EditUser";
+import ChangePassword from "../views/auth/settings/changePassword/ChangePassword";
+import Profile from "../views/auth/settings/profile/Profile";
 
 export const routesConfig: IRoute[] = [
   // Public Routes
   {title: 'login', path: '/auth/login', element: Login, private: false},
+  {title: 'change-password', path: '/auth/change-password/:id', element: ChangePassword, private: false},
 
   // Private Routes
 
-
+  {title: 'profile', path: '/auth/profile', element: Profile, private: true},
 
   {title: 'dashboard', path: '/dashboard', element: Dashboard, private: true},
 

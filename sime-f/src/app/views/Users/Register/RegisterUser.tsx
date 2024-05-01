@@ -1,6 +1,6 @@
 import "./RegisterUser.scss";
 import { User } from "../../../interfaces/user/User";
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import TextField from "../../../components/shared/FormInputs/TextField";
 import SelectField from "../../../components/shared/FormInputs/SelectFIeld";
 import { CheckboxList } from "../../../components/shared/FormInputs/CheckBox";
@@ -67,12 +67,12 @@ const RegisterUser = () => {
   };
 
   return (
-    <div className="User-Register">
-      <h1>Register User</h1>
+    <div className="User-Register p-3">
+      <h1>Registrar Usuario</h1>
       <div className="form">
         <div className="container-fluid-mb-3 form-group">
           <div className="row">
-            <h2>Personal Data:</h2>
+            <h2>Datos Personales:</h2>
             <hr className="border border-secondary border-1 opacity-75" />
           </div>
           <div className="row mb-4">

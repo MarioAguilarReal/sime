@@ -9,7 +9,6 @@ import { useForm } from "react-hook-form";
 import { User } from "../../../interfaces/user/User";
 import { useLoader } from "../../../Global/Context/globalContext";
 import { generalData } from "../../../common/generalData";
-import { PATTERNS } from "../../../components/shared/FormInputs/patterns";
 
 const EditUser = () => {
   const { id } = useParams<{ id: string }>();
@@ -107,12 +106,12 @@ const EditUser = () => {
   // if (!user) return null;
 
   return (
-    <div className="User-Register">
-      <h1>Register User</h1>
+    <div className="User-Register p-3">
+      <h1>Editar Usuario</h1>
       <div className="form">
         <div className="container-fluid-mb-3 form-group">
           <div className="row">
-            <h2>Personal Data:</h2>
+            <h2>Datos Personales:</h2>
             <hr className="border border-secondary border-1 opacity-75" />
           </div>
           <div className="row mb-4">
@@ -232,7 +231,7 @@ const EditUser = () => {
             <div className="col-3">
               <CheckboxList
                 items={[
-                  { field: "is_teacher", label: "Maestro" },
+                  { field: "is_teacher", label: "Profesor" },
                   { field: "is_tutor", label: "Tutor" },
                   { field: "is_admin", label: "Admin" },
                 ]}
@@ -252,7 +251,7 @@ const EditUser = () => {
                 className="btn btn-primary xl"
                 onClick={handleSubmit((data) => handleUpdateUser(data))}
               >
-                Registrar
+                Actualizar
               </button>
             </div>
           </div>

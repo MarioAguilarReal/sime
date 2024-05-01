@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ApiAuthController;
 use App\Http\Controllers\ApiController;
 use App\Http\Controllers\ApiStudentsController;
+use App\Http\Controllers\EmailController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,16 +34,25 @@ Route::prefix('students')->group(function () {
     Route::get('/all',[ApiStudentsController::class, 'all']);
 });
 
+//Email Routes
+
 
 //Private Routes
 Route::middleware('auth:sanctum')->group(function () {
+
     Route::post('/logout', [ApiAuthController::class, 'logout']);
     Route::get('/me', [ApiAuthController::class, 'me']);
+
+    Route::post('/change-password', [ApiAuthController::class, 'changePassword']);
+
+    Route::prefix('email')->group(function () {
+        Route::post('/change-password/{id}', [EmailController::class, 'sendEmailChangePassword']);
+    });
 
     Route::prefix('/user')->group(function () {
         Route::get('/all', [ApiAuthController::class, 'all']);
         Route::post('/register', [ApiAuthController::class, 'register']);
-        Route::patch('/update/{id}', [ApiAuthController::class, 'update']);
+        Route::post('/edit/{id}', [ApiAuthController::class, 'edit']);
         Route::get('/{id}', [ApiAuthController::class, 'show']);
         Route::delete('/delete/{id}', [ApiAuthController::class, 'delete']);
     });

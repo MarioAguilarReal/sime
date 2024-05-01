@@ -1,6 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\App;
+use App\Mail\ChangePasswordMail;
+use App\Models\User;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -12,7 +16,3 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
-Route::get('/', function () {
-    return view('welcome');
-});
