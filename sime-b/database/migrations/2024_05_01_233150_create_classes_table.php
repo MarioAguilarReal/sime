@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('classes', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->text('description');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->integer('max_students');
+            $table->boolean('status')->default(true);
             $table->timestamps();
         });
     }

@@ -70,24 +70,10 @@ const SideMenu = (user : User) => {
           </Link>
         </li>
         <li className="nav-item">
-          <Link to={"/register/group/"} className={`nav-link link-light ${location.pathname === '/register/group/' ? 'active' : ''}`} >
-            <i className="bi bi-plus" />
-            &nbsp; Crear Grupo
-          </Link>
-          <hr className="border border-secondary border-1 opacity-75" />
-        </li>
-        <li className="nav-item">
           <Link to={"/list/classes/"} className={`nav-link link-light ${location.pathname === '/list/classes/' ? 'active' : ''}`} >
             <i className="bi bi-book" />
             &nbsp; Clases
           </Link>
-        </li>
-        <li className="nav-item">
-          <Link to={"/register/class/"} className={`nav-link link-light ${location.pathname === '/register/class/' ? 'active' : ''}`} >
-            <i className="bi bi-plus" />
-            &nbsp; Crear Clase
-          </Link>
-          <hr className="border border-secondary border-1 opacity-75" />
         </li>
       </ul>
       <hr className="border border-secondary border-1 opacity-75" />
