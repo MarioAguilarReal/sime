@@ -23,7 +23,7 @@ const Checkbox: FunctionComponent<CheckboxProps> = ({
   inputClass = "form-check-input",
   parentClass = "form-group",
 }) => {
-  const validationError = getValidationErrors(errors, field, "Please select an option", rules, "");
+  const validationError = getValidationErrors(errors, field, "", rules, "");
   return (
     <div className={parentClass}>
       <input className={inputClass} type="checkbox" {...register(field, { ...rules })} />

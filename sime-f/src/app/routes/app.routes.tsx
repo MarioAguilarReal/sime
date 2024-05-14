@@ -9,6 +9,8 @@ import UserOverview from "../views/Users/Overview/UserOverview";
 import EditUser from "../views/Users/Edit/EditUser";
 import ChangePassword from "../views/auth/settings/changePassword/ChangePassword";
 import Profile from "../views/auth/settings/profile/Profile";
+import Groups from "../views/groups/Groups";
+import Classes from "../views/clases/Classes";
 
 export const routesConfig: IRoute[] = [
   // Public Routes
@@ -28,4 +30,7 @@ export const routesConfig: IRoute[] = [
 
   {title: "student_register", path: "/register/student", element: StudentRegister, private: true},
   {title: 'student_all', path: "/list/students", element: StudentAll, private: true},
+
+  {title: 'groups', path: '/list/groups', element: Groups, private: true},
+  {title: 'classes', path: '/list/classes', element: Classes, private: true},
 ]

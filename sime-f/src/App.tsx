@@ -25,17 +25,6 @@ function getSidebar(user: any, getSharedContent: () => boolean){
     </div>
   );
 }
-// const getSidebar = () => {
-//   if (!getSharedContent()) {
-//     return null;
-//   } else {
-//     return (
-//       <div className="sideMenu hideMenu" id="collapseSideMenu">
-//         <SideMenu {...user}/>
-//       </div>
-//     );
-//   }
-// };
 
 async function checkIfUserIsLoggedIn(dispatchUser: any) {
   try {

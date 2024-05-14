@@ -125,7 +125,7 @@ class ApiAuthController extends Controller
         $response['message'] = 'User created successfully';
         $response['user'] = $user;
 
-        return response()->json($response, 200);
+        return response()->json($response, $response['status']);
     }
 
     public function edit(Request $request,  $id)
