@@ -20,4 +20,8 @@ export class SimeService{
   public static delete(path: string, headers?: AxiosRequestConfig['headers']): Promise<any> {
     return axios.delete(this.baseURL + path, { headers })
   }
+
+  public static patch(path: string, obj:any, headers?: AxiosRequestConfig['headers']): Promise<any> {
+    return axios.patch(this.baseURL + path, obj, { headers })
+  }
 }

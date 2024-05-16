@@ -63,6 +63,18 @@ const SideMenu = (user : User) => {
           </Link>
           <hr className="border border-secondary border-1 opacity-75" />
         </li>
+        <li className="nav-item">
+          <Link to={"/list/groups/"} className={`nav-link link-light ${location.pathname === '/list/groups/' ? 'active' : ''}`} >
+            <i className="bi bi-people" />
+            &nbsp; Grupos
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link to={"/list/classes/"} className={`nav-link link-light ${location.pathname === '/list/classes/' ? 'active' : ''}`} >
+            <i className="bi bi-book" />
+            &nbsp; Clases
+          </Link>
+        </li>
       </ul>
       <hr className="border border-secondary border-1 opacity-75" />
       <div className="dropdown">
@@ -73,20 +85,28 @@ const SideMenu = (user : User) => {
           data-bs-toggle="dropdown"
           aria-expanded="false"
         >
-          <img src="https://scx2.b-cdn.net/gfx/news/hires/2018/1-detectingfak.jpg" alt="" width="32" height="32" className="rounded-circle me-2" />
+          <img src={user.photo ? user.photo : "https://via.placeholder.com/150"} alt="" width="32" height="32" className="rounded-circle me-2" />
           <strong>{user.first_name + " " + user.last_name}</strong>
         </a>
         <ul
-          className="dropdown-menu text-small shadow"
+          className="dropdown-menu text-small shadow p-3"
           aria-labelledby="dropdownUser2"
         >
           <li>
             {/* Todo - create user profile page and here the link */}
-            <Link to={"/"} className="nav-link">
+            <Link to={"/auth/profile/"} className="nav-link">
               <i className="bi bi-person"/>
               Perfil
             </Link>
           </li>
+          <hr className="border border-secondary border-1 opacity-75" />
+          <li>
+            <button className="nav-link">
+              <i className="bi bi-gear"/>
+              Configuración
+            </button>
+          </li>
+          <hr className="border border-secondary border-1 opacity-75" />
           <li>
             <button className="nav-link" onClick={logout}>
               <i className="bi bi-box-arrow-left"/>
