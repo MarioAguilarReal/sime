@@ -74,6 +74,13 @@ class ApiStudentsController extends Controller
             'tutor_email' => $request->tutor_email,
         ]);
 
+        if ($request->has('photo')) {
+            $baseURL = url('/');
+            $imageName = $baseURL.'/images/students/'.time().$request->first_name.'_profile'.$request->photo->extension();
+            $request->photo->move(public_path('images/students/'.$imageName));
+            $student->photo = $imageName;
+        }
+
         if( $request->cognitive_skills){
             $student->cognitive_skills = $request->cognitive_skills;
         } else {
@@ -95,7 +102,7 @@ class ApiStudentsController extends Controller
 
     public function show($id){
         $response = [
-            'status' => 200,
+            'status' => 0,
             'message' => '',
             'student' => ''
         ];
@@ -125,7 +132,6 @@ class ApiStudentsController extends Controller
         $request->validate([
             'first_name' => 'required',
             'last_name' => 'required',
-            //'photo' => 'required',
             'birth_date' => 'required',
             'gender' => 'required',
             'address' => 'required',
@@ -144,17 +150,17 @@ class ApiStudentsController extends Controller
         if($student){
             $student->first_name = $request->first_name;
             $student->last_name = $request->last_name;
-            $request->birth_date = $request->birth_date;
-            $request->gender = $request->gender;
-            $request->address = $request->address;
-            $request->trans_typ = $request->trans_typ;
-            $request->age = $request->age;
-            $request->civil_statu = $request->civil_statu;
-            $request->tutor_name = $request->tutor_name;
-            $request->tutor_phone = $request->tutor_phone;
-            $request->tutor_age = $request->tutor_age;
-            $request->tutor_address = $request->tutor_address;
-            $request->tutor_email = $request->tutor_email;
+            $student->birth_date = $request->birth_date;
+            $student->gender = $request->gender;
+            $student->address = $request->address;
+            $student->trans_type = $request->trans_type;
+            $student->age = $request->age;
+            $student->civil_status = $request->civil_status;
+            $student->tutor_name = $request->tutor_name;
+            $student->tutor_phone = $request->tutor_phone;
+            $student->tutor_age = $request->tutor_age;
+            $student->tutor_address = $request->tutor_address;
+            $student->tutor_email = $request->tutor_email;
 
             if($request->has('photo')){
                 $student->photo = $request->photo;
@@ -190,6 +196,14 @@ class ApiStudentsController extends Controller
         $student = Student::find($id);
 
         if ($student){
+            if ($student->photo){
+                $photo = explode('/', $student->photo);
+                $photo = end($photo);
+                $path = public_path('images/student/'.$photo);
+                if (file_exists($path)){
+                    unlink($path);
+                }
+            }
             $student->delete();
             $response['status'] = 200;
             $response['message'] = 'Student deleted successfully';

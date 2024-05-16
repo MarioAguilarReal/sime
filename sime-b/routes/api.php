@@ -34,7 +34,7 @@ Route::post('/login', [ApiAuthController::class, 'login']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [ApiAuthController::class, 'logout']);
     Route::get('/me', [ApiAuthController::class, 'me']);
-
+    
     Route::prefix('/user')->group(function () {
         Route::get('/all', [ApiAuthController::class, 'all']);
         Route::post('/register', [ApiAuthController::class, 'register']);
@@ -48,7 +48,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/all',[ApiStudentsController::class, 'all']);
         Route::post('/register',[ApiStudentsController::class, 'register']);
         Route::get('/{id}',[ApiStudentsController::class, 'show']);
-        Route::patch('/update/{id}',[ApiStudentsController::class, 'update']);
+        Route::put('/update/{id}',[ApiStudentsController::class, 'update']);
         Route::delete('/delete/{id}',[ApiStudentsController::class, 'delete']);
     });
 
