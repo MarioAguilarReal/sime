@@ -57,7 +57,11 @@ const StudentRegister = () => {
     console.log(resp);
     if (resp.status === 200) {
       toast.success(resp.message);
-      navigate("/stuent/overview/" + resp.student.id);
+      if (resp.student) {
+        navigate("/stuent/overview/" + resp.student.id);
+      } else {
+        navigate("/list/students");
+      }
     } else {
       toast.error(resp.message);
     }
