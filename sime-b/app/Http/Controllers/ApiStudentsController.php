@@ -76,21 +76,11 @@ class ApiStudentsController extends Controller
 
         if ($request->has('photo')) {
             $baseURL = url('/');
-            $imageName = $baseURL.'/images/students/'.time().$request->first_name.'_profile'.$request->photo->extension();
-            $request->photo->move(public_path('images/students/'.$imageName));
+            $imageName = $baseURL.'/images/students/'.time().$request->first_name.'_student.'.$request->photo->extension();
+            $request->photo->move(public_path('images/students/'),$imageName);
             $student->photo = $imageName;
         }
 
-        if( $request->cognitive_skills){
-            $student->cognitive_skills = $request->cognitive_skills;
-        } else {
-            $student->cognitive_skills = '';
-        }
-        if( $request->alternative_skills){
-            $student->alternative_skills = $request->alternative_skills;
-        } else {
-            $student->alternative_skills = '';
-        }
         $student->save();
 
         $response['status'] = 200;
@@ -129,6 +119,8 @@ class ApiStudentsController extends Controller
             'student' => ''
         ];
 
+        $student = Student::find($id);
+
         $request->validate([
             'first_name' => 'required',
             'last_name' => 'required',
@@ -144,8 +136,6 @@ class ApiStudentsController extends Controller
             'tutor_address' => 'required',
             'tutor_email' => 'required',
         ]);
-
-        $student = Student::find($id);
 
         if($student){
             $student->first_name = $request->first_name;
@@ -163,13 +153,20 @@ class ApiStudentsController extends Controller
             $student->tutor_email = $request->tutor_email;
 
             if($request->has('photo')){
-                $student->photo = $request->photo;
-            }
-            if($request->has('cognitive_skills')){
-                $student->cognitive_skills = $request->cognitive_skills;
-            }
-            if($request->has('alternative_skills')){
-                $student->alternative_skills = $request->alternative_skills;
+                //delete old photo
+                if ($student->photo){
+                    $photo = explode('/', $student->photo);
+                    $photo = end($photo);
+                    $path = public_path('images/students/'.$photo);
+                    if (file_exists($path)){
+                        unlink($path);
+                    }
+                }
+                // save photo to storage
+                $baseURL = url('/');
+                $imageName = $baseURL.'/images/students/'.time().$request->first_name.'_student.'.$request->photo->extension();
+                $request->photo->move(public_path('images/students/'),$imageName);
+                $student->photo = $imageName;
             }
             
             $student->save();

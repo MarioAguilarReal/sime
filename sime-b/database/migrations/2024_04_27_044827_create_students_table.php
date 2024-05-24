@@ -27,12 +27,12 @@ return new class extends Migration
             $table->integer('tutor_age');
             $table->string('tutor_address');
             $table->string('tutor_email');
-            $table->string('cognitive_skills')->nullable();
-            $table->string('alternative_skills')->nullable();
             $table->foreignId('student_academic_data_id')->nullable()->constrained();
             $table->foreignId('student_learning_type_id')->nullable()->constrained();
+            $table->foreignId('student_cognitive_skills_id')->nullable()->constrained();
             $table->foreignId('student_special_needs_id')->nullable()->constrained();
             $table->foreignId('student_social_skills_id')->nullable()->constrained();
+            $table->foreignId('student_alternative_skills_id')->nullable()->constrained();
             $table->foreignId('student_planning_skills_id')->nullable()->constrained();
             $table->timestamps();
         });

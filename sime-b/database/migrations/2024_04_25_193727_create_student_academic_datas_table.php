@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('student_academic_datas', function (Blueprint $table) {
             $table->id();
+            $table->integer('grade_level');
+            $table->string('student_id');
+            $table->float('last_grade_average');
+            $table->float('actual_grade_average');
+            $table->integer('behavior');
+            $table->integer('group_id');
             $table->timestamps();
         });
     }

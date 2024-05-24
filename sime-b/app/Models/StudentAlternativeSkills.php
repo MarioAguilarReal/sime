@@ -5,14 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class StudentSpecialNeeds extends Model
+class StudentAlternativeSkills extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'usaer_status',
-        'learning_problems',
-        'diseases',
+        'alternative_list',
     ];
 
     public function student()
