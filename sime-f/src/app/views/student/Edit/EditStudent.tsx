@@ -69,7 +69,7 @@ const EditStudent = () => {
     const resp = await StudentService.update(formData, student?.id || 0);
     if (resp.status === 200) {
       toast.success(resp.message);
-      navigate("/student/overwiew" + resp.student.id);
+      navigate("/student/overview/" + resp.student.id);
     } else {
       toast.error(resp.message);
     }
@@ -126,6 +126,14 @@ const EditStudent = () => {
     <div className="edit-student">
       <h1>Editar Estudiante</h1>
       <div className="form">
+        <div className="row mb-2">
+          <div className="col-4 btn-edit">
+            <button className='btn btn-secondary' onClick={() => navigate("/student/overview/" + student?.id)}><i className="bi bi-chevron-left" />Volver</button>
+          </div>
+        </div>
+        <div className="row mb-2 mt-3">
+          <hr className="border border-secondary border-1 opacity-75" />
+        </div>
         <div className='container-fluid-mb-3 form-group'>
           <div className="row">
             <h2>Datos Personales del Estudiante</h2>
@@ -279,16 +287,6 @@ const EditStudent = () => {
                 rules={{ value: PATTERNS.emailRegEx, message: 'Invalid email address' }}
                 errors={errors}
               />
-            </div>
-            <div className="row mb-4">
-              <div className="col-4">
-                <label htmlFor="">Photo</label>
-                <input type="file" className='form-control' />
-              </div>
-              <div className="col-4">
-                <p>Photo Prewiew</p>
-                ...
-              </div>
             </div>
             <div className="row mb-2 mt-3">
               <hr className="border border-secondary border-1 opacity-75" />

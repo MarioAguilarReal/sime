@@ -6,6 +6,8 @@ import { StudentService } from '../../../services/students/StudentsService';
 import { useNavigate, useParams } from 'react-router-dom';
 import { generalData } from '../../../common/generalEnums';
 import { studentsData } from '../../../common/studentEnums';
+import { Link } from 'react-router-dom';
+import DeleteModal from '../../../components/shared/modals/modalDelete/DeleteModal';
 
 const ViewStudent = () => {
 
@@ -14,6 +16,7 @@ const ViewStudent = () => {
   const navigate = useNavigate();
 
   const [student, setStudent] = useState<Student>({} as Student);
+  const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
 
   const [genderIndex, setGenderIndex] = useState<string>();
   const [civilIndex, setCivilIndex] = useState<string>();
@@ -47,11 +50,12 @@ const ViewStudent = () => {
     setLoading(true);
     let resp = await StudentService.delete(Number(student.id));
     if (resp.status === 200) {
-      navigate('/students/all');
+      navigate('/list/students');
     } else {
       console.log(resp.status);
     }
     setLoading(false);
+    setShowDeleteModal(false);
   }
 
 
@@ -67,11 +71,17 @@ const ViewStudent = () => {
       <h1>Informacion del Estudiante</h1>
       <div className="form">
         <div className="row mb-2">
-          <div className="col-6 btn-edit">
+          <div className="col-2">
+            <Link to="/list/students" className="btn btn-secondary">
+              <i className="bi bi-chevron-left" />
+              Volver
+            </Link>
+          </div>
+          <div className="col-4 btn-edit">
             <button className='btn btn-primary' onClick={() => navigate(`/edit/student/${student.id}`)}>Editar Estudiante</button>
           </div>
-          <div className="col-6">
-            <button className='btn btn-danger' onClick={() => handleDelete(student)}>Eliminar Estudiante</button>
+          <div className="col-4">
+            <button className='btn btn-danger' onClick={() => setShowDeleteModal(true)}>Eliminar Estudiante</button>
           </div>
         </div>
         <div className="row mb-2 mt-3">
@@ -84,6 +94,10 @@ const ViewStudent = () => {
                 <h3>Datos Personales</h3>
                 <hr className="border border-secondary border- opacity-75" />
               </div>
+              <div className="image">
+                <img src={student.photo} alt="student" className="student-photo" />
+              </div>
+              <hr className="border border-secondary border-1 opacity-75" />
               <p>
                 <b>Nombre:</b> {student.first_name + " " + student.last_name}
               </p>
@@ -156,6 +170,7 @@ const ViewStudent = () => {
           </div>
         </div>
       </div>
+      {showDeleteModal && <DeleteModal obj="Estudiante" show={showDeleteModal} onClose={() => setShowDeleteModal(false)} onDelete={() => handleDelete(student)} />}
     </div>
   )
 }
