@@ -168,7 +168,7 @@ class ApiStudentsController extends Controller
                 $request->photo->move(public_path('images/students/'),$imageName);
                 $student->photo = $imageName;
             }
-            
+
             $student->save();
 
             $response['status'] = 200;
