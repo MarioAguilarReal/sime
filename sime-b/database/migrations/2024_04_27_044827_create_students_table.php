@@ -17,13 +17,13 @@ return new class extends Migration
             $table->string('last_name');
             $table->string('photo')->nullable();
             $table->date('birth_date');
-            $table->string('gender');
+            $table->integer('gender');
             $table->string('address');
-            $table->string('trans_type');
+            $table->integer('trans_type');
             $table->integer('age');
-            $table->string('civil_status');
+            $table->integer('civil_status');
             $table->string('tutor_name');
-            $table->integer('tutor_phone');
+            $table->string('tutor_phone');
             $table->integer('tutor_age');
             $table->string('tutor_address');
             $table->string('tutor_email');

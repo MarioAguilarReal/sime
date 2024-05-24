@@ -2,13 +2,13 @@ export interface Student{
     id?: number;
     first_name: string;
     last_name: string;
-    photo: string;
+    photo?: string;
     birth_date: Date;
-    gender: string;
+    gender: number;
     address: string;
-    trans_type: string;
+    trans_type: number;
     age: number;
-    civil_status: string;
+    civil_status: number;
     tutor_name: string;
     tutor_phone: string;
     tutor_age: number;

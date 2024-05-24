@@ -15,9 +15,9 @@ const UserOverview = () => {
 
   const [user, setUser] = useState<User>({} as User);
 
-  const loadData = async (id : number) => {
+  const loadData = async (userId : number) => {
     setLoading(true);
-    let resp = await UsersService.getUser(id);
+    let resp = await UsersService.getUser(userId);
     if (resp.status === 200){
       setUser(resp.user);
     }
