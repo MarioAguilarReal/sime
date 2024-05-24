@@ -11,11 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('student_special_needs', function (Blueprint $table) {
+        Schema::create('student_cognitive_skills', function (Blueprint $table) {
             $table->id();
-            $table->integer('usaer_status');
-            $table->string('learning_problems');
-            $table->string('diseases');
+            $table->json('cognitive_list');
             $table->timestamps();
         });
     }
@@ -25,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('student_special_needs');
+        Schema::dropIfExists('student_cognitive_skills');
     }
 };

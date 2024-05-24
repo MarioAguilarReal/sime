@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('student_social_skills', function (Blueprint $table) {
             $table->id();
+            $table->json('basic');
+            $table->json('advanced');
+            $table->json('feelings');
+            $table->json('assault');
+            $table->json('stress');
+            $table->json('planning');
             $table->timestamps();
         });
     }

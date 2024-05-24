@@ -8,6 +8,12 @@ use App\Http\Controllers\ApiAuthController;
 use App\Http\Controllers\ApiController;
 use App\Http\Controllers\ApiStudentsController;
 use App\Http\Controllers\EmailController;
+use App\Http\Controllers\ApiStudentsAcademicDataController;
+use App\Http\Controllers\ApiSpecialNeedsController;
+use App\Http\Controllers\ApiPlanningSkillsController;
+use App\Http\Controllers\ApiSocialSkillsController;
+use App\Http\Controllers\ApiCognitiveSkillsController;
+use App\Http\Controllers\ApiAlternativeSkillsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -54,16 +60,52 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/{id}', [ApiAuthController::class, 'show']);
         Route::delete('/delete/{id}', [ApiAuthController::class, 'delete']);
     });
-    
+
     //Students Routes
     Route::prefix('students')->group(function () {
         Route::get('/all',[ApiStudentsController::class, 'all']);
         Route::post('/register',[ApiStudentsController::class, 'register']);
         Route::get('/{id}',[ApiStudentsController::class, 'show']);
-        Route::put('/update/{id}',[ApiStudentsController::class, 'update']);
+        Route::post('/update/{id}',[ApiStudentsController::class, 'update']);
         Route::delete('/delete/{id}',[ApiStudentsController::class, 'delete']);
-    });
 
+        Route::prefix('academic-data')->group(function () {
+            Route::post('/register/{id}',[ApiStudentsAcademicDataController::class, 'register']);
+            Route::get('/{id}',[ApiStudentsAcademicDataController::class, 'show']);
+            Route::post('/update/{id}',[ApiStudentsAcademicDataController::class, 'update']);
+        });
+
+        Route::prefix('cognitive-skills')->group(function () {
+            Route::post('/register/{id}',[ApiCognitiveSkillsController::class, 'register']);
+            Route::get('/{id}',[ApiCognitiveSkillsController::class, 'show']);
+            Route::post('/update/{id}',[ApiCognitiveSkillsController::class, 'update']);
+        });
+
+        Route::prefix('special-needs')->group(function () {
+            Route::post('/register/{id}',[ApiSpecialNeedsController::class, 'register']);
+            Route::get('/{id}',[ApiSpecialNeedsController::class, 'show']);
+            Route::post('/update/{id}',[ApiSpecialNeedsController::class, 'update']);
+        });
+
+        Route::prefix('planning-skills')->group(function () {
+            Route::post('/register/{id}',[ApiPlanningSkillsController::class, 'register']);
+            Route::get('/{id}',[ApiPlanningSkillsController::class, 'show']);
+            Route::post('/update/{id}',[ApiPlanningSkillsController::class, 'update']);
+        });
+
+        Route::prefix('social-skills')->group(function () {
+            Route::post('/register/{id}',[ApiSocialSkillsController::class, 'register']);
+            Route::get('/{id}',[ApiSocialSkillsController::class, 'show']);
+            Route::post('/update/{id}',[ApiSocialSkillsController::class, 'update']);
+        });
+
+        Route::prefix('alternative-skills')->group(function () {
+            Route::post('/register/{id}',[ApiAlternativeSkillsController::class, 'register']);
+            Route::get('/{id}',[ApiAlternativeSkillsController::class, 'show']);
+            Route::post('/update/{id}',[ApiAlternativeSkillsController::class, 'update']);
+        });
+
+    });
 
     Route::prefix('/group')->group(function () {
         Route::get('/all', [GroupController::class, 'all']);

@@ -9,6 +9,8 @@ class StudentAcademicData extends Model
 {
     use HasFactory;
 
+    protected $table = 'student_academic_datas';
+
     protected $fillable = [
         'grade_level',
         'student_id',
