@@ -1,0 +1,16 @@
+.student-cognitive{
+    display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	.form{
+		width: 80%;
+		margin: 0 auto;
+		padding: 20px;
+		border: 1px solid #ccc;
+    .form-check-label{
+      margin-left: 0.5rem;
+      margin-bottom: 1rem;
+    }
+  }
+}
