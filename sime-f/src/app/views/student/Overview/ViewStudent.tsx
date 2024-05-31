@@ -147,16 +147,38 @@ const ViewStudent = () => {
           </div>
           <div className="more-data row">
             <div className="academic-data col-4">
-              <p className='btn btn-primary'>Datos Academicos</p>
+              <button className='btn btn-primary' onClick={() => {
+                if (student.student_academic_data_id) {
+                  navigate(`/student/data/overview/${student.student_academic_data_id}`)
+                } else {
+                  navigate(`/student/data/register/${student.id}`)
+                }
+              }}>Datos Academicos</button>
             </div>
             <div className="learning-type col-4">
               <p className='btn btn-primary'>Tipo de Aprendizaje (SEP)</p>
             </div>
             <div className="special-needs col-4">
-              <p className='btn btn-primary'>Necesidades Especiales</p>
+              <button className='btn btn-primary' onClick={() => {
+                if (student.student_special_needs_id) {
+                  console.log(student.student_special_needs_id)
+                  navigate(`/student/need/overview/${student.student_special_needs_id}`)
+                } else {
+                  console.log(student.student_special_needs_id)
+                  navigate(`/student/need/register/${student.id}`)
+                }
+              }}>Necesidades Especiales</button>
             </div>
             <div className="cognitive-skills col-4">
-              <p className='btn btn-primary'>Habilidades Cognitivas</p>
+              <button className='btn btn-primary' onClick={() => {
+                if (student.student_cognitive_skills_id) {
+                  console.log(student.student_cognitive_skills_id)
+                  navigate(`/student/cognitive/skills/overview/${student.student_cognitive_skills_id}`)
+                } else {
+                  console.log(student.student_cognitive_skills_id)
+                  navigate(`/student/cognitive/skills/register/${student.id}`)
+                }
+              }}>Habilidades Cognitivas</button>
             </div>
             <div className="social-skills col-4">
               <p className='btn btn-primary'>Habilidades Sociales</p>
@@ -171,7 +193,7 @@ const ViewStudent = () => {
         </div>
       </div>
       {showDeleteModal && <DeleteModal obj="Estudiante" show={showDeleteModal} onClose={() => setShowDeleteModal(false)} onDelete={() => handleDelete(student)} />}
-    </div>
+    </div >
   )
 }
 

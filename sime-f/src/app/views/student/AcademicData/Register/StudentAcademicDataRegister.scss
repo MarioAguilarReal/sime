@@ -1,0 +1,15 @@
+.student-data{
+    display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	.form{
+		width: 80%;
+		margin: 0 auto;
+		padding: 20px;
+		border: 1px solid #ccc;
+		label{
+			font-weight: bold;
+		}
+	}
+}

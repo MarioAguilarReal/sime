@@ -14,11 +14,11 @@ export interface Student{
     tutor_age: number;
     tutor_address: string;
     tutor_email: string;
-    cognitive_skills?: string;
-    alternative_skills?: string;
-    student_academic_data?: number;
-    learning_type?: number;
-    special_needs?: number;
-    social_skills?: number;
-    planning_skills?: number;
+    student_cognitive_skills_id?: number;
+    student_alternative_skills_id?: number;
+    student_academic_data_id?: number;
+    student_learning_type_id?: number;
+    student_special_needs_id?: number;
+    student_social_skills_id?: number;
+    student_planning_skills_id?: number;
 }
