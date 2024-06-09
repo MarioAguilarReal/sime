@@ -75,11 +75,11 @@ const EditStudentSpecialNeeds = () => {
 
 	return (
 		<div className="edit-needs">
-			<h1>Enitar Necesidades Especiales</h1>
+			<h1>Editar Necesidades Especiales</h1>
 			<div className="form">
 				<div className='container-fluid-mb-3 form-group'>
-					<div className="row mb-4">
-						<div className="col-4">
+					<div className="mb-4">
+						<div className="row mb-4 col-4">
 							<SelectField
 								label={"¿El alumno asiste a USAER?"}
 								field={'usaer_status'}
@@ -88,7 +88,7 @@ const EditStudentSpecialNeeds = () => {
 								options={studentsData.booleanType}
 							/>
 						</div>
-						<div className="col-4">
+						<div className="row mb-4 col-4">
 							<TextField
 								label={"¿Presenta problemas de aprendizaje? (de que tipo)"}
 								field={'learning_problems'}
@@ -98,7 +98,7 @@ const EditStudentSpecialNeeds = () => {
 								errors={errors}
 							/>
 						</div>
-						<div className="col-4">
+						<div className="row mb-4 col-4">
 							<TextField
 								label={"¿Presenta alguna enfermedad? (neuronal, motriz, etc.)"}
 								field={'diseases'}

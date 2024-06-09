@@ -2,7 +2,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useLoader } from '../../../../Global/Context/globalContext';
 import './ViewStudentCognitiveSkills.scss';
 import { useEffect, useState } from 'react';
-import { StudentCognitiveSkills } from '../../../../interfaces/student/StudentCognitiveSkills';
 import { StudentCognitiveSkillsService } from '../../../../services/students/StudentCognitiveSkillsService';
 import { studentsData } from '../../../../common/studentEnums';
 
