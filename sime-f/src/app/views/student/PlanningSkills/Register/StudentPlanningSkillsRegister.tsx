@@ -1,18 +1,17 @@
-import './StudentSpecialNeedsRegister.scss';
-import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
-import { StudentSpecialNeeds } from '../../../../interfaces/student/StudentSpecialNeeds';
+import './StudentPlanningSkillsRegister.scss';
+import { useForm } from 'react-hook-form';
+import { StudentPlanningSkills } from '../../../../interfaces/student/StudentPlanningSkills';
 import { useLoader } from '../../../../Global/Context/globalContext';
 import { useEffect, useState } from 'react';
 import { Student } from '../../../../interfaces/student/Student';
 import { StudentService } from '../../../../services/students/StudentsService';
-import { StudentSpecialNeedsService } from '../../../../services/students/StudentSpecialNeedsService';
+import { StudentPlanningSkillsService } from '../../../../services/students/StudentPlanningSkillsService';
 import { ToastContainer, toast } from 'react-toastify';
-import TextField from '../../../../components/shared/FormInputs/TextField';
 import SelectField from '../../../../components/shared/FormInputs/SelectFIeld';
 import { studentsData } from '../../../../common/studentEnums';
 
-const StudentSpecialNeedsRegister = () => {
+const StudentPlanningSkillsRegister = () => {
 
   const { id } = useParams<{ id: string }>();
   const {
@@ -22,39 +21,39 @@ const StudentSpecialNeedsRegister = () => {
     control,
     getValues,
     watch
-  } = useForm<StudentSpecialNeeds>();
+  } = useForm<StudentPlanningSkills>();
   const navigate = useNavigate();
   const { setLoading } = useLoader();
 
-  const [studentNeeds, setStudentNeeds] = useState<Student>();
+  const [studentPlanning, setStudentPlanning] = useState<Student>();
 
   const loadStudent = async (studentId: number) => {
     setLoading(true);
     let resp = await StudentService.getStudent(studentId);
     console.log(resp);
     if (resp.status === 200) {
-      setStudentNeeds(resp.student);
+      setStudentPlanning(resp.student);
     } else {
       console.log(resp.status);
     }
     setLoading(false);
   };
 
-  const handleCreate = async (data: StudentSpecialNeeds) => {
+  const handleCreate = async (data: StudentPlanningSkills) => {
     setLoading(true);
     console.log(data);
     const formData = new FormData();
-    formData.append('usaer_status', data.usaer_status.toString());
-    formData.append('learning_problems', data.learning_problems);
-    formData.append('diseases', data.diseases);
+    formData.append('focus', data.focus.toString());
+    formData.append('detect', data.detect.toString());
+    formData.append('correlation', data.correlation.toString());
 
-    const resp = await StudentSpecialNeedsService.register(formData, studentNeeds?.id || 0);
-    console.log(studentNeeds);
+    const resp = await StudentPlanningSkillsService.register(formData, studentPlanning?.id || 0);
+    console.log(studentPlanning);
     console.log(resp);
     if (resp.status === 200) {
       toast.success(resp.message);
-      if (resp.students_special_needs)
-        navigate('/student/need/overview/' + resp.students_special_needs.id);
+      if (resp.students_planning_skills)
+        navigate('/student/planning/skills/overview/' + resp.students_planning_skills.id);
     } else {
       toast.error(resp.message);
     }
@@ -68,39 +67,43 @@ const StudentSpecialNeedsRegister = () => {
   }, [id]);
 
   return (
-    <div className="student-needs">
-      <h1>Registro de Necasidades Especiales</h1>
+    <div className="student-planning">
+      <h1>Registro de Habilidades de Planificación</h1>
       <div className="form">
         <div className='container-fluid-mb-3 form-group'>
-          <div className="mb-4">
+          <div className="row mb-4">
             <div className="row mb-4 col-4">
               <SelectField
-                label={'¿El alumno asiste a USAER?'}
-                field={'usaer_status'}
+                label={"¿Sabe enfocar correctamente su atención a los puntos importantes de un problema?"}
+                field={'focus'}
                 errors={errors}
                 control={control}
                 options={studentsData.booleanType}
-                rules={{ required: 'This field is required' }}
+                rules={{ required: 'Este campo es requerido' }}
               />
             </div>
+          </div>
+          <div className="row mb-4">
             <div className="row mb-4 col-4">
-              <TextField
-                label={"¿Presenta problemas de aprendizaje? (de que tipo)"}
-                field={'learning_problems'}
-                register={register}
-                type='text'
-                rules={{ required: 'This field is required' }}
+              <SelectField
+                label={"¿Detecta o no los posibles errores?"}
+                field={'detect'}
                 errors={errors}
+                control={control}
+                options={studentsData.booleanType}
+                rules={{ required: 'Este campo es requerido' }}
               />
             </div>
+          </div>
+          <div className="row mb-4">
             <div className="row mb-4 col-4">
-              <TextField
-                label={"¿Presenta alguna enfermedad? (neuronal, motriz, etc.)"}
-                field={'diseases'}
-                register={register}
-                type='text'
-                rules={{ required: 'This field is required' }}
+              <SelectField
+                label={"¿Correlaciona entre lo planeado y lo ejecutado?"}
+                field={'correlation'}
                 errors={errors}
+                control={control}
+                options={studentsData.booleanType}
+                rules={{ required: 'Este campo es requerido' }}
               />
             </div>
           </div>
@@ -116,8 +119,8 @@ const StudentSpecialNeedsRegister = () => {
       </div>
       <ToastContainer />
     </div>
+
   );
 }
 
-
-export default StudentSpecialNeedsRegister;
+export default StudentPlanningSkillsRegister;
