@@ -46,9 +46,7 @@ const RegisterUser = () => {
     formData.append("civil_status", data.civil_status.toString());
     formData.append("email", data.email);
     formData.append("password", data.password?.toString() || "");
-    formData.append("is_teacher", data.is_teacher ? "1" : "0");
-    formData.append("is_tutor", data.is_tutor ? "1" : "0");
-    formData.append("is_admin", data.is_admin ? "1" : "0");
+    formData.append("role", data.role.toString());
 
 
     if (photo) {
@@ -240,15 +238,12 @@ const RegisterUser = () => {
           </div>
           <div className="row">
             <div className="col-3">
-              <CheckboxList
-                items={[
-                  { field: "is_teacher", label: "Maestro" },
-                  { field: "is_tutor", label: "Tutor" },
-                  { field: "is_admin", label: "Admin" },
-                ]}
-                register={register}
-                getValues={getValues}
+              <SelectField
+                label="Rol"
+                field="role"
                 errors={errors}
+                control={control}
+                options={generalData.roles}
                 rules={{ required: "Este campo es requerido" }}
               />
             </div>

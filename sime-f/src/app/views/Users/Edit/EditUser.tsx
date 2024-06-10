@@ -60,9 +60,7 @@ const EditUser = () => {
     formData.append("civil_status", data.civil_status.toString());
     formData.append("email", data.email);
     formData.append("password", data.password?.toString() || "");
-    formData.append("is_teacher", data.is_teacher ? "1" : "0");
-    formData.append("is_tutor", data.is_tutor ? "1" : "0");
-    formData.append("is_admin", data.is_admin ? "1" : "0");
+    formData.append("role", data.role.toString());
 
 
     if (photo) {
@@ -97,9 +95,7 @@ const EditUser = () => {
       setValue("phone", user.phone);
       setValue("civil_status", user.civil_status);
       setValue("email", user.email);
-      setValue("is_teacher", user.is_teacher);
-      setValue("is_tutor", user.is_tutor);
-      setValue("is_admin", user.is_admin);
+      setValue("role", user.role);
     }
   }
   , [user]);
@@ -229,15 +225,12 @@ const EditUser = () => {
           </div>
           <div className="row">
             <div className="col-3">
-              <CheckboxList
-                items={[
-                  { field: "is_teacher", label: "Profesor" },
-                  { field: "is_tutor", label: "Tutor" },
-                  { field: "is_admin", label: "Admin" },
-                ]}
-                register={register}
-                getValues={getValues}
+              <SelectField
+                label="Rol"
+                field="role"
                 errors={errors}
+                control={control}
+                options={generalData.roles}
                 rules={{ required: "Este campo es requerido" }}
               />
             </div>
@@ -246,12 +239,20 @@ const EditUser = () => {
             <hr className="border border-secondary border-1 opacity-75" />
           </div>
           <div className="row">
-            <div className="col-8">
+            <div className="col-2">
               <button
                 className="btn btn-primary xl"
                 onClick={handleSubmit((data) => handleUpdateUser(data))}
               >
                 Actualizar
+              </button>
+            </div>
+            <div className="col-2">
+              <button
+                className="btn btn-danger xl"
+                onClick={() => navigate("/user/overview/" + user?.id)}
+              >
+                Cancelar
               </button>
             </div>
           </div>

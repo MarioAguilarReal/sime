@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Cache;
+use App\Models\Classe;
 
 class ApiAuthController extends Controller
 {
@@ -103,9 +104,7 @@ class ApiAuthController extends Controller
             'address' => $request->address,
             'phone' => $request->phone,
             'civil_status' => $request->civil_status,
-            'is_teacher' => $request->is_teacher,
-            'is_tutor' => $request->is_tutor,
-            'is_admin' => $request->is_admin,
+            'role' => $request->role, // 1 for 'admin', 2 for 'teacher', 3 for 'tutor'
             'email' => $request->email,
             'password' => bcrypt($request->password)
         ]);
@@ -160,9 +159,7 @@ class ApiAuthController extends Controller
             $user->address = $request->address;
             $user->phone = $request->phone;
             $user->civil_status = $request->civil_status;
-            $user->is_teacher = $request->is_teacher;
-            $user->is_tutor = $request->is_tutor;
-            $user->is_admin = $request->is_admin;
+            $user->role = $request->role;// 1 for 'admin', 2 for 'teacher', 3 for 'tutor'
 
             if ($request->has('photo')) {
                 //delete old photo
@@ -175,7 +172,6 @@ class ApiAuthController extends Controller
                     }
                 }
                 // save photo to storage
-                // $imageName = time().$request->first_name.'_profile.'.$request->photo->extension();
                 $baseURL = url('/');
                 $imageName = $baseURL.'/images/users/profile/'.time().$request->first_name.'_profile.'.$request->photo->extension();
                 $request->photo->move(public_path('images/users/profile/'), $imageName);

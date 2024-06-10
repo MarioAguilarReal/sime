@@ -1,0 +1,25 @@
+.form-group{
+  .d-block{
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #000;
+    background-color: white;
+    padding: 0 2px;
+    z-index: 1;
+    margin-bottom: -5px;
+    position: relative;
+
+    &.error{
+      color: red;
+    }
+
+    .required{
+      color: red;
+    }
+  }
+}
+
+.css-1nmdiq5-menu{
+  z-index: 1000!important;// Add this line to increase the z-index of the dropdown menu
+  //dont change the value of z-index
+}

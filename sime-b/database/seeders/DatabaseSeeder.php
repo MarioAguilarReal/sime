@@ -24,11 +24,9 @@ class DatabaseSeeder extends Seeder
             'address' => '123 Main St',
             'phone' => '123-456-7890',
             'civil_status' => 1,
-            'is_teacher' => true,
-            'is_tutor' => true,
-            'is_admin' => true,
+            'role' => 1,
             'email' => 'mario@mario.com',
-            'password' => bcrypt('password'),
+            'password' => bcrypt('admin'),
         ]);
     }
 }

@@ -3,7 +3,6 @@ import "./Classes.scss";
 import { useNavigate } from "react-router-dom";
 import { Classe } from "../../interfaces/school/Classe";
 import ModalCreate from "../../components/shared/modals/modalsSchool/ModalCreate";
-import { AuthService } from "../../services/auth/AuthService";
 import { UsersService } from "../../services/users/UsersService";
 import { User } from "../../interfaces/user/User";
 import { useLoader } from "../../Global/Context/globalContext";
@@ -27,7 +26,7 @@ const Classes = () => {
     if (resp.status === 200){
       toast.success("Materia creada correctamente");
       const newClasses = [...classes];//clonar el array
-      let newId = classes[classes.length -1].id as number +1;
+      let newId = resp.data.id;
       data.id = newId;
       newClasses.push(data);//agregar el nuevo elemento
       setClasses(newClasses);//actualizar el estado con la finalidad de volver a cargar la tabla desde el servidor
@@ -134,7 +133,7 @@ const Classes = () => {
                       <td>{classe.id}</td>
                       <td>{classe.name}</td>
                       <td>{classe.description}</td>
-                      <td>{classe.user_id}</td>
+                      <td>{users.find((user) => user?.id === parseInt(classe?.user_id))?.first_name }</td>
                       <td>{classe.max_students}</td>
                       <td>{classe.status ? "Activo" : "Inactivo"}</td>
                       <td>
@@ -149,6 +148,12 @@ const Classes = () => {
                           onClick={() => handleDelete(classe.id as number)}
                         >
                           <i className="bi bi-trash"></i>
+                        </button>
+                        <button
+                          className="btn btn-outline-info"
+                          onClick={() => navigate(`/clases/${classe.id}`)}
+                        >
+                          <i className="bi bi-eye"></i>
                         </button>
                       </td>
                     </tr>

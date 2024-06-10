@@ -38,6 +38,8 @@ Route::post('/login', [ApiAuthController::class, 'login']);
 
 
 
+Route::get('/user/classes/{id}', [ClasseController::class, 'classes_by_user']);
+Route::get('/user/groups/{id}', [GroupController::class, 'groups_by_user']);
 //Email Routes
 
 
