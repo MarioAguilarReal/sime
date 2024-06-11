@@ -23,9 +23,7 @@ return new class extends Migration
             $table->string('phone');
             $table->integer('civil_status');
             $table->boolean('is_teacher')->default(false);
-            $table->boolean('is_tutor')->default(false);
-            $table->boolean('is_admin')->default(false);
-            $table->boolean('is_active')->default(true);
+            $table->integer('role');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

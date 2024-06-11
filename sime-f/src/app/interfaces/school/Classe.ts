@@ -3,6 +3,6 @@ export interface Classe {
     name: string;
     description: string;
     user_id: string;
-    max_students: number;
-    status: boolean;
+    max_students?: number;
+    status?: boolean;
 }

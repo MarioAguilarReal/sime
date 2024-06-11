@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Classe;
+use App\Models\User;
+use Illuminate\Support\Facades\Log;
+
 
 class ClasseController extends Controller
 {
@@ -126,6 +129,39 @@ class ClasseController extends Controller
         return response()->json($response, $response['status']);
     }
 
+
+    public function classes_by_user($id)
+    {
+        $response = [
+            'status' => 200,
+            'message' => '',
+            'data' => []
+        ];
+
+        Log::info('classes_by_user called with user ID: ' . $id);
+
+        $user = User::find($id);
+        if ($user) {
+            Log::info('User found: ' . $user->name);
+
+            $classes = $user->classes;
+            if ($classes->isNotEmpty()) {
+
+                $response['data'] = $classes;
+                $response['message'] = 'Data found';
+            } else {
+
+                $response['status'] = 201;
+                $response['message'] = 'No data found';
+            }
+        } else {
+
+            $response['status'] = 201;
+            $response['message'] = 'No data found';
+        }
+
+        return response()->json($response, $response['status']);
+    }
 
 
 }

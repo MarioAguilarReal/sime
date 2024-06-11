@@ -34,11 +34,14 @@ import EditStudentPlanningSkills from "../views/student/PlanningSkills/Edit/Edit
 import StudentCommentsRegister from "../views/student/Comments/Register/StudentCommentRegister";
 import ViewStudentComments from "../views/student/Comments/Overview/ViewStudentComments";
 import EditStudentComments from "../views/student/Comments/Edit/EditStudentComments";
+import SepForm from "../views/form/sepForm";
 
 export const routesConfig: IRoute[] = [
   // Public Routes
   { title: 'login', path: '/auth/login', element: Login, private: false },
   { title: 'change-password', path: '/auth/change-password/:id', element: ChangePassword, private: false },
+
+  { title: 'sepForm', path: '/forms/sep-test', element: SepForm, private: false },
 
   // Private Routes
   { title: 'dashboard', path: '/dashboard', element: Dashboard, private: true },
