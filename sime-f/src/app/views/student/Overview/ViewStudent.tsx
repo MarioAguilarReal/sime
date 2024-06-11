@@ -145,49 +145,79 @@ const ViewStudent = () => {
           <div className="row mb-2 mt-3">
             <hr className="border border-secondary border-1 opacity-75" />
           </div>
-          <div className="more-data row">
-            <div className="academic-data col-4">
-              <button className='btn btn-primary' onClick={() => {
-                if (student.student_academic_data_id) {
-                  navigate(`/student/data/overview/${student.student_academic_data_id}`)
-                } else {
-                  navigate(`/student/data/register/${student.id}`)
-                }
-              }}>Datos Academicos</button>
+          <div className="more-data">
+            <div className="row mb-2">
+              <div className="academic-data col-4">
+                <button className='btn btn-primary' onClick={() => {
+                  if (student.student_academic_data_id) {
+                    navigate(`/student/data/overview/${student.student_academic_data_id}`)
+                  } else {
+                    navigate(`/student/data/register/${student.id}`)
+                  }
+                }}>Datos Academicos</button>
+              </div>
+              <div className="learning-type col-4">
+                <p className='btn btn-primary'>Tipo de Aprendizaje (SEP)</p>
+              </div>
+              <div className="special-needs col-4">
+                <button className='btn btn-primary' onClick={() => {
+                  if (student.student_special_needs_id) {
+                    console.log(student.student_special_needs_id)
+                    navigate(`/student/need/overview/${student.student_special_needs_id}`)
+                  } else {
+                    console.log(student.student_special_needs_id)
+                    navigate(`/student/need/register/${student.id}`)
+                  }
+                }}>Necesidades Especiales</button>
+              </div>
             </div>
-            <div className="learning-type col-4">
-              <p className='btn btn-primary'>Tipo de Aprendizaje (SEP)</p>
+            <div className="row mb-2">
+              <div className="cognitive-skills col-4">
+                <button className='btn btn-primary' onClick={() => {
+                  if (student.student_cognitive_skills_id) {
+                    console.log(student.student_cognitive_skills_id)
+                    navigate(`/student/cognitive/skills/overview/${student.student_cognitive_skills_id}`)
+                  } else {
+                    console.log(student.student_cognitive_skills_id)
+                    navigate(`/student/cognitive/skills/register/${student.id}`)
+                  }
+                }}>Habilidades Cognitivas</button>
+              </div>
+              <div className="social-skills col-4">
+                <button className='btn btn-primary' onClick={() => {
+                  if (student.student_social_skills_id) {
+                    console.log(student.student_social_skills_id)
+                    navigate(`/student/social/skills/overview/${student.student_social_skills_id}`)
+                  } else {
+                    console.log(student.student_cognitive_skills_id)
+                    navigate(`/student/social/skills/register/${student.id}`)
+                  }
+                }}>Habilidades Sociales</button>
+              </div>
+              <div className="alternative-skills col-4">
+                <button className='btn btn-primary' onClick={() => {
+                  if (student.student_alternative_skills_id) {
+                    console.log(student.student_alternative_skills_id)
+                    navigate(`/student/alternative/skills/overview/${student.student_alternative_skills_id}`)
+                  } else {
+                    console.log(student.student_cognitive_skills_id)
+                    navigate(`/student/alternative/skills/register/${student.id}`)
+                  }
+                }}>Habilidades Alternativas</button>
+              </div>
             </div>
-            <div className="special-needs col-4">
-              <button className='btn btn-primary' onClick={() => {
-                if (student.student_special_needs_id) {
-                  console.log(student.student_special_needs_id)
-                  navigate(`/student/need/overview/${student.student_special_needs_id}`)
-                } else {
-                  console.log(student.student_special_needs_id)
-                  navigate(`/student/need/register/${student.id}`)
-                }
-              }}>Necesidades Especiales</button>
-            </div>
-            <div className="cognitive-skills col-4">
-              <button className='btn btn-primary' onClick={() => {
-                if (student.student_cognitive_skills_id) {
-                  console.log(student.student_cognitive_skills_id)
-                  navigate(`/student/cognitive/skills/overview/${student.student_cognitive_skills_id}`)
-                } else {
-                  console.log(student.student_cognitive_skills_id)
-                  navigate(`/student/cognitive/skills/register/${student.id}`)
-                }
-              }}>Habilidades Cognitivas</button>
-            </div>
-            <div className="social-skills col-4">
-              <p className='btn btn-primary'>Habilidades Sociales</p>
-            </div>
-            <div className="alternative-skills col-4">
-              <p className='btn btn-primary'>Habilidades Alternativas</p>
-            </div>
-            <div className="planning-skills col-4">
-              <p className='btn btn-primary'>Habilidades de Planificacion</p>
+            <div className="row mb-2">
+              <div className="planning-skills col-4">
+                <button className='btn btn-primary' onClick={() => {
+                  if (student.student_planning_skills_id) {
+                    console.log(student.student_planning_skills_id)
+                    navigate(`/student/planning/skills/overview/${student.student_planning_skills_id}`)
+                  } else {
+                    console.log(student.student_cognitive_skills_id)
+                    navigate(`/student/planning/skills/register/${student.id}`)
+                  }
+                }}>Habilidades de Planificación</button>
+              </div>
             </div>
           </div>
         </div>

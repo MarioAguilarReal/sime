@@ -79,7 +79,7 @@ export const studentsData = {
         { value: 6, label: 'Resolver el miedo' },
         { value: 7, label: 'Autorrecompensarse' },
     ],
-    socialAssaulta: [
+    socialAssault: [
         { value: 1, label: 'Pedir permiso' },
         { value: 2, label: 'Compartir algo propio' },
         { value: 3, label: 'Ayudar a los demás' },

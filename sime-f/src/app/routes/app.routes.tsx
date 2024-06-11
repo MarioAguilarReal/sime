@@ -22,6 +22,15 @@ import EditStudentSpecialNeeds from "../views/student/SpecialNeeds/Edit/EditStud
 import StudentCognitiveSkillsRegister from "../views/student/CognitiveSkills/Register/StudentCognitiveSkillsRegister";
 import ViewStudentCognitiveSkills from "../views/student/CognitiveSkills/Overview/ViewStudentCognitiveSkills";
 import EditStudentCognitiveSkills from "../views/student/CognitiveSkills/Edit/EditStudentCognitiveSkills";
+import StudentSocialSkillsRegister from "../views/student/SocialSkills/Register/StudentSocialSkillsRegister";
+import ViewStudentSocialSkills from "../views/student/SocialSkills/Overview/ViewStudentSocialSkills";
+import EditStudentSocialSkills from "../views/student/SocialSkills/Edit/EditStudentSocialSkills";
+import StudentAlternativeSkillsRegister from "../views/student/AlternativeSkills/Register/StudentAlternativeSkillsRegister";
+import ViewStudentAlternativeSkills from "../views/student/AlternativeSkills/Overview/ViewStudentAlternativeSkills";
+import EditStudentAlternativeSkills from "../views/student/AlternativeSkills/Edit/EditStudentAlternativeSkills";
+import StudentPlanningSkillsRegister from "../views/student/PlanningSkills/Register/StudentPlanningSkillsRegister";
+import ViewStudentPlanningSkills from "../views/student/PlanningSkills/Overview/ViewStudentPlanningSkills";
+import EditStudentPlanningSkills from "../views/student/PlanningSkills/Edit/EditStudentPlanningSkills";
 
 export const routesConfig: IRoute[] = [
   // Public Routes
@@ -53,6 +62,18 @@ export const routesConfig: IRoute[] = [
   { title: 'student-cognitive-skills-register', path: '/student/cognitive/skills/register/:id', element: StudentCognitiveSkillsRegister, private: true },
   { title: 'student-cognitive-skills-overview', path: '/student/cognitive/skills/overview/:id', element: ViewStudentCognitiveSkills, private: true },
   { title: 'student-cognitive-skills-edit', path: '/student/cognitive/skills/edit/:id', element: EditStudentCognitiveSkills, private: true },
+
+  { title: 'student-social-skills-register', path: '/student/social/skills/register/:id', element: StudentSocialSkillsRegister, private: true },
+  { title: 'student-social-skills-overview', path: '/student/social/skills/overview/:id', element: ViewStudentSocialSkills, private: true },
+  { title: 'student-social-skills-edit', path: '/student/social/skills/edit/:id', element: EditStudentSocialSkills, private: true },
+
+  { title: 'student-alternative-skills-register', path: '/student/alternative/skills/register/:id', element: StudentAlternativeSkillsRegister, private: true },
+  { title: 'student-alternative-skills-overview', path: '/student/alternative/skills/overview/:id', element: ViewStudentAlternativeSkills, private: true },
+  { title: 'student-alternative-skills-edit', path: '/student/alternative/skills/edit/:id', element: EditStudentAlternativeSkills, private: true },
+
+  { title: 'student-plnning-skills-register', path: '/student/planning/skills/register/:id', element: StudentPlanningSkillsRegister, private: true },
+  { title: 'student-plnning-skills-overview', path: '/student/planning/skills/overview/:id', element: ViewStudentPlanningSkills, private: true },
+  { title: 'student-plnning-skills-edit', path: '/student/plnning/skills/edit/:id', element: EditStudentPlanningSkills, private: true },
 
   { title: 'groups', path: '/list/groups', element: Groups, private: true },
   { title: 'classes', path: '/list/classes', element: Classes, private: true },
