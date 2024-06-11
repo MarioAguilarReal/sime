@@ -27,6 +27,7 @@ return new class extends Migration
             $table->integer('tutor_age');
             $table->string('tutor_address');
             $table->string('tutor_email');
+            $table->foreignId('comments_id')->nullable()->constrained();
             $table->foreignId('student_academic_data_id')->nullable()->constrained();
             $table->foreignId('student_learning_type_id')->nullable()->constrained();
             $table->foreignId('student_cognitive_skills_id')->nullable()->constrained();

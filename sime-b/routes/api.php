@@ -14,6 +14,7 @@ use App\Http\Controllers\ApiPlanningSkillsController;
 use App\Http\Controllers\ApiSocialSkillsController;
 use App\Http\Controllers\ApiCognitiveSkillsController;
 use App\Http\Controllers\ApiAlternativeSkillsController;
+use App\Http\Controllers\ApiCommentsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -103,6 +104,12 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::post('/register/{id}',[ApiAlternativeSkillsController::class, 'register']);
             Route::get('/{id}',[ApiAlternativeSkillsController::class, 'show']);
             Route::post('/update/{id}',[ApiAlternativeSkillsController::class, 'update']);
+        });
+
+        Route::prefix('comments')->group(function () {
+            Route::post('/register/{id}',[ApiCommentsController::class, 'register']);
+            Route::get('/{id}',[ApiCommentsController::class, 'show']);
+            Route::post('/update/{id}',[ApiCommentsController::class, 'update']);
         });
 
     });
