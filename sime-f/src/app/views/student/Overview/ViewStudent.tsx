@@ -147,6 +147,15 @@ const ViewStudent = () => {
           </div>
           <div className="more-data">
             <div className="row mb-2">
+              <div className="add-comments col-4">
+                <button className='btn btn-primary' onClick={() => {
+                  if (student.comments_id) {
+                    navigate(`/student/comments/overview/${student.comments_id}`)
+                  } else {
+                    navigate(`/student/comments/register/${student.id}`)
+                  }
+                }}>Agregar Comentario</button>
+              </div>
               <div className="academic-data col-4">
                 <button className='btn btn-primary' onClick={() => {
                   if (student.student_academic_data_id) {
@@ -159,6 +168,8 @@ const ViewStudent = () => {
               <div className="learning-type col-4">
                 <p className='btn btn-primary'>Tipo de Aprendizaje (SEP)</p>
               </div>
+            </div>
+            <div className="row mb-2">
               <div className="special-needs col-4">
                 <button className='btn btn-primary' onClick={() => {
                   if (student.student_special_needs_id) {
@@ -170,8 +181,6 @@ const ViewStudent = () => {
                   }
                 }}>Necesidades Especiales</button>
               </div>
-            </div>
-            <div className="row mb-2">
               <div className="cognitive-skills col-4">
                 <button className='btn btn-primary' onClick={() => {
                   if (student.student_cognitive_skills_id) {
@@ -194,6 +203,8 @@ const ViewStudent = () => {
                   }
                 }}>Habilidades Sociales</button>
               </div>
+            </div>
+            <div className="row mb-2">
               <div className="alternative-skills col-4">
                 <button className='btn btn-primary' onClick={() => {
                   if (student.student_alternative_skills_id) {
@@ -205,8 +216,6 @@ const ViewStudent = () => {
                   }
                 }}>Habilidades Alternativas</button>
               </div>
-            </div>
-            <div className="row mb-2">
               <div className="planning-skills col-4">
                 <button className='btn btn-primary' onClick={() => {
                   if (student.student_planning_skills_id) {

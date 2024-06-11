@@ -32,6 +32,7 @@ class Student extends Model
         'social_skills_id',
         'alternative_skills_id',
         'planning_skills_id',
+        'comments_id',
     ];
 
     public function studentAcademicData()
@@ -67,6 +68,11 @@ class Student extends Model
     public function planningSkills()
     {
         return $this->hasOne(PlanningSkills::class);
+    }
+
+    public function comments()
+    {
+        return $this->hasOne(Comments::class);
     }
 
 }

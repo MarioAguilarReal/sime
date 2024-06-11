@@ -14,6 +14,7 @@ export interface Student{
     tutor_age: number;
     tutor_address: string;
     tutor_email: string;
+    comments_id?: number;
     student_cognitive_skills_id?: number;
     student_alternative_skills_id?: number;
     student_academic_data_id?: number;
