@@ -31,11 +31,14 @@ import EditStudentAlternativeSkills from "../views/student/AlternativeSkills/Edi
 import StudentPlanningSkillsRegister from "../views/student/PlanningSkills/Register/StudentPlanningSkillsRegister";
 import ViewStudentPlanningSkills from "../views/student/PlanningSkills/Overview/ViewStudentPlanningSkills";
 import EditStudentPlanningSkills from "../views/student/PlanningSkills/Edit/EditStudentPlanningSkills";
+import SepForm from "../views/form/sepForm";
 
 export const routesConfig: IRoute[] = [
   // Public Routes
   { title: 'login', path: '/auth/login', element: Login, private: false },
   { title: 'change-password', path: '/auth/change-password/:id', element: ChangePassword, private: false },
+
+  {title: 'sepForm', path: '/forms/sep-test', element: SepForm, private: false},
 
   // Private Routes
   { title: 'dashboard', path: '/dashboard', element: Dashboard, private: true },
