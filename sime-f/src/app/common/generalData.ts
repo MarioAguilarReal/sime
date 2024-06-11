@@ -12,6 +12,15 @@ export const generalData = {
         { value: 4, label: 'Viudo' },
         { value: 5, label: 'Otro' }
     ],
-
-
+    roles: [
+        { value: 1, label: 'Administrador' },
+        { value: 2, label: 'Profesor' },
+        { value: 3, label: 'Tutor' }
+    ]
 };
+
+export enum Roles{
+    ADMIN = 1,
+    TEACHER = 2,
+    TUTOR = 3
+}

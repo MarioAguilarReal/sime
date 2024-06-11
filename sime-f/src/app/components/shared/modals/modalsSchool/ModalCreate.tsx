@@ -14,7 +14,7 @@ interface ModalProps {
   type: string;
   funct: string;
   users: User[];
-  propClass: Classe;
+  propClass: Classe | Group;
   onClose: () => void;
   onFunct: (data: Classe) => void;
 }
@@ -45,18 +45,17 @@ const ModalCreate = (props: ModalProps) => {
   }
 
   useEffect(() => {
-    if(users){
-      setUsers(users);
-    }
+    setUsers(users);
     if (funct === "edit") {
       setValue("name", propClass.name);
       setValue("description", propClass.description);
       setValue("user_id", propClass.user_id);
       if (type === "classe") {
-        setValue("max_students", propClass.max_students);
-        setValue("status", propClass.status);
+        const classe = propClass as Classe; // Add type assertion here
+        setValue("max_students", classe.max_students);
+        setValue("status", classe.status);
       }
-    }else{
+    } else {
       reset();
     }
   }, [props]);

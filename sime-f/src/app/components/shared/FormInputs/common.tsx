@@ -9,10 +9,7 @@ export const getErrorElement = (content: any) =>{
 export const getValidationErrors = (errors: any, field: string, label: string, rules: any, requiredError = "es requerido") => {
   const error = getDescendent(errors, field);
   if (error) {
-    return error.message;
-  }
-  if (rules.required) {
-    return `${label} ${requiredError}`;
+    return <span className="text-danger">{`* ${error.message} ${requiredError}`}</span>;
   }
   return null;
 }

@@ -28,9 +28,7 @@ class User extends Authenticatable
         'phone',
         'civil_status',
         'is_teacher',
-        'is_tutor',
-        'is_admin',
-        'is_active',
+        'role',
         'email',
         'password',
     ];

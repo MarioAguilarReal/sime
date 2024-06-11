@@ -77,5 +77,33 @@ export class UsersService {
     }
   }
 
+  public static async getUserClasses(id: any):Promise<any>{
+    let resp;
+    if(!localStorage.getItem('token')){
+      return resp = {data: [], success: false, status: 401, message: 'Token not found'} as ApiResponse;
+    }else{
+      resp = await SimeService.get('/user/classes/' + id, { Authorization: 'Bearer ' + localStorage.getItem('token') });
+      if (resp.status === 200){
+        return resp.data;
+      }else{
+        return resp.data;
+      }
+    }
+  }
+
+  public static async getUserGroups(id: any):Promise<any>{
+    let resp;
+    if(!localStorage.getItem('token')){
+      return resp = {data: [], success: false, status: 401, message: 'Token not found'} as ApiResponse;
+    }else{
+      resp = await SimeService.get('/user/groups/' + id, { Authorization: 'Bearer ' + localStorage.getItem('token') });
+      if (resp.status === 200){
+        return resp.data;
+      }else{
+        return resp.data;
+      }
+    }
+  }
+
 }
 

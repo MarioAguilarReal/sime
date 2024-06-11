@@ -37,7 +37,6 @@ export class GroupsService {
     if(!localStorage.getItem('token')){
       return resp = {data: [], success: false, status: 401, message: 'Token not found'} as ApiResponse;
     }else{
-      console.log('delete group id: ', id)
       resp = await SimeService.delete('/group/delete/' + id, { Authorization: 'Bearer ' + localStorage.getItem('token') });
       if (resp.status === 200){
         return resp.data;

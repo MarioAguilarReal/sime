@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { getValidationErrors } from './common';
 import InputMask from 'react-input-mask';
+import './FieldsStyles.scss';
 
 export interface TextInputProps {
   field: string;

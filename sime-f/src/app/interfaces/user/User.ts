@@ -9,10 +9,11 @@ export interface User{
   address: string;
   phone: string;
   civil_status: number;
-  is_teacher: boolean;
-  is_tutor: boolean;
-  is_admin: boolean;
+  role: number;
   email: string;
   password?: string;
   confirm_password?: string;
+
+  classes?: any[];
+  groups?: any[];
 }

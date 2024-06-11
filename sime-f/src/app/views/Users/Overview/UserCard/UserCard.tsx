@@ -88,9 +88,7 @@ const UserCard = (user: User) => {
       </p>
       <p className="u-info">
         <i className="bi bi-person-circle" /> &nbsp;
-        {user.is_teacher ? "Profesor " : ""}
-        {user.is_tutor ? "Tutor " : ""}
-        {user.is_admin ? "Administrador" : ""}
+        {generalData.roles.find((r) => r.value === user.role)?.label}
       </p>
       <p className="u-info">
         <i className="bi bi-person-bounding-box" /> &nbsp;
