@@ -5,6 +5,8 @@ import { StudentSpecialNeeds } from "../../../../interfaces/student/StudentSpeci
 import { StudentSpecialNeedsService } from "../../../../services/students/StudentSpecialNeedsService";
 import { studentsData } from "../../../../common/studentEnums";
 import './ViewStudentSpecialNeeds.scss'
+import { Student } from "../../../../interfaces/student/Student";
+import { StudentService } from "../../../../services/students/StudentsService";
 
 const ViewStudentSpecialNeeds = () => {
 
@@ -13,6 +15,8 @@ const ViewStudentSpecialNeeds = () => {
 	const navigate = useNavigate();
 
 	const [studentNeeds, setStudentNeeds] = useState<StudentSpecialNeeds>({} as StudentSpecialNeeds);
+	const [studentId, setStudentId] = useState<Student>({} as Student);
+
 
 	const [usaer, setUsaer] = useState<string>();
 
@@ -25,10 +29,25 @@ const ViewStudentSpecialNeeds = () => {
 		if (resp.status === 200) {
 			setStudentNeeds(resp.students_special_needs);
 			setUsaer(usaer?.label);
+
+			await findStudentId(resp.students_special_needs.id);
 		} else {
 			console.log(resp.status);
 		}
 		setLoading(false);
+	}
+
+	const findStudentId = async (specialNeedsId: number) => {
+		let studentsResp = await StudentService.getAll();
+		console.log(studentsResp);
+		if (studentsResp.status === 200) {
+			let student = studentsResp.students.find((student: Student) => student.student_special_needs_id === specialNeedsId);
+			console.log(student);
+			if (student) {
+				setStudentId(student);
+				console.log(studentId.id);
+			}
+		}
 	}
 
 	useEffect(() => {
@@ -44,7 +63,7 @@ const ViewStudentSpecialNeeds = () => {
 			<div className="form">
 				<div className="row mb-2">
 					<div className="col-2">
-						<button className='btn btn-secondary' onClick={() => navigate(``)}>Volver</button>
+						<button className='btn btn-secondary' onClick={() => navigate(`/student/overview/${studentId.id}`)}>Volver</button>
 					</div>
 					<div className="col-4 btn-edit">
 						<button className='btn btn-primary' onClick={() => navigate(`/student/need/edit/${studentNeeds.id}`)}>Editar Datos</button>

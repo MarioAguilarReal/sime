@@ -77,6 +77,14 @@ const EditStudentSpecialNeeds = () => {
 		<div className="edit-needs">
 			<h1>Editar Necesidades Especiales</h1>
 			<div className="form">
+				<div className="row mb-2">
+					<div className="col-4 btn-edit">
+						<button className='btn btn-secondary' onClick={() => navigate(`/student/need/overview/${studentNeeds?.id}`)}>Volver</button>
+					</div>
+				</div>
+				<div className="row mb-2 mt-3">
+					<hr className="border border-secondary border-1 opacity-75" />
+				</div>
 				<div className='container-fluid-mb-3 form-group'>
 					<div className="mb-4">
 						<div className="row mb-4 col-4">

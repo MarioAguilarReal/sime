@@ -1,0 +1,20 @@
+.view-comments{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  .form{
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    label{
+      font-weight: bold;
+    }
+    .btn-edit{
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 10px;
+    }
+  }
+}

@@ -8,7 +8,8 @@ import { useEffect, useState } from 'react';
 import { StudentService } from '../../../../services/students/StudentsService';
 import { StudentCommentsService } from '../../../../services/students/StudentCommentsService';
 import { User } from '../../../../interfaces/user/User';
-import { UsersService } from '../../../../services/users/UsersService';
+import { ToastContainer, toast } from 'react-toastify';
+import TextField from '../../../../components/shared/FormInputs/TextField';
 
 const StudentCommentsRegister = () => {
 
@@ -17,9 +18,6 @@ const StudentCommentsRegister = () => {
     register,
     handleSubmit,
     formState: { errors },
-    control,
-    getValues,
-    watch
   } = useForm<StudentComments>();
   const navigate = useNavigate();
   const { setLoading } = useLoader();
@@ -27,17 +25,16 @@ const StudentCommentsRegister = () => {
   const [studentComments, setStudentComments] = useState<Student>();
   const [userComments, setUserComments] = useState<User>();
 
-  // load user
   const loadUser = async () => {
-    setLoading(true);
-    let resp = await UsersService.getUsers();
-    console.log(resp);
-    if (resp.status === 200) {
-      setUserComments(resp.data);
+    let user = sessionStorage.getItem('user');
+    console.log(user);
+    if (user) {
+      let userObj = JSON.parse(user);
+      console.log(userObj);
+      setUserComments(userObj);
     } else {
-      console.log(resp.status);
+      console.log('not user');
     }
-    setLoading(false);
   };
 
   const loadStudent = async (studentId: number) => {
@@ -57,18 +54,27 @@ const StudentCommentsRegister = () => {
     console.log(data);
     const formData = new FormData();
     formData.append('comment', data.comment);
-    formData.append('student_id', studentComments?.id?.toString() || '');
+    formData.append('by', userComments?.first_name + ' ' + userComments?.last_name);
+    formData.append('userRoleCreator', userComments?.role.toString() || '');
+    formData.append('idStudent', studentComments?.id?.toString() || '');
 
+    console.log(formData);
     const resp = await StudentCommentsService.register(formData, studentComments?.id || 0);
     console.log(studentComments);
     console.log(resp);
     if (resp.status === 200) {
-      setLoading(false);
-      navigate('/student/comments/overview/' + resp.student_comments.id);
+      toast.success(resp.message);
+      if (resp.comments)
+        navigate('/student/comments/overview/' + resp.comments.id);
     } else {
-      setLoading(false);
+      toast.error(resp.message);
     }
+    setLoading(false);
   };
+
+  useEffect(() => {
+    loadUser();
+  }, []);
 
   useEffect(() => {
     if (!id) return;
@@ -79,6 +85,38 @@ const StudentCommentsRegister = () => {
   return (
     <div className='student-comments'>
       <h1>Agregar Comentario</h1>
+      <div className='form'>
+        <div className="row mb-2">
+          <div className="col-4 btn-edit">
+            <button className='btn btn-secondary' onClick={() => navigate(`/student/overview/${studentComments?.id}`)}>Volver</button>
+          </div>
+        </div>
+        <div className="row mb-2 mt-3">
+          <hr className="border border-secondary border-1 opacity-75" />
+        </div>
+        <div className='container-fluid-mb-3 form-group'>
+          <div className="mb-4">
+            <TextField
+              label={'Comentario'}
+              field={'comment'}
+              register={register}
+              type='text'
+              rules={{ required: 'Este campo es requerido' }}
+              errors={errors}
+              multiLine={true}
+            />
+          </div>
+          <div className="row mb-2 mt-3">
+            <hr className="border border-secondary border-1 opacity-75" />
+          </div>
+          <div className="row">
+            <div className="col-8">
+              <button className="btn btn-primary xl" onClick={handleSubmit((data) => handleCreate(data))}>Añadir Comentario</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ToastContainer />
     </div>
   );
 }

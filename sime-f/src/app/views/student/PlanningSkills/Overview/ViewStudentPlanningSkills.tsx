@@ -5,6 +5,8 @@ import { useEffect, useState } from 'react';
 import { StudentPlanningSkills } from '../../../../interfaces/student/StudentPlanningSkills';
 import { StudentPlanningSkillsService } from '../../../../services/students/StudentPlanningSkillsService';
 import { studentsData } from '../../../../common/studentEnums';
+import { Student } from '../../../../interfaces/student/Student';
+import { StudentService } from '../../../../services/students/StudentsService';
 
 const ViewStudentPlanningSkills = () => {
 
@@ -13,6 +15,7 @@ const ViewStudentPlanningSkills = () => {
   const navigate = useNavigate();
 
   const [studentPlanning, setStudentPlanning] = useState<StudentPlanningSkills>({} as StudentPlanningSkills);
+  const [studentId, setStudentId] = useState<Student>({} as Student);
 
   const [studentFocus, setStudentFocus] = useState<string>();
   const [studentDetect, setStudentDetect] = useState<string>();
@@ -31,10 +34,25 @@ const ViewStudentPlanningSkills = () => {
       setStudentFocus(studentFocus?.label);
       setStudentDetect(studentDetect?.label);
       setStudentCorrelation(studentCorrelation?.label);
+
+      await findStudentId(resp.students_planning_skills.id);
     } else {
       console.log(resp.status);
     }
     setLoading(false);
+  }
+
+  const findStudentId = async (planningSkillsId: number) => {
+    let studentsResp = await StudentService.getAll();
+    console.log(studentsResp);
+    if (studentsResp.status === 200) {
+      let student = studentsResp.students.find((student: Student) => student.student_planning_skills_id === planningSkillsId);
+      console.log(student);
+      if (student) {
+        setStudentId(student);
+        console.log(studentId.id);
+      }
+    }
   }
 
   useEffect(() => {
@@ -50,7 +68,7 @@ const ViewStudentPlanningSkills = () => {
       <div className="form">
         <div className="row mb-2">
           <div className="col-2">
-            <button className='btn btn-secondary' onClick={() => navigate(``)}>Volver</button>
+            <button className='btn btn-secondary' onClick={() => navigate(`/student/overview/${studentId.id}`)}>Volver</button>
           </div>
           <div className="col-4 btn-edit">
             <button className='btn btn-primary' onClick={() => navigate(`/student/plnning/skills/edit/${studentPlanning.id}`)}>Editar Datos</button>

@@ -13,14 +13,14 @@
       justify-content: flex-end;
       margin-bottom: 10px;
     }
-    .student-photo{
+    .image{
       width: 150px;
       height: 150px;
       margin: 0 auto 10px auto;
       border-radius: 50%;
       overflow: hidden;
       border: 1px solid #ccc;
-      img{
+      .student-photo{
         width: 100%;
         height: 100%;
         object-fit: scale-down;

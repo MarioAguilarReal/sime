@@ -122,17 +122,17 @@ const EditStudentSocialSkills = () => {
     <div className="edit-skills">
       <h1>Editar Habilidades Sociales del Estudiante</h1>
       <div className="form">
-        <div className='container-fluid-mb-3 form-group'>
-          <div className="row mb-2">
-            <div className="col-2">
-              <div className="col-4 btn-edit">
-                <button className='btn btn-secondary' onClick={() => navigate(``)}>Volver</button>
-              </div>
+        <div className="row mb-2">
+          <div className="col-2">
+            <div className="col-4 btn-edit">
+              <button className='btn btn-secondary' onClick={() => navigate(`/student/social/skills/overview/${studentSkills?.id}`)}>Volver</button>
             </div>
           </div>
-          <div className="row mb-2 mt-3">
-            <hr className="border border-secondary border-1 opacity-75" />
-          </div>
+        </div>
+        <div className="row mb-2 mt-3">
+          <hr className="border border-secondary border-1 opacity-75" />
+        </div>
+        <div className='container-fluid-mb-3 form-group'>
           <div className="row mb-2">
             <h4>Habilidades Básicas</h4>
             <h6>El alumno puede:</h6>

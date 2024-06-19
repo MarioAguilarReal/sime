@@ -48,6 +48,7 @@ const StudentSpecialNeedsRegister = () => {
     formData.append('learning_problems', data.learning_problems);
     formData.append('diseases', data.diseases);
 
+    console.log(formData);
     const resp = await StudentSpecialNeedsService.register(formData, studentNeeds?.id || 0);
     console.log(studentNeeds);
     console.log(resp);
@@ -71,6 +72,14 @@ const StudentSpecialNeedsRegister = () => {
     <div className="student-needs">
       <h1>Registro de Necasidades Especiales</h1>
       <div className="form">
+        <div className="row mb-2">
+          <div className="col-4 btn-edit">
+            <button className='btn btn-secondary' onClick={() => navigate(`/student/overview/${studentNeeds?.id}`)}>Volver</button>
+          </div>
+        </div>
+        <div className="row mb-2 mt-3">
+          <hr className="border border-secondary border-1 opacity-75" />
+        </div>
         <div className='container-fluid-mb-3 form-group'>
           <div className="mb-4">
             <div className="row mb-4 col-4">

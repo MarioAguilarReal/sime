@@ -4,6 +4,8 @@ import './ViewStudentSocialSkills.scss';
 import { useEffect, useState } from 'react';
 import { StudentSocialSkillsService } from '../../../../services/students/StudentSocialSkillsService';
 import { studentsData } from '../../../../common/studentEnums';
+import { Student } from '../../../../interfaces/student/Student';
+import { StudentService } from '../../../../services/students/StudentsService';
 
 const ViewStudentSocialSkills = () => {
 
@@ -29,6 +31,8 @@ const ViewStudentSocialSkills = () => {
     planning: [] as any[],
   });
 
+  const [studentId, setStudentId] = useState<Student>({} as Student);
+
 
   const loadStudentSocial = async (dataId: number) => {
     setLoading(true);
@@ -47,10 +51,24 @@ const ViewStudentSocialSkills = () => {
 
       setStudentSocial(socialSkills);
 
+      await findStudentId(resp.students_social_skills.id);
     } else {
       console.log(resp.status);
     }
     setLoading(false);
+  }
+
+  const findStudentId = async (socialSkillsId: number) => {
+    let studentsResp = await StudentService.getAll();
+    console.log(studentsResp);
+    if (studentsResp.status === 200) {
+      let student = studentsResp.students.find((student: Student) => student.student_social_skills_id === socialSkillsId);
+      console.log(student);
+      if (student) {
+        setStudentId(student);
+        console.log(studentId.id);
+      }
+    }
   }
 
   useEffect(() => {
@@ -85,7 +103,7 @@ const ViewStudentSocialSkills = () => {
       <div className="form">
         <div className="row mb-2">
           <div className="col-2">
-            <button className='btn btn-secondary' onClick={() => navigate(``)}>Volver</button>
+            <button className='btn btn-secondary' onClick={() => navigate(`/student/overview/${studentId.id}`)}>Volver</button>
           </div>
           <div className="col-4 btn-edit">
             <button className='btn btn-primary' onClick={() => navigate(`/student/social/skills/edit/${id}`)}>Editar Datos</button>
