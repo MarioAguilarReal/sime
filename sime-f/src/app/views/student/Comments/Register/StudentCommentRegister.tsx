@@ -29,15 +29,7 @@ const StudentCommentsRegister = () => {
 
   // load user
   const loadUser = async () => {
-    setLoading(true);
-    let resp = await UsersService.getUsers();
-    console.log(resp);
-    if (resp.status === 200) {
-      setUserComments(resp.data);
-    } else {
-      console.log(resp.status);
-    }
-    setLoading(false);
+    let user = sessionStorage.getItem('user');
   };
 
   const loadStudent = async (studentId: number) => {
