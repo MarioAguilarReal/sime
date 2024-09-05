@@ -54,31 +54,27 @@ const Login = () => {
       <div className="login-wrapper">
         <div className="login-image"></div>
         <div className="login-form">
-          <h1>Iniciar Sesión</h1>
           <form>
             <div className="form-group">
-              <label htmlFor="email">Email address</label>
-              <input
-                type="email"
-                className="form-control"
-                id="email"
-                aria-describedby="emailHelp"
-                placeholder="Enter email"
-                {...register("email", {
-                  required: true,
-                  pattern: {
-                    value: PATTERNS.emailRegEx,
-                    message: "Invalid email address",
-                  },
-                })}
-              />
-              {errors.email && (
-                <span className="error">*{errors.email.message}</span>
-              )}
+                <input
+                  type="email"
+                  className="form-control"
+                  id="email"
+                  aria-describedby="emailHelp"
+                  placeholder="Email Address"
+                  {...register("email", {
+                    required: true,
+                    pattern: {
+                      value: PATTERNS.emailRegEx,
+                      message: "Invalid email address",
+                    },
+                  })}
+                />
+                {errors.email && (
+                  <span className="error">*{errors.email.message}</span>
+                )}
             </div>
             <div className="form-group">
-              <label htmlFor="password">Password</label>
-              <div className="input-wrapper">
                 <input
                   type={showPassword ? "text" : "password"}
                   className="form-control"
@@ -92,13 +88,15 @@ const Login = () => {
                   } see-pass`}
                   onClick={() => setShowPassword(!showPassword)}
                 ></i>
-              </div>
             </div>
           </form>
+          <div className="forgot-password">
+            <a href="/forgot-password">Forgot Password?</a>
+          </div>
           <button
             className="btn-xl"
             onClick={handleSubmit((data) => handleLogin(data))}
-            disabled={!canLogin}
+            disabled={(password.length < 5 || !canLogin)}
           >
             Iniciar Sesión <i className="bi bi-box-arrow-in-right"></i>
           </button>
