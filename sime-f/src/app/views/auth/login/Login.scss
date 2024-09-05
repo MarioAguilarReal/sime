@@ -1,77 +1,71 @@
-.login{
+.login {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background: #f1f1f1;
+  background: #812a1a;
   margin: 0;
   padding: 0;
-  .login-wrapper{
+  .login-wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: 0 0 10px rgba(0,0,0,0.2);
-    .login-image{
-      width: 30rem;
-      height: 30rem;
-      background: url('../../../assets/images/student-bg.jpg') no-repeat center;
-      background-size: cover;
+    background-color: #3d000b5b;
+    border-radius: 10px;
+    box-shadow: 5px 10px 10px rgba(0, 0, 0, 0.1);
+    padding: 0 2rem;
+    .login-image {
+      width: 20rem;
+      height: 20rem;
+      padding: 10rem 10rem;
+      background: url("../../../assets/images/Site_logo.png") no-repeat center;
+      background-size: contain;
+      background-position: center;
+      background-position-x: center;
+      background-position-y: center;
     }
-    .login-form{
+    .login-form {
       width: 30rem;
       height: 30rem;
       padding: 20px;
-      background: #fff;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      form{
+      justify-content: center;
+      form {
         display: flex;
         flex-direction: column;
         justify-content: center;
         margin-bottom: 10px;
-
-        input{
-          margin: 10px 0;
-          padding: 10px;
-          border: 1px solid #ccc;
-          border-radius: 5px;
-
-          .see-pass{
-              position: absolute;
-              left: 10px;
-              top: 10px;
-              cursor: pointer;
-          }
-        }
-
-        .input-wrapper {
+        height: 40%;
+        .form-group {
           display: flex;
+          justify-content: space-between;
           align-items: center;
-        }
-
-        .see-pass {
-          margin-left: 10px;
-          color: #ccc;
-          font-size: 16px;
-        }
-
-        .form input {
-          position: relative;
-          padding-left: 30px;
-
-          ::before {
-            content: "\f023";
-            font-family: FontAwesome;
-            position: absolute;
-            left: 10px;
-            top: 50%;
-            transform: translateY(-50%);
+          gap: 10px;
+          .see-pass {
+            cursor: pointer;
+            color: #ccc;
             font-size: 16px;
           }
+          input {
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #18105c;
+          }
+
         }
       }
-      .btn-xl{
+      .forgot-password {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 0.5rem;
+        a {
+          color: #007bff;
+          text-decoration: none;
+          font-size: 14px;
+        }
+      }
+      .btn-xl {
         padding: 10px;
         background: #007bff;
         color: #fff;
@@ -80,12 +74,12 @@
         cursor: pointer;
         transition: 0.3s;
         width: 100%;
-        &:hover{
-            background: #0056b3;
+        &:hover {
+          background: #0056b3;
         }
-        &:disabled{
-            background: #ccc;
-            cursor: not-allowed;
+        &:disabled {
+          background: #ccc;
+          cursor: not-allowed;
         }
       }
     }

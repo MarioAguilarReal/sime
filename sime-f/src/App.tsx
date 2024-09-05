@@ -55,13 +55,7 @@ function App() {
   let location = useLocation();
 
   const getSharedContent = () => {
-    if (
-      location.pathname.includes("/auth/") || // for auth pages
-      location.pathname.includes("/forms/") // for form pages
-    ) {
-      return false;
-    }
-    return true;
+    return !location.pathname.includes("/auth") && !location.pathname.includes("/forms");
   };
 
   useEffect(() => {
