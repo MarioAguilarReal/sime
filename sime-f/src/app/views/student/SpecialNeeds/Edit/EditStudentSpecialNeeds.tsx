@@ -18,7 +18,6 @@ const EditStudentSpecialNeeds = () => {
 		handleSubmit,
 		formState: { errors },
 		control,
-		getValues,
 		setValue
 	} = useForm<StudentSpecialNeeds>();
 
@@ -27,6 +26,8 @@ const EditStudentSpecialNeeds = () => {
 
 	const [studentNeeds, setStudentNeeds] = useState<StudentSpecialNeeds>();
 
+	const [back, setBack] = useState(Number);
+
 	const loadStudentNeeds = async (dataId: number) => {
 		setLoading(true);
 		let resp = await StudentSpecialNeedsService.get(dataId);
@@ -34,6 +35,7 @@ const EditStudentSpecialNeeds = () => {
 
 		if (resp.status === 200) {
 			setStudentNeeds(resp.students_special_needs);
+			setBack(dataId);
 		} else {
 			console.log(resp.status);
 		}
@@ -77,6 +79,14 @@ const EditStudentSpecialNeeds = () => {
 		<div className="edit-needs">
 			<h1>Editar Necesidades Especiales</h1>
 			<div className="form">
+				<div className="row mb-2">
+					<div className="col-2">
+						<button className='btn btn-secondary' onClick={() => navigate(`/student/need/overview/${back}`)}>Volver</button>
+					</div>
+				</div>
+				<div className="row mb-2 mt-3">
+					<hr />
+				</div>
 				<div className='container-fluid-mb-3 form-group'>
 					<div className="mb-4">
 						<div className="row mb-4 col-4">
@@ -110,11 +120,11 @@ const EditStudentSpecialNeeds = () => {
 						</div>
 					</div>
 					<div className="row mb-2 mt-3">
-						<hr className="border border-secondary border-1 opacity-75" />
+						<hr />
 					</div>
 					<div className="row">
 						<div className="col-8">
-							<button className="btn btn-primary xl" onClick={handleSubmit((data) => handleUpdateNeeds(data))}>Editar</button>
+							<button className="btn btn-edit xl" onClick={handleSubmit((data) => handleUpdateNeeds(data))}>Editar</button>
 						</div>
 					</div>
 				</div>

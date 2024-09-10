@@ -1,4 +1,4 @@
-.student-needs{
+.student-comments{
   display: flex;
 	justify-content: center;
 	align-items: center;
@@ -19,7 +19,11 @@
       font-weight: bold;
 			color: #812A1A;
     }
-		.btn-add{
+		.comment{
+			height: fit-content;
+			min-height: 300px;
+		}
+		.btn-comment{
 			background-color: #812A1A;
 			border-color: #812A1A;
 			color: #ffffff;

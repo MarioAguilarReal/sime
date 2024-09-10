@@ -12,7 +12,7 @@ const StudentsAll = () => {
 
     const listStudents = async () => {
         setLoading(true);
-        
+
         let resp = await StudentService.getAll();
         if (resp.status === 200) {
             setStudents(resp.students);
@@ -33,6 +33,9 @@ const StudentsAll = () => {
         <div className="students-all">
             <div className="container">
                 <h1>Lista de Estudiantes</h1>
+                <div className="row mb-2 mt-3">
+                    <hr className="border border-secondary border-1 opacity-75" />
+                </div>
                 <div className="row">
                     <div className="col-12">
                         <table className="table table-striped">
@@ -56,7 +59,7 @@ const StudentsAll = () => {
                                             <td>{student.age}</td>
                                             <td>{student.tutor_name}</td>
                                             <td>
-                                                <button className="btn btn-primary" onClick={() => navigate(`/student/overview/${student.id}`)}>Ver Estudiante</button>
+                                                <button className="btn" onClick={() => navigate(`/student/overview/${student.id}`)}>Ver Estudiante</button>
                                             </td>
                                         </tr>
                                     )
