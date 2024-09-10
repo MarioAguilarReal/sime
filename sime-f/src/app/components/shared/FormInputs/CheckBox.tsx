@@ -63,7 +63,7 @@ export const CheckboxList: FunctionComponent<CheckboxListProps> = ({
   isDirty = false,
   labelClass = "form-check-label",
   inputClass = "form-check-input",
-  parentClass = "",
+  parentClass = "form-check",
 }) => {
   const oneRequiredValidation = () => {
     for (let i = 0; i < items.length; i++) {

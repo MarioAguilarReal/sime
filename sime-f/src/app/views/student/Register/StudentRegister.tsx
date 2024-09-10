@@ -19,8 +19,6 @@ const StudentRegister = () => {
     handleSubmit,
     formState: { errors },
     control,
-    getValues,
-    watch
   } = useForm<Student>();
   const navigate = useNavigate();
   const { setLoading } = useLoader();
@@ -76,7 +74,7 @@ const StudentRegister = () => {
         <div className="container-fluid-mb-3 form-group">
           <div className="row">
             <h2>Datos Personales del Estudiante</h2>
-            <hr className="border border-secondary border-1 opacity-75" />
+            <hr />
           </div>
           <div className="row mb-4">
             <div className="col-6">
@@ -163,7 +161,7 @@ const StudentRegister = () => {
           </div>
           <div className="row">
             <h2>Información del Tutor</h2>
-            <hr className="border border-secondary border-1 opacity-75" />
+            <hr />
           </div>
           <div className="row mb-4">
             <div className="col-4">
@@ -218,30 +216,30 @@ const StudentRegister = () => {
                 errors={errors}
               />
             </div>
-            <div className="row mb-4">
-              <div className="col-4">
-                <label htmlFor="">Foto</label>
-                <input
-                  type="file"
-                  className='form-control'
-                  accept='image/*'
-                  onChange={handlePhotoChange}
-                />
-              </div>
-              <div className="col-4">
-                <p>Vista Previa de la Foto</p>
-                <img src={photo ? URL.createObjectURL(photo) : 'https://via.placeholder.com/150'}
-                  alt="student"
-                  className='student-photo' />
-              </div>
+          </div>
+          <div className="row mb-4">
+            <div className="col-6">
+              <label htmlFor="">Foto</label>
+              <input
+                type="file"
+                className='form-control'
+                accept='image/*'
+                onChange={handlePhotoChange}
+              />
             </div>
-            <div className="row mb-2 mt-3">
-              <hr className="border border-secondary border-1 opacity-75" />
+            <div className="col-6">
+              <p>Vista Previa de la Foto</p>
+              <img src={photo ? URL.createObjectURL(photo) : 'https://via.placeholder.com/150'}
+                alt="student"
+                className='student-photo' />
             </div>
-            <div className="row">
-              <div className="col-8">
-                <button className="btn btn-primary xl" onClick={handleSubmit((data) => handleCreate(data))}>Registrar</button>
-              </div>
+          </div>
+          <div className="row mb-2 mt-3">
+            <hr />
+          </div>
+          <div className="row mb-4">
+            <div className="col-8">
+              <button className="btn xl" onClick={handleSubmit((data) => handleCreate(data))}>Registrar</button>
             </div>
           </div>
         </div>

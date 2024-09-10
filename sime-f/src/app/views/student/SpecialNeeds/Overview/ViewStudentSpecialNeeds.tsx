@@ -5,6 +5,8 @@ import { StudentSpecialNeeds } from "../../../../interfaces/student/StudentSpeci
 import { StudentSpecialNeedsService } from "../../../../services/students/StudentSpecialNeedsService";
 import { studentsData } from "../../../../common/studentEnums";
 import './ViewStudentSpecialNeeds.scss'
+import { Student } from "../../../../interfaces/student/Student";
+import { StudentService } from "../../../../services/students/StudentsService";
 
 const ViewStudentSpecialNeeds = () => {
 
@@ -15,6 +17,18 @@ const ViewStudentSpecialNeeds = () => {
 	const [studentNeeds, setStudentNeeds] = useState<StudentSpecialNeeds>({} as StudentSpecialNeeds);
 
 	const [usaer, setUsaer] = useState<string>();
+
+	const [student, setStudent] = useState<Student>();
+
+	const getStudent = async (dataId: number) => {
+		setLoading(true);
+		let resp = await StudentService.getAll();
+		let returnStudent = resp.students.find((student: Student) => student.student_special_needs_id === dataId);
+		if (resp.status === 200) {
+			setStudent(returnStudent.id);
+		}
+		setLoading(false);
+	}
 
 	const loadStudentNeeds = async (dataId: number) => {
 		setLoading(true);
@@ -35,6 +49,7 @@ const ViewStudentSpecialNeeds = () => {
 		if (id) {
 			let dataId = parseInt(id);
 			loadStudentNeeds(dataId);
+			getStudent(dataId);
 		}
 	}, [id]);
 
@@ -44,14 +59,14 @@ const ViewStudentSpecialNeeds = () => {
 			<div className="form">
 				<div className="row mb-2">
 					<div className="col-2">
-						<button className='btn btn-secondary' onClick={() => navigate(``)}>Volver</button>
+						<button className='btn btn-secondary' onClick={() => navigate(`/student/overview/${student}`)}>Volver</button>
 					</div>
 					<div className="col-4 btn-edit">
 						<button className='btn btn-primary' onClick={() => navigate(`/student/need/edit/${studentNeeds.id}`)}>Editar Datos</button>
 					</div>
 				</div>
 				<div className="row mb-2 mt-3">
-					<hr className="border border-secondary border-1 opacity-75" />
+					<hr />
 				</div>
 				<div className="container-fluid-mb-3 form-group">
 					<div className="row">
