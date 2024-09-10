@@ -54,6 +54,7 @@ const Login = () => {
       <div className="login-wrapper">
         <div className="login-image"></div>
         <div className="login-form">
+          <h1 style={{color: 'white'}}>Iniciar Sesión</h1>
           <form>
             <div className="form-group">
                 <input
@@ -96,7 +97,7 @@ const Login = () => {
           <button
             className="btn-xl"
             onClick={handleSubmit((data) => handleLogin(data))}
-            disabled={(password.length < 5 || !canLogin)}
+            disabled={(password?.length < 5 || !canLogin)}
           >
             Iniciar Sesión <i className="bi bi-box-arrow-in-right"></i>
           </button>
