@@ -4,6 +4,8 @@ import './ViewStudentCognitiveSkills.scss';
 import { useEffect, useState } from 'react';
 import { StudentCognitiveSkillsService } from '../../../../services/students/StudentCognitiveSkillsService';
 import { studentsData } from '../../../../common/studentEnums';
+import { Student } from '../../../../interfaces/student/Student';
+import { StudentService } from '../../../../services/students/StudentsService';
 
 const ViewStudentCognitiveSkills = () => {
 
@@ -13,6 +15,18 @@ const ViewStudentCognitiveSkills = () => {
 
   const [studentCognitive, setStudentCognitive] = useState<any>([]);
   const [selectedSkills, setSelectedSkills] = useState<any[]>([]);
+
+  const [student, setStudent] = useState<Student>();
+
+  const getStudent = async (dataId: number) => {
+    setLoading(true);
+    let resp = await StudentService.getAll();
+    let returnStudent = resp.students.find((student: Student) => student.student_cognitive_skills_id === dataId);
+    if (resp.status === 200) {
+      setStudent(returnStudent.id);
+    }
+    setLoading(false);
+  }
 
   const loadStudentCognitive = async (dataId: number) => {
     setLoading(true);
@@ -36,6 +50,7 @@ const ViewStudentCognitiveSkills = () => {
     if (id) {
       let dataId = parseInt(id);
       loadStudentCognitive(dataId);
+      getStudent(dataId);
     }
   }, [id]);
 
@@ -52,14 +67,14 @@ const ViewStudentCognitiveSkills = () => {
       <div className="form">
         <div className="row mb-2">
           <div className="col-2">
-            <button className='btn btn-secondary' onClick={() => navigate(``)}>Volver</button>
+            <button className='btn btn-secondary' onClick={() => navigate(`/student/overview/${student}`)}>Volver</button>
           </div>
           <div className="col-4 btn-edit">
-            <button className='btn btn-primary' onClick={() => navigate(`/student/cognitive/skills/edit/${id}`)}>Editar Datos</button>
+            <button className='btn' onClick={() => navigate(`/student/cognitive/skills/edit/${id}`)}>Editar Datos</button>
           </div>
         </div>
         <div className="row mb-2 mt-3">
-          <hr className="border border-secondary border-1 opacity-75" />
+          <hr />
         </div>
         <div className='container-fluid-mb-3 form-group'>
           <div className="row">

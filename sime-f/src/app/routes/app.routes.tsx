@@ -31,9 +31,7 @@ import EditStudentAlternativeSkills from "../views/student/AlternativeSkills/Edi
 import StudentPlanningSkillsRegister from "../views/student/PlanningSkills/Register/StudentPlanningSkillsRegister";
 import ViewStudentPlanningSkills from "../views/student/PlanningSkills/Overview/ViewStudentPlanningSkills";
 import EditStudentPlanningSkills from "../views/student/PlanningSkills/Edit/EditStudentPlanningSkills";
-import StudentCommentsRegister from "../views/student/Comments/Register/StudentCommentRegister";
-import ViewStudentComments from "../views/student/Comments/Overview/ViewStudentComments";
-import EditStudentComments from "../views/student/Comments/Edit/EditStudentComments";
+import ViewStudentComments from "../views/student/Comments/ViewStudentComments";
 import SepForm from "../views/form/sepForm";
 
 export const routesConfig: IRoute[] = [
@@ -81,9 +79,7 @@ export const routesConfig: IRoute[] = [
   { title: 'student-plnning-skills-overview', path: '/student/planning/skills/overview/:id', element: ViewStudentPlanningSkills, private: true },
   { title: 'student-plnning-skills-edit', path: '/student/plnning/skills/edit/:id', element: EditStudentPlanningSkills, private: true },
 
-  { title: 'student-comments-register', path: '/student/comments/register/:id', element: StudentCommentsRegister, private: true },
-  { title: 'student-comments-overview', path: '/student/comments/overview/:id', element: ViewStudentComments, private: true },
-  { title: 'student-comments-edit', path: '/student/comments/edit/:id', element: EditStudentComments, private: true },
+  { title: 'student-comments', path: '/student/comments/:id', element: ViewStudentComments, private: true },
 
   { title: 'groups', path: '/list/groups', element: Groups, private: true },
   { title: 'classes', path: '/list/classes', element: Classes, private: true },

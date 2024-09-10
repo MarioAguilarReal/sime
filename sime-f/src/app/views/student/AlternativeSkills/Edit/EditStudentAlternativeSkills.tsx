@@ -16,7 +16,6 @@ const EditStudentAlternativeSkills = () => {
     register,
     handleSubmit,
     formState: { errors },
-    control,
     setValue,
     getValues,
   } = useForm<StudentAlternativeSkills & { [key: string]: any }>();
@@ -25,11 +24,15 @@ const EditStudentAlternativeSkills = () => {
 
   const [studentSkills, setStudentSkills] = useState<StudentAlternativeSkills>();
 
+  const [back, setBack] = useState(Number);
+
+
   const loadStudent = async (studentId: number) => {
     setLoading(true);
     let resp = await StudentAlternativeSkillsService.get(studentId);
     if (resp.status === 200) {
       setStudentSkills(resp.students_alternative_skills);
+      setBack(studentId);
     } else {
       toast.error(resp.status);
     }
@@ -76,13 +79,13 @@ const EditStudentAlternativeSkills = () => {
         <div className='container-fluid-mb-3 form-group'>
           <div className="row mb-2">
             <div className="col-2">
-              <div className="col-4 btn-edit">
-                <button className='btn btn-secondary' onClick={() => navigate(``)}>Volver</button>
+              <div className="col-4">
+                <button className='btn btn-secondary' onClick={() => navigate(`/student/alternative/skills/overview/${back}`)}>Volver</button>
               </div>
             </div>
           </div>
           <div className="row mb-2 mt-3">
-            <hr className="border border-secondary border-1 opacity-75" />
+            <hr />
           </div>
           <div className="row mb-4">
             <h6>El alumno:</h6>
@@ -97,11 +100,11 @@ const EditStudentAlternativeSkills = () => {
             </div>
           </div>
           <div className="row mb-2 mt-3">
-            <hr className="border border-secondary border-1 opacity-75" />
+            <hr />
           </div>
           <div className="row">
             <div className="col-8">
-              <button className="btn btn-primary xl" onClick={handleSubmit((data) => handleUpdateStudent(data))}>Editar</button>
+              <button className="btn btn-edit xl" onClick={handleSubmit((data) => handleUpdateStudent(data))}>Editar</button>
             </div>
           </div>
         </div>

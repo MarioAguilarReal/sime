@@ -16,7 +16,6 @@ const EditStudentCognitiveSkills = () => {
     register,
     handleSubmit,
     formState: { errors },
-    control,
     setValue,
     getValues,
   } = useForm<StudentCognitiveSkills & { [key: string]: any }>();
@@ -24,12 +23,15 @@ const EditStudentCognitiveSkills = () => {
   const { setLoading } = useLoader();
 
   const [studentSkills, setStudentSkills] = useState<StudentCognitiveSkills>();
+  const [back, setBack] = useState(Number);
+
 
   const loadStudent = async (studentId: number) => {
     setLoading(true);
     let resp = await StudentCognitiveSkillsService.get(studentId);
     if (resp.status === 200) {
       setStudentSkills(resp.students_cognitive_skills);
+      setBack(studentId);
     } else {
       toast.error(resp.status);
     }
@@ -77,12 +79,12 @@ const EditStudentCognitiveSkills = () => {
           <div className="row mb-2">
             <div className="col-2">
               <div className="col-4 btn-edit">
-                <button className='btn btn-secondary' onClick={() => navigate(``)}>Volver</button>
+                <button className='btn btn-secondary' onClick={() => navigate(`/student/cognitive/skills/overview/${back}`)}>Volver</button>
               </div>
             </div>
           </div>
           <div className="row mb-2 mt-3">
-            <hr className="border border-secondary border-1 opacity-75" />
+            <hr />
           </div>
           <div className="row mb-4">
             <h6>El alumno:</h6>
@@ -97,11 +99,11 @@ const EditStudentCognitiveSkills = () => {
             </div>
           </div>
           <div className="row mb-2 mt-3">
-            <hr className="border border-secondary border-1 opacity-75" />
+            <hr />
           </div>
           <div className="row">
             <div className="col-8">
-              <button className="btn btn-primary xl" onClick={handleSubmit((data) => handleUpdateStudent(data))}>Editar</button>
+              <button className="btn btn-edit xl" onClick={handleSubmit((data) => handleUpdateStudent(data))}>Editar</button>
             </div>
           </div>
         </div>

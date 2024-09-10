@@ -16,7 +16,6 @@ const EditStudentSocialSkills = () => {
     register,
     handleSubmit,
     formState: { errors },
-    control,
     setValue,
     getValues,
   } = useForm<StudentSocialSkills & { [key: string]: any }>();
@@ -25,11 +24,14 @@ const EditStudentSocialSkills = () => {
 
   const [studentSkills, setStudentSkills] = useState<StudentSocialSkills>();
 
+  const [back, setBack] = useState(Number);
+
   const loadStudent = async (studentId: number) => {
     setLoading(true);
     let resp = await StudentSocialSkillsService.get(studentId);
     if (resp.status === 200) {
       setStudentSkills(resp.students_social_skills);
+      setBack(studentId);
     } else {
       toast.error(resp.status);
     }
@@ -126,12 +128,12 @@ const EditStudentSocialSkills = () => {
           <div className="row mb-2">
             <div className="col-2">
               <div className="col-4 btn-edit">
-                <button className='btn btn-secondary' onClick={() => navigate(``)}>Volver</button>
+                <button className='btn btn-secondary' onClick={() => navigate(`/student/social/skills/overview/${back}`)}>Volver</button>
               </div>
             </div>
           </div>
           <div className="row mb-2 mt-3">
-            <hr className="border border-secondary border-1 opacity-75" />
+            <hr />
           </div>
           <div className="row mb-2">
             <h4>Habilidades Básicas</h4>
@@ -212,11 +214,11 @@ const EditStudentSocialSkills = () => {
             </div>
           </div>
           <div className="row mb-2 mt-3">
-            <hr className="border border-secondary border-1 opacity-75" />
+            <hr />
           </div>
           <div className="row">
             <div className="col-8">
-              <button className="btn btn-primary xl" onClick={handleSubmit((data) => handleUpdateStudent(data))}>Editar</button>
+              <button className="btn btn-edit xl" onClick={handleSubmit((data) => handleUpdateStudent(data))}>Editar</button>
             </div>
           </div>
         </div>
