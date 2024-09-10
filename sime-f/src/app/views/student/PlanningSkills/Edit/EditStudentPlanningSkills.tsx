@@ -13,11 +13,9 @@ const EditStudentPlanningSkills = () => {
 
   const { id } = useParams<{ id: string }>();
   const {
-    register,
     handleSubmit,
     formState: { errors },
     control,
-    getValues,
     setValue
   } = useForm<StudentPlanningSkills>();
 
@@ -26,6 +24,8 @@ const EditStudentPlanningSkills = () => {
 
   const [studentPlanning, setStudentPlanning] = useState<StudentPlanningSkills>();
 
+  const [back, setBack] = useState(Number);
+
   const loadStudentPlanning = async (dataId: number) => {
     setLoading(true);
     let resp = await StudentPlanningSkillsService.get(dataId);
@@ -33,6 +33,7 @@ const EditStudentPlanningSkills = () => {
 
     if (resp.status === 200) {
       setStudentPlanning(resp.students_planning_skills);
+      setBack(dataId);
     } else {
       console.log(resp.status);
     }
@@ -76,6 +77,14 @@ const EditStudentPlanningSkills = () => {
     <div className="edit-skills">
       <h1>Editar Habilidades de Planificación</h1>
       <div className="form">
+        <div className="row mb-2">
+          <div className="col-2">
+            <button className='btn btn-secondary' onClick={() => navigate(`/student/planning/skills/overview/${back}`)}>Volver</button>
+          </div>
+        </div>
+        <div className="row mb-2 mt-3">
+          <hr />
+        </div>
         <div className='container-fluid-mb-3 form-group'>
           <div className="mb-4">
             <div className="row  mb-4 col-6">
@@ -108,11 +117,11 @@ const EditStudentPlanningSkills = () => {
           </div>
 
           <div className="row mb-2 mt-3">
-            <hr className="border border-secondary border-1 opacity-75" />
+            <hr />
           </div>
           <div className="row">
             <div className="col-8">
-              <button className="btn btn-primary xl" onClick={handleSubmit((data) => handleUpdate(data))}>Editar</button>
+              <button className="btn btn-edit xl" onClick={handleSubmit((data) => handleUpdate(data))}>Editar</button>
             </div>
           </div>
         </div>
