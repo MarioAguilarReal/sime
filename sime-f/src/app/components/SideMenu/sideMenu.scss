@@ -1,4 +1,104 @@
-.sideMenu{
-  min-height: 100vh;
+.side {
+  max-width: 120px;
+  height: 100vh;
+  position: relative; // Add this line to position the floating button relative to the side menu
 
+  .menu{
+    .sideMenu{
+      min-height: 100vh;
+      background-color: #53190f ;
+      .logo{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100px;
+        width: 100%;
+        img{
+          margin: 0 auto;
+          width: 70px;
+        }
+      }
+
+      .border{
+        color: white;
+        width: 70%;
+        text-align: center;
+        margin: 10px auto;
+      }
+
+
+      //Navigation Style (Side Menu Naviagte Items)
+      .nav{
+        gap: 10px;
+        .nav-item {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          width: 100%;
+
+          .border{
+            width: 70%;
+          }
+          .nav-link{
+            width: 85px;
+            height: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background-color: #502c26fd;
+            box-shadow: 0px 0px 5px 0px #000000;
+            .item-name{
+              padding: 0;
+              margin: 0;
+            }
+          }
+          .nav-link:hover{
+            background-color: #502c26;
+            box-shadow: none;
+            scale: 0.95;
+          }
+        }
+
+      }
+
+      //Image Profile and name side menu bottom
+      .dropdown{
+        .profile-button{
+          width: 100px;
+          overflow-x: hidden;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          text-align: center;
+          align-items: center;
+          font-size: .9rem;
+        }
+
+        .dropdown-menu{
+          margin: 0 0 0 90px!important;
+          background-color: #53302aea;
+          color: white;
+
+          .nav-link{
+            color: white;
+            &:hover{
+              background-color: #86868675;
+              scale: 1.05;
+              border-radius: 5%;
+            }
+          }
+        }
+
+      }
+
+
+    }
+  }
+
+  .noShow {
+    display: none;
+  }
 }

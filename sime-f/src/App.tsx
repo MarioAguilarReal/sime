@@ -39,17 +39,6 @@ async function checkIfUserIsLoggedIn(dispatchUser: any) {
   }
 }
 
-// function getFloatingButton( handleCollapse: () => void, getSharedContent: () => boolean){
-//   if (!getSharedContent()) return null;
-//   return (
-//     <div className="floatingButton">
-//       <button className="coll-btn" type="button" onClick={handleCollapse}>
-//         <i className="bi bi-chevron-left"></i>
-//       </button>
-//     </div>
-//   );
-// }
-
 function App() {
   const [user, dispatchUser] = useReducer(authReducer, {}, initializeUser);
   let location = useLocation();
@@ -61,16 +50,6 @@ function App() {
   useEffect(() => {
     checkIfUserIsLoggedIn(dispatchUser);
   }, []);
-
-  // const handleCollapse = () => {
-  //   const sideMenu = document.querySelector(".sideMenu");
-  //   if (!sideMenu) return;
-  //   sideMenu.classList.toggle("noShow");
-  //   const icon = document.querySelector(".bi");
-  //   if (!icon) return;
-  //   icon.classList.toggle("bi-chevron-right");
-  //   icon.classList.toggle("bi-chevron-left");
-  // }
 
   return (
     <div className="app">

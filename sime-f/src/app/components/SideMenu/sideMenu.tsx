@@ -39,7 +39,7 @@ const SideMenu = (user: User) => {
         division: false,
       },
       {
-        title: "Nuevo Usuario",
+        title: "Usuario",
         icon: "bi bi-plus",
         link: "/register/user/",
         visible: user.role === Roles.ADMIN,
@@ -53,7 +53,7 @@ const SideMenu = (user: User) => {
         division: false,
       },
       {
-        title: "Nuevo Estudiante",
+        title: "Agregar",
         icon: "bi bi-plus",
         link: "/register/student/",
         visible: user.role === Roles.ADMIN,
@@ -90,14 +90,14 @@ const SideMenu = (user: User) => {
   return (
     <div className="side">
       <div className="menu">
-        <div className="sideMenu d-flex flex-column flex-shrink-0 p-3 bg-dark slide-menu">
+        <div className="sideMenu d-flex flex-column flex-shrink-0 slide-menu">
           <Link
             to={"/"}
-            className="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-light text-decoration-none dashboard-title"
+            className="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-light text-decoration-none logo"
           >
-            <span className="fs-4">Dashboard</span>
+            <img src="assets/images/Site_logo.png" />
           </Link>
-          <hr className="border border-secondary border-1 opacity-75" />
+          <hr className="border border-1 opacity-75" />
           <ul className="nav nav-pills flex-column mb-auto">
             {getMenuItems().map((item, index) =>
               item.visible ? (
@@ -109,20 +109,20 @@ const SideMenu = (user: User) => {
                     }`}
                   >
                     <i className={item.icon} />
-                    &nbsp; {item.title}
+                    <p className="item-name">{item.title}</p>
                   </Link>
                   {item.division ? (
-                    <hr className="border border-secondary border-1 opacity-75" />
+                    <hr className="border border-1 opacity-75" />
                   ) : null}
                 </li>
               ) : null
             )}
           </ul>
-          <hr className="border border-secondary border-1 opacity-75" />
+          <hr className="border border-1 opacity-75" />
           <div className="dropdown">
             <a
               href="#"
-              className="d-flex align-items-center link-light text-decoration-none dropdown-toggle"
+              className=" profile-button d-flex align-items-center link-light text-decoration-none dropdown-toggle"
               id="dropdownUser2"
               data-bs-toggle="dropdown"
               aria-expanded="false"
@@ -136,7 +136,7 @@ const SideMenu = (user: User) => {
                 height="32"
                 className="rounded-circle me-2"
               />
-              <strong>{user.first_name + " " + user.last_name}</strong>
+              <strong>{"Hola! " + user.first_name}</strong>
             </a>
             <ul
               className="dropdown-menu text-small shadow p-3"
@@ -146,13 +146,15 @@ const SideMenu = (user: User) => {
                 {/* Todo - create user profile page and here the link */}
                 <Link to={"/auth/profile/"} className="nav-link">
                   <i className="bi bi-person" />
-                  Perfil
+                  &nbsp;
+                  Ver Perfil
                 </Link>
               </li>
               <hr className="border border-secondary border-1 opacity-75" />
               <li>
                 <button className="nav-link">
                   <i className="bi bi-gear" />
+                  &nbsp;
                   Configuración
                 </button>
               </li>
@@ -160,17 +162,13 @@ const SideMenu = (user: User) => {
               <li>
                 <button className="nav-link" onClick={logout}>
                   <i className="bi bi-box-arrow-left" />
-                  Logout
+                  &nbsp;
+                  Cerrar Sesión
                 </button>
               </li>
             </ul>
           </div>
         </div>
-      </div>
-      <div className="floatingButton">
-        <button className="coll-btn" type="button" onClick={handleCollapse}>
-          <i className="chevron bi bi-chevron-left"></i>
-        </button>
       </div>
     </div>
   );

@@ -49,6 +49,14 @@ const Login = () => {
     }
   }, [email, password]);
 
+  useEffect(() => {
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && canLogin) {
+        handleSubmit((data) => handleLogin(data))();
+      }
+    });
+  }, [canLogin]);
+
   return (
     <div className="login">
       <div className="login-wrapper">
