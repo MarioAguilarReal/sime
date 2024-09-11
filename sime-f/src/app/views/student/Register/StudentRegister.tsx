@@ -238,8 +238,8 @@ const StudentRegister = () => {
             <hr />
           </div>
           <div className="row mb-4">
-            <div className="col-8">
-              <button className="btn xl" onClick={handleSubmit((data) => handleCreate(data))}>Registrar</button>
+            <div className="button-container col-12">
+              <button className="btn" onClick={handleSubmit((data) => handleCreate(data))}>Registrar</button>
             </div>
           </div>
         </div>

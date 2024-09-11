@@ -4,33 +4,6 @@
     height: 100vh;
     width: 100vw;
 
-    .side {
-      max-width: 20vw;
-      height: 100vh;
-      position: relative; // Add this line to position the floating button relative to the side menu
-
-      .noShow {
-        display: none;
-      }
-
-      .floatingButton {
-        position: absolute; // Add this line to position the button absolutely within the side menu
-        top: 50%;
-        transform: translateY(-50%);
-        right: -25px; // Change from left to right
-        z-index: 10;
-
-        .coll-btn {
-          border: none;
-          background-color: #464646;
-          color: white;
-          height: 150px;
-          width: 25px;
-          border-radius: 0 30px 30px 0;
-          transition: 0.5s;
-        }
-      }
-    }
 
     .content {
       flex: 10;
@@ -39,6 +12,7 @@
       padding: 0px;
       position: relative;
       width: 100%;
+      background-color: #8a581748;
     }
   }
 }

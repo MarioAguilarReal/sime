@@ -9,6 +9,8 @@
 		text-align: center;
 	}
 	.form{
+		background-color: white;
+		box-shadow: 5px 10px 10px rgba(0, 0, 0, 0.1);
 		width: 80%;
 		margin: 1rem auto;
 		padding: 20px;
@@ -34,10 +36,21 @@
 					object-fit: scale-down;
 				}
 		}
-		.btn{
-      background-color: #812A1A;
-      border-color: #812A1A;
-      color: #ffffff;
-    }
+		.button-container{
+			text-align: center;
+			.btn{
+				background-color: #812A1A;
+				border-color: #812A1A;
+				color: #ffffff;
+				width: 150px;
+				transition: 0.3s;
+				&:hover{
+					background-color: #B0942D;
+					border-color: #B0942D;
+					scale: 1.1;
+				}
+
+			}
+		}
 	}
 }
