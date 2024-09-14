@@ -19,6 +19,7 @@ return new class extends Migration
             $table->float('actual_grade_average');
             $table->integer('behavior');
             $table->integer('group_id');
+            $table->string('attendance');
             $table->timestamps();
         });
     }

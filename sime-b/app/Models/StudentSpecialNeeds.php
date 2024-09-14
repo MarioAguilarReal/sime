@@ -13,6 +13,8 @@ class StudentSpecialNeeds extends Model
         'usaer_status',
         'learning_problems',
         'diseases',
+        'treatment_place',
+        'special_treatment',
     ];
 
     public function student()

@@ -50,11 +50,26 @@ class ApiStudentsController extends Controller
             'trans_type' => 'required',
             'age' => 'required',
             'civil_status' => 'required',
+            'birth_place' => 'required',
+            'nationality' => 'required',
+            'curp' => 'required',
+            'transport_time' => 'required',
             'tutor_name' => 'required',
             'tutor_phone' => 'required',
             'tutor_age' => 'required',
             'tutor_address' => 'required',
             'tutor_email' => 'required',
+            'tutor_birth_date' => 'required',
+            'tutor_occupation' => 'required',
+            'tutor_schooling' => 'required',
+            'tutor_live_student' => 'required',
+            'tutor_curp' => 'required',
+            'emergency_contact_name_1' => 'required',
+            'emergency_contact_phone_1' => 'required',
+            'emergency_contact_relationship_1' => 'required',
+            'emergency_contact_name_2' => 'required',
+            'emergency_contact_phone_2' => 'required',
+            'emergency_contact_relationship_2' => 'required',
         ]);
 
         $student = Student::create ([
@@ -67,11 +82,26 @@ class ApiStudentsController extends Controller
             'trans_type' => $request->trans_type,
             'age' => $request->age,
             'civil_status' => $request->civil_status,
+            'birth_place' => $request->birth_place,
+            'nationality' => $request->nationality,
+            'curp' => $request->curp,
+            'transport_time' => $request->transport_time,
             'tutor_name' => $request->tutor_name,
             'tutor_phone' => $request->tutor_phone,
             'tutor_age' => $request->tutor_age,
             'tutor_address' => $request->tutor_address,
             'tutor_email' => $request->tutor_email,
+            'tutor_birth_date' => $request->tutor_birth_date,
+            'tutor_occupation' => $request->tutor_occupation,
+            'tutor_schooling' => $request->tutor_schooling,
+            'tutor_live_student' => $request->tutor_live_student,
+            'tutor_curp' => $request->tutor_curp,
+            'emergency_contact_name_1' => $request->emergency_contact_name_1,
+            'emergency_contact_phone_1' => $request->emergency_contact_phone_1,
+            'emergency_contact_relationship_1' => $request->emergency_contact_relationship_1,
+            'emergency_contact_name_2' => $request->emergency_contact_name_2,
+            'emergency_contact_phone_2' => $request->emergency_contact_phone_2,
+            'emergency_contact_relationship_2' => $request->emergency_contact_relationship_2,
         ]);
 
         if ($request->has('photo')) {
@@ -130,11 +160,26 @@ class ApiStudentsController extends Controller
             'trans_type' => 'required',
             'age' => 'required',
             'civil_status' => 'required',
+            'birth_place' => 'required',
+            'nationality' => 'required',
+            'curp' => 'required',
+            'transport_time' => 'required',
             'tutor_name' => 'required',
             'tutor_phone' => 'required',
             'tutor_age' => 'required',
             'tutor_address' => 'required',
             'tutor_email' => 'required',
+            'tutor_birth_date' => 'required',
+            'tutor_occupation' => 'required',
+            'tutor_schooling' => 'required',
+            'tutor_live_student' => 'required',
+            'tutor_curp' => 'required',
+            'emergency_contact_name_1' => 'required',
+            'emergency_contact_phone_1' => 'required',
+            'emergency_contact_relationship_1' => 'required',
+            'emergency_contact_name_2' => 'required',
+            'emergency_contact_phone_2' => 'required',
+            'emergency_contact_relationship_2' => 'required',
         ]);
 
         if($student){
@@ -146,11 +191,26 @@ class ApiStudentsController extends Controller
             $student->trans_type = $request->trans_type;
             $student->age = $request->age;
             $student->civil_status = $request->civil_status;
+            $student->birth_place = $request->birth_place;
+            $student->nationality = $request->nationality;
+            $student->curp = $request->curp;
+            $student->transport_time = $request->transport_time;
             $student->tutor_name = $request->tutor_name;
             $student->tutor_phone = $request->tutor_phone;
             $student->tutor_age = $request->tutor_age;
             $student->tutor_address = $request->tutor_address;
             $student->tutor_email = $request->tutor_email;
+            $student->tutor_birth_date = $request->tutor_birth_date;
+            $student->tutor_occupation = $request->tutor_occupation;
+            $student->tutor_schooling = $request->tutor_schooling;
+            $student->tutor_live_student = $request->tutor_live_student;
+            $student->tutor_curp = $request->tutor_curp;
+            $student->emergency_contact_name_1 = $request->emergency_contact_name_1;
+            $student->emergency_contact_phone_1 = $request->emergency_contact_phone_1;
+            $student->emergency_contact_relationship_1 = $request->emergency_contact_relationship_1;
+            $student->emergency_contact_name_2 = $request->emergency_contact_name_2;
+            $student->emergency_contact_phone_2 = $request->emergency_contact_phone_2;
+            $student->emergency_contact_relationship_2 = $request->emergency_contact_relationship_2;
 
             if($request->has('photo')){
                 //delete old photo

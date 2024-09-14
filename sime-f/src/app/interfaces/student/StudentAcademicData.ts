@@ -6,4 +6,5 @@ export interface StudentAcademicData{
     actual_grade_average: number;
     behavior: string;
     group_id: number;
+    attendance: string;
 }
