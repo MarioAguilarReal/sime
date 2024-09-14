@@ -11,6 +11,7 @@ class Student extends Model
 
 
     protected $fillable = [
+        //Student
         'first_name',
         'last_name',
         'photo',
@@ -20,11 +21,31 @@ class Student extends Model
         'trans_type',
         'age',
         'civil_status',
+        'birth_place',
+        'nationality',
+        'curp',
+        'transport_time',
+        //'grade',    // relation 1-1
+        //'group',    // relation 1-1
+        //Tutor
         'tutor_name',
         'tutor_phone',
         'tutor_age',
         'tutor_address',
         'tutor_email',
+        'tutor_birth_date',
+        'tutor_occupation',
+        'tutor_schooling',
+        'tutor_live_student',   //boolean
+        'tutor_curp',
+        //Emergency Contact
+        'emergency_contact_name_1',
+        'emergency_contact_phone_1',
+        'emergency_contact_relationship_1',
+        'emergency_contact_name_2',
+        'emergency_contact_phone_2',
+        'emergency_contact_relationship_2',
+        //More
         'student_academic_data_id',
         'learning_type_id',
         'cognitive_skills_id',

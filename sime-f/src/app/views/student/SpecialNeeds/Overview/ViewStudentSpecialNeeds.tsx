@@ -83,6 +83,16 @@ const ViewStudentSpecialNeeds = () => {
 							<p>{studentNeeds.diseases}</p>
 						</div>
 					</div>
+					<div className="row">
+						<div className="col-4">
+							<label>¿Necesita algún tratamiento especial? </label>
+							<p>{studentNeeds.special_treatment}</p>
+						</div>
+						<div className="col-4">
+							<label>¿En que lugar ha sido atendido?</label>
+							<p>{studentNeeds.treatment_place}</p>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>

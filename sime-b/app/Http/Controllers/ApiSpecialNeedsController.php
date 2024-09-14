@@ -22,6 +22,8 @@ class ApiSpecialNeedsController extends Controller
       'usaer_status' => 'required',
       'learning_problems' => 'required',
       'diseases' => 'required',
+      'treatment_place' => 'required',
+      'special_treatment' => 'required',
     ]);
     
     $student = Student::find($id);
@@ -35,6 +37,8 @@ class ApiSpecialNeedsController extends Controller
       'usaer_status' => $request->usaer_status,
       'learning_problems' => $request->learning_problems,
       'diseases' => $request->diseases,
+      'treatment_place' => $request->treatment_place,
+      'special_treatment' => $request->special_treatment,
     ]);
     
     if ($student_special_needs){
@@ -83,6 +87,8 @@ class ApiSpecialNeedsController extends Controller
       'usaer_status' => 'required',
       'learning_problems' => 'required',
       'diseases' => 'required',
+      'treatment_place' => 'required',
+      'special_treatment' => 'required',
     ]);
     
     $student_special_needs = StudentSpecialNeeds::find($id_student);
@@ -91,6 +97,8 @@ class ApiSpecialNeedsController extends Controller
       $student_special_needs->usaer_status = $request->usaer_status;
       $student_special_needs->learning_problems = $request->learning_problems;
       $student_special_needs->diseases = $request->diseases;
+      $student_special_needs->treatment_place = $request->treatment_place;
+      $student_special_needs->special_treatment = $request->special_treatment;
       $student_special_needs->save();
 
       $response['status'] = 200;
