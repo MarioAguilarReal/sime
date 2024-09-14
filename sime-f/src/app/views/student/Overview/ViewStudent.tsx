@@ -21,6 +21,7 @@ const ViewStudent = () => {
   const [genderIndex, setGenderIndex] = useState<string>();
   const [civilIndex, setCivilIndex] = useState<string>();
   const [transportIndex, setTransportIndex] = useState<string>();
+  const [liveStudent, setLiveStudent] = useState<string>();
 
   const formatDate = (date: Date) => {
     let d = new Date(date);
@@ -31,15 +32,17 @@ const ViewStudent = () => {
   const loadStudent = async (studentId: number) => {
     setLoading(true);
     let resp = await StudentService.getStudent(studentId);
-    let gender = generalData.gender.find(obj => obj.value === Number(resp.student.gender))
-    let civil = generalData.civilStatus.find(obj => obj.value === Number(resp.student.civil_status))
-    let trans = studentsData.transType.find(obj => obj.value === Number(resp.student.trans_type))
+    let gender = generalData.gender.find(obj => obj.value === Number(resp.student.gender));
+    let civil = generalData.civilStatus.find(obj => obj.value === Number(resp.student.civil_status));
+    let trans = studentsData.transType.find(obj => obj.value === Number(resp.student.trans_type));
+    let live = studentsData.booleanType.find(obj => obj.value === Number(resp.student.tutor_live_student));
 
     if (resp.status === 200) {
       setStudent(resp.student);
       setGenderIndex(gender?.label);
       setCivilIndex(civil?.label);
       setTransportIndex(trans?.label);
+      setLiveStudent(live?.label);
     } else {
       console.log(resp.status);
     }
@@ -119,6 +122,18 @@ const ViewStudent = () => {
               <p>
                 <b>Tipo de Transporte:</b> {transportIndex}
               </p>
+              <p>
+                <b>Lugar de nacimiento:</b> {student.birth_place}
+              </p>
+              <p>
+                <b>Nacionalidad:</b> {student.nationality}
+              </p>
+              <p>
+                <b>CURP:</b> {student.curp}
+              </p>
+              <p>
+                <b>Tiempo estimado de la escuela a la casa:</b> {student.transport_time}
+              </p>
             </div>
             <div className="col-6 mb-4 tutor-data">
               <div className="row">
@@ -140,6 +155,44 @@ const ViewStudent = () => {
               <p>
                 <b>Dirección:</b> {student.tutor_address}
               </p>
+              <p>
+                <b>Fecha de nacimiento:</b> {new Date().getFullYear() - new Date(student.tutor_birth_date).getFullYear()}
+              </p>
+              <p>
+                <b>Ocupación:</b> {student.tutor_occupation}
+              </p>
+              <p>
+                <b>Grado cursado:</b> {student.tutor_schooling}
+              </p>
+              <p>
+                <b>¿Vive con el alumno?:</b> {liveStudent}
+              </p>
+              <p>
+                <b>CURP:</b> {student.tutor_curp}
+              </p>
+              <div className="row">
+                <h3>Contactos de Emergencia</h3>
+                <hr className="border border-secondary border- opacity-75" />
+              </div>
+              <p>
+                <b>Nombre 1:</b> {student.emergency_contact_name_1}
+              </p>
+              <p>
+                <b>Teléfono 1:</b> {student.emergency_contact_phone_1}
+              </p>
+              <p>
+                <b>Parentesco con el alumno:</b> {student.emergency_contact_relationship_1}
+              </p>
+              <p>
+                <b>Nombre 2:</b> {student.emergency_contact_name_2}
+              </p>
+              <p>
+                <b>Teléfono 2:</b> {student.emergency_contact_phone_2}
+              </p>
+              <p>
+                <b>Parentesco con el alumno:</b> {student.emergency_contact_relationship_2}
+              </p>
+
             </div>
           </div>
           <div className="row mb-2 mt-3">

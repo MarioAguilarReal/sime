@@ -98,6 +98,11 @@ const ViewStudentAcademicData = () => {
               <p><b>Comportamiento:</b> {behavior}</p>
             </div>
           </div>
+          <div className="row">
+            <div className="col-4">
+              <p><b>Asistencia:</b> {studentData.attendance}</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>

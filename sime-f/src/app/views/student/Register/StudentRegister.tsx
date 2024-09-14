@@ -42,11 +42,28 @@ const StudentRegister = () => {
     formData.append('address', data.address);
     formData.append('trans_type', data.trans_type.toString());
     formData.append('civil_status', data.civil_status.toString());
+    formData.append('birth_place', data.birth_place);
+    formData.append('nationality', data.nationality);
+    formData.append('curp', data.curp);
+    formData.append('transport_time', data.transport_time);
+
     formData.append('tutor_name', data.tutor_name);
     formData.append('tutor_phone', data.tutor_phone);
     formData.append('tutor_age', data.tutor_age.toString());
     formData.append('tutor_address', data.tutor_address);
     formData.append('tutor_email', data.tutor_email);
+    formData.append('tutor_birth_date', data.tutor_birth_date.toString());
+    formData.append('tutor_occupation', data.tutor_occupation);
+    formData.append('tutor_schooling', data.tutor_schooling);
+    formData.append('tutor_live_student', data.tutor_live_student.toString());
+    formData.append('tutor_curp', data.tutor_curp);
+
+    formData.append('emergency_contact_name_1', data.emergency_contact_name_1);
+    formData.append('emergency_contact_phone_1', data.emergency_contact_phone_1);
+    formData.append('emergency_contact_relationship_1', data.emergency_contact_relationship_1);
+    formData.append('emergency_contact_name_2', data.emergency_contact_name_2);
+    formData.append('emergency_contact_phone_2', data.emergency_contact_phone_2);
+    formData.append('emergency_contact_relationship_2', data.emergency_contact_relationship_2);
 
     if (photo) {
       formData.append('photo', photo);
@@ -72,6 +89,7 @@ const StudentRegister = () => {
       <h1>Registro de Estudiantes</h1>
       <div className='form'>
         <div className="container-fluid-mb-3 form-group">
+          {/*  -----------------------      Student Information   ------------------------ */}
           <div className="row">
             <h2>Datos Personales del Estudiante</h2>
             <hr />
@@ -129,11 +147,60 @@ const StudentRegister = () => {
               />
             </div>
           </div>
+
+
+          {/* ----------------------------   New   ------------------------- */}
           <div className="row mb-4">
-            <div className="col-4">
+            <div className="col-6">
+              <TextField
+                label='Nacionalidad'
+                field='nationality'
+                type='text'
+                register={register}
+                rules={{ required: 'This field is required' }}
+                errors={errors}
+              />
+            </div>
+            <div className="col-6">
+              <TextField
+                label='CURP'
+                field='curp'
+                type='text'
+                register={register}
+                rules={{ required: 'This field is required' }}
+                errors={errors}
+              />
+            </div>
+          </div>
+          <div className="row mb-4">
+            <div className="col-6">
+              <TextField
+                label='Lugar de nacimiento'
+                field='birth_place'
+                type='text'
+                register={register}
+                rules={{ required: 'This field is required' }}
+                errors={errors}
+              />
+            </div>
+            <div className="col-6">
               <TextField
                 label='Dirección'
                 field='address'
+                type='text'
+                register={register}
+                rules={{ required: 'This field is required' }}
+                errors={errors}
+              />
+            </div>
+          </div>
+
+
+          <div className="row mb-4">
+            <div className="col-4">
+              <TextField
+                label='Tiempo estimado de la escuela a la casa'
+                field='transport_time'
                 type='text'
                 register={register}
                 rules={{ required: 'This field is required' }}
@@ -159,6 +226,26 @@ const StudentRegister = () => {
               />
             </div>
           </div>
+
+          <div className="row mb-4">
+            <div className="col-6">
+              <label htmlFor="">Foto</label>
+              <input
+                type="file"
+                className='form-control'
+                accept='image/*'
+                onChange={handlePhotoChange}
+              />
+            </div>
+            <div className="col-6">
+              <p>Vista Previa de la Foto</p>
+              <img src={photo ? URL.createObjectURL(photo) : 'https://via.placeholder.com/150'}
+                alt="student"
+                className='student-photo' />
+            </div>
+          </div>
+
+          {/* ----------------------------   Tutor Information   -------------------------- */}
           <div className="row">
             <h2>Información del Tutor</h2>
             <hr />
@@ -217,23 +304,134 @@ const StudentRegister = () => {
               />
             </div>
           </div>
+
+
+          {/* ----------------------------  New Tutor Information   -------------------------- */}
+          <div className="row mb-4">
+            <div className="col-4">
+              <TextField
+                label='Fecha de Nacimiento'
+                field='tutor_birth_date'
+                type='date'
+                register={register}
+                rules={{ required: 'This field is required' }}
+                errors={errors}
+              />
+            </div>
+            <div className="col-4">
+              <TextField
+                label="CURP"
+                field="tutor_curp"
+                register={register}
+                type='text'
+                rules={{ required: 'This field is required' }}
+                errors={errors}
+              />
+            </div>
+            <div className="col-4">
+              <SelectField
+                label='¿Vive con el alumno?'
+                field='tutor_live_student'
+                errors={errors}
+                control={control}
+                options={studentsData.booleanType}
+              />
+            </div>
+          </div>
           <div className="row mb-4">
             <div className="col-6">
-              <label htmlFor="">Foto</label>
-              <input
-                type="file"
-                className='form-control'
-                accept='image/*'
-                onChange={handlePhotoChange}
+              <TextField
+                label="Ocupación"
+                field="tutor_occupation"
+                register={register}
+                type='text'
+                rules={{ required: 'This field is required' }}
+                errors={errors}
               />
             </div>
             <div className="col-6">
-              <p>Vista Previa de la Foto</p>
-              <img src={photo ? URL.createObjectURL(photo) : 'https://via.placeholder.com/150'}
-                alt="student"
-                className='student-photo' />
+              <TextField
+                label="Grado cursado"
+                field="tutor_schooling"
+                register={register}
+                type='text'
+                rules={{ required: 'This field is required' }}
+                errors={errors}
+              />
             </div>
           </div>
+
+
+          {/* ----------------------------   Emergency Information   -------------------------- */}
+          <div className="row">
+            <h2>Información de Contactos de Emergencia</h2>
+            <hr />
+          </div>
+          <div className="row mb-4">
+            <div className="col-4">
+              <TextField
+                label="Nombre"
+                field="emergency_contact_name_1"
+                register={register}
+                type='text'
+                rules={{ required: 'This field is required' }}
+                errors={errors}
+              />
+            </div>
+            <div className="col-4">
+              <TextField
+                label="Telefono"
+                field="emergency_contact_phone_1"
+                register={register}
+                type='text'
+                rules={{ required: 'This field is required' }}
+                errors={errors}
+              />
+            </div>
+            <div className="col-4">
+              <TextField
+                label="Parentesco"
+                field="emergency_contact_relationship_1"
+                register={register}
+                type='text'
+                rules={{ required: 'This field is required' }}
+                errors={errors}
+              />
+            </div>
+          </div>
+          <div className="row mb-4">
+            <div className="col-4">
+              <TextField
+                label="Nombre"
+                field="emergency_contact_name_2"
+                register={register}
+                type='text'
+                rules={{ required: 'This field is required' }}
+                errors={errors}
+              />
+            </div>
+            <div className="col-4">
+              <TextField
+                label="Telefono"
+                field="emergency_contact_phone_2"
+                register={register}
+                type='text'
+                rules={{ required: 'This field is required' }}
+                errors={errors}
+              />
+            </div>
+            <div className="col-4">
+              <TextField
+                label="Parentesco"
+                field="emergency_contact_relationship_2"
+                register={register}
+                type='text'
+                rules={{ required: 'This field is required' }}
+                errors={errors}
+              />
+            </div>
+          </div>
+
           <div className="row mb-2 mt-3">
             <hr />
           </div>

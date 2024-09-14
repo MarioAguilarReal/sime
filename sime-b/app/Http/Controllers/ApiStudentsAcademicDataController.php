@@ -26,6 +26,7 @@ class ApiStudentsAcademicDataController extends Controller
             'actual_grade_average' => 'required',
             'behavior' => 'required',
             'group_id' => 'required',
+            'attendance' => 'required',
         ]);
 
         $student = Student::find($id);
@@ -42,6 +43,7 @@ class ApiStudentsAcademicDataController extends Controller
             'actual_grade_average' => $request->actual_grade_average,
             'behavior' => $request->behavior,
             'group_id' => $request->group_id,
+            'attendance' => $request->attendance,
         ]);
         
         if ($student_academic_data){
@@ -93,6 +95,7 @@ class ApiStudentsAcademicDataController extends Controller
             'actual_grade_average' => 'required',
             'behavior' => 'required',
             'group_id' => 'required',
+            'attendance' => 'required',
         ]);
 
         $student_academic_data = StudentAcademicData::find($id_student);
@@ -103,6 +106,7 @@ class ApiStudentsAcademicDataController extends Controller
             $student_academic_data->actual_grade_average = $request->actual_grade_average;
             $student_academic_data->behavior = $request->behavior;
             $student_academic_data->group_id = $request->group_id;
+            $student_academic_data->attendance = $request->attendance;
 
             $student_academic_data->save();
 

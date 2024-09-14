@@ -18,6 +18,7 @@ class StudentAcademicData extends Model
         'actual_grade_average',
         'behavior',
         'group_id',
+        'attendance',
     ];
 
     public function student()

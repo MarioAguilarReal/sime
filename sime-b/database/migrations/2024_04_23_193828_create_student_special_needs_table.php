@@ -16,6 +16,8 @@ return new class extends Migration
             $table->integer('usaer_status');
             $table->string('learning_problems');
             $table->string('diseases');
+            $table->string('treatment_place');
+            $table->string('special_treatment');
             $table->timestamps();
         });
     }

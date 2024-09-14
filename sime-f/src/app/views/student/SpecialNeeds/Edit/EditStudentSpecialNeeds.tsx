@@ -49,6 +49,8 @@ const EditStudentSpecialNeeds = () => {
 		formData.append('usaer_status', data.usaer_status.toString());
 		formData.append('learning_problems', data.learning_problems);
 		formData.append('diseases', data.diseases);
+		formData.append('treatment_place', data.treatment_place);
+		formData.append('special_treatment', data.special_treatment);
 
 		const resp = await StudentSpecialNeedsService.update(formData, studentNeeds?.id || 0);
 		console.log(resp);
@@ -72,6 +74,8 @@ const EditStudentSpecialNeeds = () => {
 			setValue('usaer_status', studentNeeds.usaer_status);
 			setValue('learning_problems', studentNeeds.learning_problems);
 			setValue('diseases', studentNeeds.diseases);
+			setValue('treatment_place', studentNeeds.treatment_place);
+			setValue('special_treatment', studentNeeds.special_treatment);
 		}
 	}, [studentNeeds]);
 
@@ -88,8 +92,8 @@ const EditStudentSpecialNeeds = () => {
 					<hr />
 				</div>
 				<div className='container-fluid-mb-3 form-group'>
-					<div className="mb-4">
-						<div className="row mb-4 col-4">
+					<div className="row mb-4">
+						<div className="row mb-4 col-6">
 							<SelectField
 								label={"¿El alumno asiste a USAER?"}
 								field={'usaer_status'}
@@ -98,7 +102,7 @@ const EditStudentSpecialNeeds = () => {
 								options={studentsData.booleanType}
 							/>
 						</div>
-						<div className="row mb-4 col-4">
+						<div className="row mb-4 col-6">
 							<TextField
 								label={"¿Presenta problemas de aprendizaje? (de que tipo)"}
 								field={'learning_problems'}
@@ -108,7 +112,31 @@ const EditStudentSpecialNeeds = () => {
 								errors={errors}
 							/>
 						</div>
-						<div className="row mb-4 col-4">
+					</div>
+					<div className="row mb-4">
+						<div className="row mb-4 col-6">
+							<TextField
+								label={"¿Necesita algún tratamiento especial? (En caso de así ser, ¿Cuáles? De no necesitarlo, escriba 'Ninguno')"}
+								field={'special_treatment'}
+								register={register}
+								type='text'
+								rules={{ required: 'This field is required' }}
+								errors={errors}
+							/>
+						</div>
+						<div className="row mb-4 col-6">
+							<TextField
+								label={"¿En que lugar ha sido atendido? (Escriba 'Ninguno' en caso de no haber sido atendido)"}
+								field={'treatment_place'}
+								register={register}
+								type='text'
+								rules={{ required: 'This field is required' }}
+								errors={errors}
+							/>
+						</div>
+					</div>
+					<div className="row mb-4">
+						<div className="row mb-4 col-6">
 							<TextField
 								label={"¿Presenta alguna enfermedad? (neuronal, motriz, etc.)"}
 								field={'diseases'}

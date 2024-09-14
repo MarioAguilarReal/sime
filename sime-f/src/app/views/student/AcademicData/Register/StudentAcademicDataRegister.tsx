@@ -51,6 +51,7 @@ const StudentAcademicDataRegister = () => {
     formData.append('last_grade_average', data.last_grade_average.toString());
     formData.append('actual_grade_average', data.actual_grade_average.toString());
     formData.append('behavior', data.behavior.toString());
+    formData.append('attendance', data.attendance);
 
     const resp = await StudentAcademicDataService.register(formData, studentData?.id || 0);
     console.log(studentData);
@@ -142,6 +143,18 @@ const StudentAcademicDataRegister = () => {
                 errors={errors}
                 control={control}
                 options={studentsData.conduct}
+              />
+            </div>
+          </div>
+          <div className="row mb-4">
+            <div className="col-4">
+              <TextField
+                label="Asistencia"
+                field='attendance'
+                register={register}
+                type='text'
+                rules={{ required: 'This field is required' }}
+                errors={errors}
               />
             </div>
           </div>
