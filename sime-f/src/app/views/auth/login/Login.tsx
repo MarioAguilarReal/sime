@@ -100,12 +100,12 @@ const Login = () => {
             </div>
           </form>
           <div className="forgot-password">
-            <a href="/forgot-password">Forgot Password?</a>
+            <a href="/forgot-password">Recuperar Contraseña</a>
           </div>
           <button
             className="btn-xl"
             onClick={handleSubmit((data) => handleLogin(data))}
-            disabled={(password?.length < 5 || !canLogin)}
+            disabled={(password?.length < 8 || !canLogin)}
           >
             Iniciar Sesión <i className="bi bi-box-arrow-in-right"></i>
           </button>
