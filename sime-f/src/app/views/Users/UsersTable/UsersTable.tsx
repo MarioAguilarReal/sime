@@ -42,12 +42,13 @@ const UsersTable = () => {
       <div className="container">
         <div className="divider">
           <h1 className="title">USUARIOS</h1>
+          <hr />
         </div>
         <div className="row">
           <div className="col-12">
             <table className="table table-striped">
               <thead>
-                <tr className="table-secondary">
+                <tr className="table-primary">
                   <th scope="col">ID</th>
                   <th scope="col">Nombre</th>
                   <th scope="col">Apellidos</th>
