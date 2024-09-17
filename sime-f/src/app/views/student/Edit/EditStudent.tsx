@@ -95,7 +95,7 @@ const EditStudent = () => {
     if (!id) return;
     let studentId = parseInt(id);
     loadStudent(studentId);
-  });
+  }, [id]);
 
   useEffect(() => {
     if (student) {
