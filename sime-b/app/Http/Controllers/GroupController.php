@@ -36,7 +36,7 @@ class GroupController extends Controller
             'data' => []
         ];
 
-        $group = Group::find($id);
+        $group = Group::with('subjects')->find($id);
 
         if($group) {
             $response['data'] = $group;
@@ -58,16 +58,19 @@ class GroupController extends Controller
         ];
 
         $request->validate([
-            'name' => 'required',
+            'grade' => 'required',
             'description' => 'required',
-            'user_id' => 'required'
+            'user_id' => 'required',
+            //'subjects_id' => 'required|array'
         ]);
 
         $group = new Group();
-        $group->name = $request->name;
-        $group->description = $request->description;
+        $group->grade = $request->grade;
+        $group->group = $request->group;
         $group->user_id = $request->user_id;
         $group->save();
+
+        $group->subjects()->attach($request->subjects_id);
 
         $response['data'] = $group;
         $response['message'] = 'Data saved';
@@ -84,16 +87,19 @@ class GroupController extends Controller
         ];
 
         $request->validate([
-            'name' => 'required',
-            'description' => 'required',
-            'user_id' => 'required'
+            'grade' => 'required',
+            'group' => 'required',
+            'user_id' => 'required',
+            //'subjects_id' => 'required|array',
         ]);
 
         $group = Group::find($id);
-        $group->name = $request->name;
-        $group->description = $request->description;
+        $group->grade = $request->grade;
+        $group->group = $request->group;
         $group->user_id = $request->user_id;
         $group->save();
+
+        $group->subjects()->sync($request->subjects_id);
 
         $response['data'] = $group;
         $response['message'] = 'Data updated';

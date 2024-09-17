@@ -8,6 +8,8 @@ import { GroupsService } from "../../services/school/GroupsService";
 import { toast } from "react-toastify";
 import { UsersService } from "../../services/users/UsersService";
 import ModalCreate from "../../components/shared/modals/modalsSchool/ModalCreate";
+import { studentsData } from "../../common/studentEnums";
+import { Classe } from "../../interfaces/school/Classe";
 
 const Groups = () => {
   const [groups, setGroups] = useState([] as Group[]);
@@ -16,14 +18,17 @@ const Groups = () => {
   const [funct, setFunct] = useState("create");
   const [propGroup, setPropGroup] = useState({} as Group);
 
+  const [grade, setGrade] = useState<String>();
+  const [groupName, setGroup] = useState<String>();
+
   const navigate = useNavigate();
   const { setLoading } = useLoader();
 
-  const hanldeCreate = async (data: Group) => {
+  const handleCreate = async (data: Group) => {
     setLoading(true);
     const resp = await GroupsService.register(data);
 
-    if(resp.status === 200){
+    if (resp.status === 200) {
       toast.success("Grupo creado correctamente");
       const newGroups = [...groups];
       let newId = resp.data.id;
@@ -31,7 +36,7 @@ const Groups = () => {
       newGroups.push(data);
       setGroups(newGroups);
       setShowModal(!showModal);
-    }else{
+    } else {
       toast.error("Error al crear el grupo");
     }
     setLoading(false);
@@ -41,16 +46,16 @@ const Groups = () => {
     setLoading(true);
     const resp = await GroupsService.update(data, data.id as number);
     console.log(resp);
-    if(resp.status === 200 ){
+    if (resp.status === 200) {
       toast.success("Grupo actualizado correctamente");
       const newGroups = groups.map(group => {
-        if(group.id === data.id) {
+        if (group.id === data.id) {
           return data;
         }
         return group;
       });
       setGroups(newGroups);
-    }else{
+    } else {
       toast.error("Error al actualizar el grupo");
     }
     setShowModal(!showModal);
@@ -60,11 +65,11 @@ const Groups = () => {
   const handleDelete = async (id: number) => {
     setLoading(true);
     const resp = await GroupsService.delete(id);
-    if (resp.status === 200){
+    if (resp.status === 200) {
       toast.success("Grupo eliminado correctamente");
       const newGroups = groups.filter(group => group.id !== id);
       setGroups(newGroups);
-    }else{
+    } else {
       toast.error("Error al eliminar el grupo");
     }
     setLoading(false);
@@ -73,23 +78,27 @@ const Groups = () => {
   const loadData = async () => {
     setLoading(true);
     let resp = await UsersService.getUsers();
-    if(resp.status === 200){
+    let grade = studentsData.grade.find(obj => obj.value === Number(resp.users.grade));
+    let group = studentsData.group.find(obj => obj.value === Number(resp.users.group));
+    if (resp.status === 200) {
       setUsers(resp.users);
-    }else{
+    } else {
       toast.error("Error al cargar los usuarios");
     }
     let resp2 = await GroupsService.getGroups();
-    if(resp2.status === 200){
+    if (resp2.status === 200) {
       setGroups(resp2.data);
-    }else{
+      setGrade(grade?.label);
+      setGroup(group?.label);
+    } else {
       toast.error("Error al cargar los grupos");
     }
     setLoading(false);
   }
 
-  const showModalType = (funct:string, group?: Group) => {
+  const showModalType = (funct: string, group?: Group) => {
     setFunct(funct);
-    if(funct === "edit"){
+    if (funct === "edit") {
       setPropGroup(group as Group);
     }
     setShowModal(!showModal);
@@ -117,8 +126,8 @@ const Groups = () => {
               <thead>
                 <tr className="table-secondary">
                   <th scope="col">ID</th>
-                  <th scope="col">Nombre</th>
-                  <th scope="col">Descripción</th>
+                  <th scope="col">Grado</th>
+                  <th scope="col">Grupo</th>
                   <th scope="col">Acciones</th>
                 </tr>
               </thead>
@@ -127,8 +136,8 @@ const Groups = () => {
                   return (
                     <tr key={index}>
                       <td>{group.id}</td>
-                      <td>{group.name}</td>
-                      <td>{group.description}</td>
+                      <td>{grade}</td>
+                      <td>{groupName}</td>
                       <td>
                         <button
                           className="btn btn-outline-primary me-2"
@@ -164,7 +173,17 @@ const Groups = () => {
         funct={funct}
         users={users}
         propClass={propGroup}
-        onFunct={(data) => funct === "create" ? hanldeCreate(data) : handleUpdate(data)}
+        onFunct={(data: Group | Classe) => {
+          if (funct === "create") {
+            if (data.hasOwnProperty('grade') && data.hasOwnProperty('group')) {
+              handleCreate(data as Group);
+            }
+          } else {
+            if (data.hasOwnProperty('grade') && data.hasOwnProperty('group')) {
+              handleUpdate(data as Group);
+            }
+          }
+        }}
       />
     </div>
   );

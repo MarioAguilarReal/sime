@@ -16,7 +16,7 @@ interface ModalProps {
   users: User[];
   propClass: Classe | Group;
   onClose: () => void;
-  onFunct: (data: Classe) => void;
+  onFunct: (data: Classe | Group) => void;
 }
 
 const ModalCreate = (props: ModalProps) => {
@@ -35,7 +35,7 @@ const ModalCreate = (props: ModalProps) => {
     reset,
   } = useForm<Classe & Group>();
 
-  const handleOnSubmit = (data: Classe & Group) => {
+  const handleOnSubmit = (data: Classe | Group) => {
     reset();
     if (funct === "create") {
       onFunct(data);
@@ -47,11 +47,16 @@ const ModalCreate = (props: ModalProps) => {
   useEffect(() => {
     setUsers(users);
     if (funct === "edit") {
-      setValue("name", propClass.name);
-      setValue("description", propClass.description);
       setValue("user_id", propClass.user_id);
+      if (type === "group") {
+        const group = propClass as Group;
+        setValue("grade", group.grade);
+        setValue("group", group.group);
+      }
       if (type === "classe") {
         const classe = propClass as Classe; // Add type assertion here
+        setValue("name", classe.name);
+        setValue("description", classe.description);
         setValue("max_students", classe.max_students);
         setValue("status", classe.status);
       }
@@ -91,7 +96,7 @@ const ModalCreate = (props: ModalProps) => {
     }
   };
 
-  useEffect(() => {}, [props]);
+  useEffect(() => { }, [props]);
 
   return (
     <div>
