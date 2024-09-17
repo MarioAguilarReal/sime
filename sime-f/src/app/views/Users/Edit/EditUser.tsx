@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { UsersService } from "../../../services/users/UsersService";
 import { ToastContainer, toast } from "react-toastify";
-import { CheckboxList } from "../../../components/shared/FormInputs/CheckBox";
 import TextField from "../../../components/shared/FormInputs/TextField";
 import SelectField from "../../../components/shared/FormInputs/SelectFIeld";
 import { useForm } from "react-hook-form";
@@ -17,11 +16,10 @@ const EditUser = () => {
     handleSubmit,
     formState: { errors },
     control,
-    getValues,
-    watch,
     setValue,
   } = useForm<User>();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const { setLoading } = useLoader();
 
@@ -34,6 +32,11 @@ const EditUser = () => {
   }
 
 
+  const handleCancelEdit = () => {
+
+    location.pathname.includes("auth") ? navigate("/auth/profile") : navigate("/user/overview/" + user?.id);
+
+  };
 
 
   const loadData = async (userId: number) => {
@@ -97,8 +100,7 @@ const EditUser = () => {
       setValue("email", user.email);
       setValue("role", user.role);
     }
-  }
-  , [user]);
+  }, [user]);
   // if (!user) return null;
 
   return (
@@ -219,6 +221,8 @@ const EditUser = () => {
               />
             </div>
           </div>
+          { !location.pathname.includes("auth") && (
+            <div>
           <div className="row">
             <h2>Roles:</h2>
             <hr className="border border-secondary border-1 opacity-75" />
@@ -235,6 +239,8 @@ const EditUser = () => {
               />
             </div>
           </div>
+            </div>
+          )}
           <div className="row mb-2 mt-3">
             <hr className="border border-secondary border-1 opacity-75" />
           </div>
@@ -250,7 +256,7 @@ const EditUser = () => {
             <div className="col-2">
               <button
                 className="btn btn-danger xl"
-                onClick={() => navigate("/user/overview/" + user?.id)}
+                onClick={handleCancelEdit}
               >
                 Cancelar
               </button>

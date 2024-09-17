@@ -2,12 +2,8 @@
   .d-block{
     font-size: 0.9rem;
     font-weight: 500;
-    color: #000;
-    background-color: white;
-    padding: 0 2px;
-    z-index: 1;
-    margin-bottom: -5px;
-    position: relative;
+    color: #ffffff;
+    // z-index: 1;
 
     &.error{
       color: red;

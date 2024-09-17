@@ -29,7 +29,7 @@ class ChangePasswordMail extends Mailable
         //
         $this->user = $user;
         $this->token = $token;
-        $this->url = env('FRONTEND_URL') . '/auth/change-password/'. $user->id . '?token=' . $token . '&email=' . $user->email;
+        $this->url = env('FRONTEND_URL') . '/auth/forget-password'. $user->id . '?token=' . $token . '&email=' . $user->email;
     }
 
     /**

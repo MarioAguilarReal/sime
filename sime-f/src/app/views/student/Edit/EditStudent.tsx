@@ -8,7 +8,6 @@ import TextField from '../../../components/shared/FormInputs/TextField';
 import SelectField from '../../../components/shared/FormInputs/SelectFIeld';
 import { generalData } from '../../../common/generalEnums';
 import { studentsData } from '../../../common/studentEnums';
-import { PATTERNS } from '../../../components/shared/FormInputs/patterns';
 import { useEffect, useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 
@@ -96,7 +95,7 @@ const EditStudent = () => {
     if (!id) return;
     let studentId = parseInt(id);
     loadStudent(studentId);
-  }, [id]);
+  });
 
   useEffect(() => {
     if (student) {
@@ -131,7 +130,7 @@ const EditStudent = () => {
       setValue('emergency_contact_phone_2', student.emergency_contact_phone_2);
       setValue('emergency_contact_relationship_2', student.emergency_contact_relationship_2);
     }
-  }, [student]);
+  });
 
   // const handleEdit = async (student: Student) => {
   //   console.log(student.id);

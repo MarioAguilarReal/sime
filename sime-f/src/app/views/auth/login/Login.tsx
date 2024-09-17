@@ -3,9 +3,10 @@ import { AuthContext, useLoader } from "../../../Global/Context/globalContext";
 import { AuthService } from "../../../services/auth/AuthService";
 import { useNavigate } from "react-router-dom";
 import "./Login.scss";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import { ToastContainer, toast } from "react-toastify";
 import { PATTERNS } from "../../../components/shared/FormInputs/patterns";
+import { Link } from "react-router-dom";
 
 interface login {
   email: string;
@@ -41,6 +42,22 @@ const Login = () => {
     setLoading(false);
   };
 
+  const handleForgetPassword = async  () => {
+    setLoading(true);
+    if(email){
+      let resp = await AuthService.sendEmailToForgetPassword(email);
+      console.log("resp: ", resp);
+      if (resp.status === 200) {
+        toast.success(resp.message + ": " + email);
+      } else {
+        toast.error(resp.message);
+      }
+    } else {
+      toast.error("Por favor ingrese su correo electrónico");
+    }
+    setLoading(false);
+  }
+
   useEffect(() => {
     if (email && password) {
       setCanLogin(true);
@@ -55,6 +72,10 @@ const Login = () => {
         handleSubmit((data) => handleLogin(data))();
       }
     });
+
+    return () => {
+      document.removeEventListener("keydown", () => {});
+    };
   }, [canLogin]);
 
   return (
@@ -62,28 +83,29 @@ const Login = () => {
       <div className="login-wrapper">
         <div className="login-image"></div>
         <div className="login-form">
-          <h1 style={{color: 'white'}}>Iniciar Sesión</h1>
+          <h1 style={{ color: "white" }}>Iniciar Sesión</h1>
           <form>
             <div className="form-group">
-                <input
-                  type="email"
-                  className="form-control"
-                  id="email"
-                  aria-describedby="emailHelp"
-                  placeholder="Email Address"
-                  {...register("email", {
-                    required: true,
-                    pattern: {
-                      value: PATTERNS.emailRegEx,
-                      message: "Invalid email address",
-                    },
-                  })}
-                />
-                {errors.email && (
-                  <span className="error">*{errors.email.message}</span>
-                )}
+              <input
+                type="email"
+                className="form-control"
+                id="email"
+                aria-describedby="emailHelp"
+                placeholder="Email Address"
+                {...register("email", {
+                  required: true,
+                  pattern: {
+                    value: PATTERNS.emailRegEx,
+                    message: "Invalid email address",
+                  },
+                })}
+              />
+              {errors.email && (
+                <span className="error">*{errors.email.message}</span>
+              )}
             </div>
             <div className="form-group">
+              <div className="pass">
                 <input
                   type={showPassword ? "text" : "password"}
                   className="form-control"
@@ -97,15 +119,17 @@ const Login = () => {
                   } see-pass`}
                   onClick={() => setShowPassword(!showPassword)}
                 ></i>
+              </div>
             </div>
           </form>
           <div className="forgot-password">
-            <a href="/forgot-password">Recuperar Contraseña</a>
+            {/* <a href="/forgot-password">Recuperar Contraseña</a> */}
+            <p role="button" onClick={handleForgetPassword}>Recuperar Contraseña</p>
           </div>
           <button
             className="btn-xl"
             onClick={handleSubmit((data) => handleLogin(data))}
-            disabled={(password?.length < 8 || !canLogin)}
+            disabled={password?.length < 8 || !canLogin}
           >
             Iniciar Sesión <i className="bi bi-box-arrow-in-right"></i>
           </button>

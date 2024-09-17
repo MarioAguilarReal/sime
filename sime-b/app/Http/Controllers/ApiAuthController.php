@@ -28,7 +28,7 @@ class ApiAuthController extends Controller
         if (User::where('email', $request->email)->doesntExist()) {
             $response['status'] = 201;
             $response['message'] = 'User does not exist';
-        }else{
+        } else {
             if (auth()->attempt($credentials)) {
                 $token = auth()->user()->createToken('authToken')->plainTextToken;
                 $response['status'] = 200;
@@ -97,7 +97,7 @@ class ApiAuthController extends Controller
 
         $user = User::create([
             'first_name' => $request->first_name,
-            'last_name' =>  $request->last_name,
+            'last_name' => $request->last_name,
             'birth_date' => $request->birth_date,
             'age' => $request->age,
             'gender' => $request->gender,
@@ -113,7 +113,7 @@ class ApiAuthController extends Controller
             // save photo to storage
             // $imageName = time().$request->first_name.'_profile.'.$request->photo->extension();
             $baseURL = url('/');
-            $imageName = $baseURL.'/images/users/profile/'.time().$request->first_name.'_profile.'.$request->photo->extension();
+            $imageName = $baseURL . '/images/users/profile/' . time() . $request->first_name . '_profile.' . $request->photo->extension();
             $request->photo->move(public_path('images/users/profile/'), $imageName);
             $user->photo = $imageName;
         }
@@ -127,7 +127,7 @@ class ApiAuthController extends Controller
         return response()->json($response, $response['status']);
     }
 
-    public function edit(Request $request,  $id)
+    public function edit(Request $request, $id)
     {
 
         $response = [
@@ -166,14 +166,14 @@ class ApiAuthController extends Controller
                 if ($user->photo) {
                     $photo = explode('/', $user->photo);
                     $photo = end($photo);
-                    $path = public_path('images/users/profile/'.$photo);
+                    $path = public_path('images/users/profile/' . $photo);
                     if (file_exists($path)) {
                         unlink($path);
                     }
                 }
                 // save photo to storage
                 $baseURL = url('/');
-                $imageName = $baseURL.'/images/users/profile/'.time().$request->first_name.'_profile.'.$request->photo->extension();
+                $imageName = $baseURL . '/images/users/profile/' . time() . $request->first_name . '_profile.' . $request->photo->extension();
                 $request->photo->move(public_path('images/users/profile/'), $imageName);
                 $user->photo = $imageName;
             }
@@ -190,7 +190,6 @@ class ApiAuthController extends Controller
 
         return response()->json($response, $response['status']);
     }
-
 
     public function show($id)
     {
@@ -230,7 +229,7 @@ class ApiAuthController extends Controller
             if ($user->photo) {
                 $photo = explode('/', $user->photo);
                 $photo = end($photo);
-                $path = public_path('images/users/profile/'.$photo);
+                $path = public_path('images/users/profile/' . $photo);
                 if (file_exists($path)) {
                     unlink($path);
                 }
@@ -268,7 +267,6 @@ class ApiAuthController extends Controller
         return response()->json($response, $response['status']);
     }
 
-
     public function changePassword(Request $request)
     {
         $response = [
@@ -281,26 +279,119 @@ class ApiAuthController extends Controller
             'newPassword' => 'required',
             'confirmPassword' => 'required|same:newPassword',
             'email' => 'required|email',
-            'token' => 'required'
         ]);
 
-        if (Cache::get('password_reset_token'. $request->email) != $request->token) {
+        if ($request->email != auth()->user()->email) {
             $response['status'] = 201;
-            $response['message'] = 'Invalid token';
+            $response['message'] = 'Ocurrió un error';
             return response()->json($response, $response['status']);
         }
 
         $user = auth()->user();
 
-        if (password_verify($request->currentPassword, $user->password)) {
-            $user->password = bcrypt($request->newPassword);
-            $user->save();
-            $response['status'] = 200;
-            $response['message'] = 'Password changed successfully';
-        } else {
+        if (!password_verify($request->currentPassword, $user->password)) {
             $response['status'] = 201;
-            $response['message'] = 'Invalid current password';
+            $response['message'] = 'La contraseña actual no es válida';
+            return response()->json($response, $response['status']);
         }
+
+        //verify if old password is the same as new password
+        if (password_verify($request->newPassword, $user->password)) {
+            $response['status'] = 201;
+            $response['message'] = 'La nueva contraseña no puede ser igual a la anterior';
+            return response()->json($response, $response['status']);
+        }
+
+        $user->password = bcrypt($request->newPassword);
+        $user->save();
+        $response['status'] = 200;
+        $response['message'] = 'Password changed successfully';
+
+        return response()->json($response, $response['status']);
+    }
+
+    public function verifyTokenToChangePassword(Request $request)
+    {
+        $response = [
+            'status' => 0,
+            'message' => ''
+        ];
+
+        $request->validate([
+            'token' => 'required',
+            'email' => 'required|email'
+        ]);
+
+        $token = Cache::get('password_reset_token' . $request->email);
+
+        if (!$token) {
+            $response['status'] = 201;
+            $response['message'] = 'El token ha expirado';
+            return response()->json($response, $response['status']);
+        }
+
+        if ($token != $request->token) {
+            $response['status'] = 201;
+            $response['message'] = 'El token no es válido';
+            return response()->json($response, $response['status']);
+        }
+
+        $response['status'] = 200;
+        $response['message'] = 'El token es válido';
+
+        return response()->json($response, $response['status']);
+    }
+
+    public function resetPassword(Request $request){
+        $response = [
+            'status' => 0,
+            'message' => ''
+        ];
+
+
+        $request->validate([
+            'email' => 'required|email',
+            'newPassword' => 'required',
+            'token' => 'required'
+        ]);
+
+        $token = Cache::get('password_reset_token' . $request->email);
+
+        if (!$token) {
+            $response['status'] = 201;
+            $response['message'] = 'El token ha expirado';
+            return response()->json($response, $response['status']);
+        }
+
+        if ($token != $request->token) {
+            $response['status'] = 201;
+            $response['message'] = 'El token no es válido';
+            return response()->json($response, $response['status']);
+        }
+
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user) {
+            $response['status'] = 201;
+            $response['message'] = 'El usuario no existe';
+            return response()->json($response, $response['status']);
+        }
+
+        //verify if old password is the same as new password
+        if (password_verify($request->newPassword, $user->password)) {
+            $response['status'] = 201;
+            $response['message'] = 'La nueva contraseña no puede ser igual a la anterior';
+            return response()->json($response, $response['status']);
+        }
+
+        //delete token
+        Cache::forget('password_reset_token' . $request->email);
+
+        $user->password = bcrypt($request->newPassword);
+        $user->save();
+
+        $response['status'] = 200;
+        $response['message'] = 'Contraseña restablecida con éxito';
 
         return response()->json($response, $response['status']);
     }

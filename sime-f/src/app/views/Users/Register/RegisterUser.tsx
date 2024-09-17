@@ -30,7 +30,7 @@ const RegisterUser = () => {
   const handlePhotoChange = (e: any) => {
     const selectedPhoto = e.target.files[0];
     setPhoto(selectedPhoto);
-  }
+  };
 
   const handleNewUser = async (data: User) => {
     setLoading(true);
@@ -47,7 +47,6 @@ const RegisterUser = () => {
     formData.append("email", data.email);
     formData.append("password", data.password?.toString() || "");
     formData.append("role", data.role.toString());
-
 
     if (photo) {
       formData.append("photo", photo);
@@ -71,7 +70,7 @@ const RegisterUser = () => {
         <div className="container-fluid-mb-3 form-group">
           <div className="row">
             <h2>Datos Personales:</h2>
-            <hr className="border border-secondary border-1 opacity-75" />
+            <hr />
           </div>
           <div className="row mb-4">
             <div className="col-6">
@@ -86,7 +85,7 @@ const RegisterUser = () => {
             </div>
             <div className="col-6">
               <TextField
-                label="Apellido"
+                label="Apellido Paterno"
                 field="last_name"
                 type="text"
                 register={register}
@@ -129,7 +128,7 @@ const RegisterUser = () => {
           </div>
           <div className="row">
             <h2>Información de Contacto:</h2>
-            <hr className="border border-secondary border-1 opacity-75" />
+            <hr />
           </div>
           <div className="row mb-4">
             <div className="col-4">
@@ -165,7 +164,7 @@ const RegisterUser = () => {
           </div>
           <div className="row">
             <h2>Información de Cuenta:</h2>
-            <hr className="border border-secondary border-1 opacity-75" />
+            <hr />
           </div>
           <div className="row mb-2">
             <div className="col-4">
@@ -204,7 +203,8 @@ const RegisterUser = () => {
                   required: "Este campo es requerido",
                   validate: (val: any) => {
                     return (
-                      val === watch("password") || "Las contraseñas no coinciden"
+                      val === watch("password") ||
+                      "Las contraseñas no coinciden"
                     );
                   },
                 }}
@@ -214,6 +214,16 @@ const RegisterUser = () => {
             </div>
           </div>
           <div className="row mb-4">
+            <div className="col-4">
+              <SelectField
+                label="Rol"
+                field="role"
+                errors={errors}
+                control={control}
+                options={generalData.roles}
+                rules={{ required: "Este campo es requerido" }}
+              />
+            </div>
             <div className="col-4">
               <label htmlFor="">Photo</label>
               <input
@@ -226,33 +236,21 @@ const RegisterUser = () => {
             <div className="col-4">
               <p>Photo Preview</p>
               <img
-                src={photo ? URL.createObjectURL(photo) : 'https://via.placeholder.com/150'}
+                src={
+                  photo
+                    ? URL.createObjectURL(photo)
+                    : "https://via.placeholder.com/150"
+                }
                 alt="student"
                 className="user-photo"
               />
             </div>
           </div>
           <div className="row">
-            <h2>Roles:</h2>
-            <hr className="border border-secondary border-1 opacity-75" />
+            <hr />
           </div>
-          <div className="row">
-            <div className="col-3">
-              <SelectField
-                label="Rol"
-                field="role"
-                errors={errors}
-                control={control}
-                options={generalData.roles}
-                rules={{ required: "Este campo es requerido" }}
-              />
-            </div>
-          </div>
-          <div className="row mb-2 mt-3">
-            <hr className="border border-secondary border-1 opacity-75" />
-          </div>
-          <div className="row">
-            <div className="col-8">
+          <div className="row mb-4">
+            <div className="button-container col-12">
               <button
                 className="btn btn-primary xl"
                 onClick={handleSubmit((data) => handleNewUser(data))}
