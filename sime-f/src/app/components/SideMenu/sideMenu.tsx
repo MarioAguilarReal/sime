@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import "./sideMenu.scss";
 import { AuthService } from "../../services/auth/AuthService";
@@ -76,17 +76,6 @@ const SideMenu = (user: User) => {
     ];
   };
 
-  const handleCollapse = () => {
-    const sideMenu = document.querySelector(".menu");
-    console.log(sideMenu);
-    if (!sideMenu) return;
-    sideMenu.classList.toggle("noShow");
-    const icon = document.querySelector(".chevron");
-    if (!icon) return;
-    icon.classList.toggle("bi-chevron-right");
-    icon.classList.toggle("bi-chevron-left");
-  };
-
   return (
     <div className="side">
       <div className="menu">
@@ -95,7 +84,7 @@ const SideMenu = (user: User) => {
             to={"/"}
             className="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-light text-decoration-none logo"
           >
-            <img src="assets/images/Site_logo.png" />
+            <img src="/assets/images/Site_logo.png" />
           </Link>
           <hr className="border border-1 opacity-75" />
           <ul className="nav nav-pills flex-column mb-auto">
@@ -129,7 +118,7 @@ const SideMenu = (user: User) => {
             >
               <img
                 src={
-                  user.photo ? user.photo : "https://via.placeholder.com/150"
+                  user.photo ? user.photo : "/assets/images/default-user.jpg"
                 }
                 alt=""
                 width="32"
@@ -149,14 +138,6 @@ const SideMenu = (user: User) => {
                   &nbsp;
                   Ver Perfil
                 </Link>
-              </li>
-              <hr className="border border-secondary border-1 opacity-75" />
-              <li>
-                <button className="nav-link">
-                  <i className="bi bi-gear" />
-                  &nbsp;
-                  Configuración
-                </button>
               </li>
               <hr className="border border-secondary border-1 opacity-75" />
               <li>

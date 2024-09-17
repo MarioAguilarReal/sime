@@ -67,7 +67,7 @@ const ViewStudent = () => {
       let studentId = parseInt(id);
       loadStudent(studentId);
     }
-  }, [id]);
+  });
 
   return (
     <div className="view-student">

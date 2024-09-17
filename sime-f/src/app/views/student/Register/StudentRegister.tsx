@@ -85,7 +85,7 @@ const StudentRegister = () => {
 
 
   return (
-    <div className='student-register'>
+    <div className='student-register p-3'>
       <h1>Registro de Estudiantes</h1>
       <div className='form'>
         <div className="container-fluid-mb-3 form-group">

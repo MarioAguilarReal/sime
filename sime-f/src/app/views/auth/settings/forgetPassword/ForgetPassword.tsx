@@ -1,24 +1,24 @@
-import { useLocation, useNavigate } from 'react-router-dom';
-import "./ChangePassword.scss";
+import { useLocation } from "react-router-dom";
+import "./forgetPassword.scss";
 import { useLoader } from "../../../../Global/Context/globalContext";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
+import TextField from "../../../../components/shared/FormInputs/TextField";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { AuthService } from "../../../../services/auth/AuthService";
-import { User } from "../../../../interfaces/user/User";
 
-interface ChangePasswordForm {
-  currentPassword: string;
+interface ForgetPasswordForm {
   newPassword: string;
   confirmPassword: string;
 }
 
-const ChangePassword = () => {
-  const navigate = useNavigate();
+const ForgetPassword = () => {
+  // const navigate = useNavigate();
   const { setLoading } = useLoader();
-  // const location = useLocation();
+  const location = useLocation();
 
-  const [user, setUser] = useState<User>({} as User);
+  const [token, setToken] = useState<string>();
+  const [email, setEmail] = useState<string>();
   const [showPassword, setShowPassword] = useState(false);
 
   const {
@@ -26,9 +26,9 @@ const ChangePassword = () => {
     handleSubmit,
     formState: { errors },
     getValues,
-  } = useForm<ChangePasswordForm>();
+  } = useForm<ForgetPasswordForm>();
 
-  const handleChangePassword = async (data: ChangePasswordForm) => {
+  const handleChangePassword = async (data: ForgetPasswordForm) => {
     setLoading(true);
     let passwordCorrect =
       data.newPassword.length >= 8 &&
@@ -45,9 +45,8 @@ const ChangePassword = () => {
       setLoading(false);
       return;
     }
-
-    let payload = { ...data, email: user?.email };
-    let resp = await AuthService.changePassword(payload);
+    let payload = { ...data, email, token };
+    let resp = await AuthService.resetPassword(payload);
     if (resp.status === 200) {
       toast.success(
         "Contraseña cambiada. Esta ventana se cerrará automaticamente en 5 segundos"
@@ -61,48 +60,41 @@ const ChangePassword = () => {
     setLoading(false);
   };
 
-  const loadData = () => {
+  const verifyToken = async (email: string, token: string) => {
     setLoading(true);
-    let sessionUser: any = sessionStorage.getItem("user");
-    if (sessionUser) {
-      setUser(JSON.parse(sessionUser));
+    let resp = await AuthService.verifyToken({ email, token });
+    if (resp.status === 200) {
+      toast.success(resp.message);
+    } else {
+      toast.error(resp.message);
+      toast.error("Esta ventana se cerrará automaticamente en 5 segundos");
+      setTimeout(() => {
+        window.close();
+      }, 5000);
     }
     setLoading(false);
   };
 
-  useEffect(() => {}, [user]);
-
   useEffect(() => {
-    loadData();
-  });
+    let token = new URLSearchParams(location.search).get("token");
+    let email = new URLSearchParams(location.search).get("email");
+    if (token && email) {
+      setToken(token);
+      setEmail(email);
+      verifyToken(email, token);
+    }
+  }, [location]);
 
   return (
-    <div className="change-password">
-      <div className="change-password-container">
+    <div className="forget-password">
+      <div className="forget-password-container">
         <div className="header">
           <h1 className="title">Cambiar Contraseña</h1>
         </div>
         <hr className="border border-1 opacity-75" />
-        <div className="change-password-content">
-          <div className="change-password-form">
-          <form>
-              <div className="form-group">
-                <div className="pass">
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    className="form-control"
-                    id="password"
-                    placeholder="Password"
-                    {...register("currentPassword", { required: true })}
-                  />
-                  <i
-                    className={`bi ${
-                      showPassword ? "bi-eye-slash" : "bi-eye"
-                    } see-pass`}
-                    onClick={() => setShowPassword(!showPassword)}
-                  ></i>
-                </div>
-              </div>
+        <div className="forget-password-content">
+          <div className="forget-password-form">
+            <form>
               <div className="form-group">
                 <div className="pass">
                   <input
@@ -149,8 +141,8 @@ const ChangePassword = () => {
               )}
               <div className="interaction">
                 <div className="btn cancel" onClick={
-                  () => navigate(-1)
-                } >
+                  () => window.close()
+                }>
                   <i className="bi bi-chevron-left" />
                   Cancelar
                 </div>
@@ -172,4 +164,4 @@ const ChangePassword = () => {
   );
 };
 
-export default ChangePassword;
+export default ForgetPassword;

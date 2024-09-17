@@ -20,13 +20,13 @@ class DatabaseSeeder extends Seeder
             'birth_date' => '1990-01-01',
             'age' => 30,
             'gender' => 1,
-            'photo' => 'photo.jpg',
+            'photo' => '',
             'address' => '123 Main St',
             'phone' => '123-456-7890',
             'civil_status' => 1,
             'role' => 1,
-            'email' => 'mario@mario.com',
-            'password' => bcrypt('admin'),
+            'email' => 'marioaguilar@mailinator.com',
+            'password' => bcrypt('M4r10r34l'),
         ]);
     }
 }
