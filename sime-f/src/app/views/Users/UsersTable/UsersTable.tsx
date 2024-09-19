@@ -16,7 +16,7 @@ const UsersTable = () => {
     setLoading(true);
 
     let me = await AuthService.me();
-    if (me.status === 200){
+    if (me.status === 200) {
       setAdmin(me.user);
     }
 
@@ -29,7 +29,7 @@ const UsersTable = () => {
 
   const formatDate = (date: Date) => {
     let d = new Date(date);
-    return (d.getDate() < 10 ? `0${d.getDate()}` : d.getDate()) + '-' + ((d.getMonth() + 1) < 10 ? `0${d.getMonth()+1}`: d.getMonth()+1) + '-' + d.getFullYear();
+    return (d.getDate() < 10 ? `0${d.getDate()}` : d.getDate()) + '-' + ((d.getMonth() + 1) < 10 ? `0${d.getMonth() + 1}` : d.getMonth() + 1) + '-' + d.getFullYear();
   };
 
   useEffect(() => {
@@ -65,7 +65,7 @@ const UsersTable = () => {
                       <tr key={index}>
                         <td>{user.id}</td>
                         <td>{user.first_name}</td>
-                        <td>{user.last_name}</td>
+                        <td>{user.paternal_surname + " " + user.maternal_surname}</td>
                         <td>{user.email}</td>
                         <td>{formatDate(user.birth_date)}</td>
                         <td>{new Date().getFullYear() - new Date(user.birth_date).getFullYear()}</td>
