@@ -11,9 +11,19 @@
 		width: 80%;
 		margin: 1rem auto;
 		padding: 20px;
-		border: 1px solid #B0942D;
+		background-color: #ffffff;
+		border-radius: 5px;
+		box-shadow: 0 0 10px rgba(0,0,0,0.1);
+
 		hr{
 			border: 1.8px solid #B0942D;
+		}
+
+		.form-floating{
+			.form-control{
+				background-color: rgb(230, 230, 230);
+				box-shadow: 0 0 10px rgba(0,0,0,0.1);
+			}
 		}
 		label{
       font-weight: bold;
@@ -22,6 +32,7 @@
 		.comment{
 			height: fit-content;
 			min-height: 300px;
+
 		}
 		.btn-comment{
 			background-color: #812A1A;

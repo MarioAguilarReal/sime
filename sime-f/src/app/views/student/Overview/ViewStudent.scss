@@ -9,20 +9,94 @@
   }
   .form{
     width: 80%;
+    background-color: #ffffff;
     margin: 1rem auto;
     padding: 20px;
     padding-bottom: 10px;
-    border: 1px solid #656956;
-    .btn-edit{
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    .header{
       display: flex;
-      justify-content: flex-end;
-      margin-bottom: 10px;
+      justify-content: space-between;
+      align-items: center;
+
+      .btn-back{
+        font-size: 1.2rem;
+        text-decoration: none;
+        color: #812A1A;
+        font-weight: bold;
+      }
+
+      .buttons{
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 10px;
+        .btn-edit{
+          border: none;
+          background-color: rgba(255, 255, 255, 0);
+          color: #812A1A;
+          font-size: 1.1rem;
+          cursor: pointer;
+          padding: 5px 10px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 5px;
+          transition: all 0.3s;
+          font-weight: bold;
+
+          &:hover{
+            background-color: #812A1A;
+            color: #ffffff;
+            scale: 1.04;
+          }
+        }
+        .btn-delete{
+          border: none;
+          background-color: rgba(255, 255, 255, 0);
+          color: #ff2600;
+          font-size: 1.1rem;
+          cursor: pointer;
+          padding: 5px 10px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 5px;
+          transition: all 0.3s;
+          font-weight: bold;
+
+          &:hover{
+            background-color: #ff2600;
+            color: #ffffff;
+            scale: 1.04;
+          }
+        }
+      }
     }
+
     .btn-more{
+      border: none;
       background-color: #812A1A;
-      border-color: #812A1A;
       color: #ffffff;
+      font-size: 1.1rem;
+      cursor: pointer;
+      padding: 5px 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.3s;
+      font-weight: bold;
+      width: 80%;
+
+      &:hover{
+        background-color: rgba(255, 255, 255, 0);
+        color: #812A1A;
+        scale: 1.04;
+      }
     }
+
     h3{
       color: #812A1A;
     }

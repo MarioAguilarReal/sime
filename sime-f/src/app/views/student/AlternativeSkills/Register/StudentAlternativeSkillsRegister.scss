@@ -11,13 +11,18 @@
 		width: 80%;
 		margin: 1rem auto;
 		padding: 20px;
-		border: 1px solid #B0942D;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 		hr{
       border: 1.8px solid #B0942D;
     }
     .form-check{
       display: flex;
       gap: 0.5rem;
+    }
+    .form-check-input{
+      border-color: #812A1A;
     }
     .form-check-input:checked{
       border-color: #812A1A;

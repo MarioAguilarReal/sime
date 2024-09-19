@@ -12,7 +12,9 @@
     width: 80%;
     margin: 1rem auto;
     padding: 20px;
-    border: 1px solid #B0942D;
+    background-color: white;
+    border-radius:5px;
+    box-shadow: 0 0 10px 0 rgba(0,0,0,0.1);
     label{
       font-weight: bold;
     }

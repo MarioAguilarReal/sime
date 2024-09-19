@@ -74,7 +74,7 @@ const ChangePassword = () => {
 
   useEffect(() => {
     loadData();
-  });
+  },[]);
 
   return (
     <div className="change-password">

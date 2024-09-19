@@ -1,16 +1,15 @@
-import { useEffect, useState } from 'react';
-import './ViewStudent.scss';
-import { Student } from '../../../interfaces/student/Student';
-import { useLoader } from '../../../Global/Context/globalContext';
-import { StudentService } from '../../../services/students/StudentsService';
-import { useNavigate, useParams } from 'react-router-dom';
-import { generalData } from '../../../common/generalEnums';
-import { studentsData } from '../../../common/studentEnums';
-import { Link } from 'react-router-dom';
-import DeleteModal from '../../../components/shared/modals/modalDelete/DeleteModal';
+import { useEffect, useState } from "react";
+import "./ViewStudent.scss";
+import { Student } from "../../../interfaces/student/Student";
+import { useLoader } from "../../../Global/Context/globalContext";
+import { StudentService } from "../../../services/students/StudentsService";
+import { useNavigate, useParams } from "react-router-dom";
+import { generalData } from "../../../common/generalEnums";
+import { studentsData } from "../../../common/studentEnums";
+import { Link } from "react-router-dom";
+import DeleteModal from "../../../components/shared/modals/modalDelete/DeleteModal";
 
 const ViewStudent = () => {
-
   const { setLoading } = useLoader();
   const { id } = useParams();
   const navigate = useNavigate();
@@ -25,17 +24,30 @@ const ViewStudent = () => {
 
   const formatDate = (date: Date) => {
     let d = new Date(date);
-    return d.getDate() + '-' + ((d.getMonth() + 1) < 10 ? `0${d.getMonth() + 1}` : d.getMonth() + 1) + '-' + d.getFullYear();
-  }
-
+    return (
+      d.getDate() +
+      "-" +
+      (d.getMonth() + 1 < 10 ? `0${d.getMonth() + 1}` : d.getMonth() + 1) +
+      "-" +
+      d.getFullYear()
+    );
+  };
 
   const loadStudent = async (studentId: number) => {
     setLoading(true);
     let resp = await StudentService.getStudent(studentId);
-    let gender = generalData.gender.find(obj => obj.value === Number(resp.student.gender));
-    let civil = generalData.civilStatus.find(obj => obj.value === Number(resp.student.civil_status));
-    let trans = studentsData.transType.find(obj => obj.value === Number(resp.student.trans_type));
-    let live = studentsData.booleanType.find(obj => obj.value === Number(resp.student.tutor_live_student));
+    let gender = generalData.gender.find(
+      (obj) => obj.value === Number(resp.student.gender)
+    );
+    let civil = generalData.civilStatus.find(
+      (obj) => obj.value === Number(resp.student.civil_status)
+    );
+    let trans = studentsData.transType.find(
+      (obj) => obj.value === Number(resp.student.trans_type)
+    );
+    let live = studentsData.booleanType.find(
+      (obj) => obj.value === Number(resp.student.tutor_live_student)
+    );
 
     if (resp.status === 200) {
       setStudent(resp.student);
@@ -47,20 +59,19 @@ const ViewStudent = () => {
       console.log(resp.status);
     }
     setLoading(false);
-  }
+  };
 
   const handleDelete = async (student: Student) => {
     setLoading(true);
     let resp = await StudentService.delete(Number(student.id));
     if (resp.status === 200) {
-      navigate('/list/students');
+      navigate("/list/students");
     } else {
       console.log(resp.status);
     }
     setLoading(false);
     setShowDeleteModal(false);
-  }
-
+  };
 
   useEffect(() => {
     if (id) {
@@ -73,18 +84,26 @@ const ViewStudent = () => {
     <div className="view-student">
       <h1>Informacion del Estudiante</h1>
       <div className="form">
-        <div className="row mb-2">
-          <div className="col-2">
-            <Link to="/list/students" className="btn btn-secondary">
-              <i className="bi bi-chevron-left" />
-              Volver
-            </Link>
-          </div>
-          <div className="col-4 btn-edit">
-            <button className='btn btn-primary' onClick={() => navigate(`/edit/student/${student.id}`)}>Editar Estudiante</button>
-          </div>
-          <div className="col-4">
-            <button className='btn btn-danger' onClick={() => setShowDeleteModal(true)}>Eliminar Estudiante</button>
+        <div className="header">
+          <Link to="/list/students" className="btn-back">
+            <i className="bi bi-chevron-left" />
+            Volver
+          </Link>
+          <div className="buttons">
+            <button
+              className="btn-edit"
+              onClick={() => navigate(`/edit/student/${student.id}`)}
+            >
+              <i className="bi bi-pencil" />
+              Editar Estudiante
+            </button>
+            <button
+              className="btn-delete"
+              onClick={() => setShowDeleteModal(true)}
+            >
+              <i className="bi bi-trash" />
+              Eliminar Estudiante
+            </button>
           </div>
         </div>
         <div className="row mb-2 mt-3">
@@ -98,7 +117,11 @@ const ViewStudent = () => {
                 <hr className="border border-secondary border- opacity-75" />
               </div>
               <div className="image">
-                <img src={student.photo} alt="student" className="student-photo" />
+                <img
+                  src={student.photo ? student.photo : "/assets/images/default-user.jpg"}
+                  alt="student"
+                  className="student-photo"
+                />
               </div>
               <hr className="border border-secondary border-1 opacity-75" />
               <p>
@@ -108,7 +131,9 @@ const ViewStudent = () => {
                 <b>Fecha de Nacimiento:</b> {formatDate(student.birth_date)}
               </p>
               <p>
-                <b>Edad:</b> {new Date().getFullYear() - new Date(student.birth_date).getFullYear()}
+                <b>Edad:</b>{" "}
+                {new Date().getFullYear() -
+                  new Date(student.birth_date).getFullYear()}
               </p>
               <p>
                 <b>Genero:</b> {genderIndex}
@@ -132,7 +157,8 @@ const ViewStudent = () => {
                 <b>CURP:</b> {student.curp}
               </p>
               <p>
-                <b>Tiempo estimado de la escuela a la casa:</b> {student.transport_time}
+                <b>Tiempo estimado de la escuela a la casa:</b>{" "}
+                {student.transport_time}
               </p>
             </div>
             <div className="col-6 mb-4 tutor-data">
@@ -156,7 +182,9 @@ const ViewStudent = () => {
                 <b>Dirección:</b> {student.tutor_address}
               </p>
               <p>
-                <b>Fecha de nacimiento:</b> {new Date().getFullYear() - new Date(student.tutor_birth_date).getFullYear()}
+                <b>Fecha de nacimiento:</b>{" "}
+                {new Date().getFullYear() -
+                  new Date(student.tutor_birth_date).getFullYear()}
               </p>
               <p>
                 <b>Ocupación:</b> {student.tutor_occupation}
@@ -181,7 +209,8 @@ const ViewStudent = () => {
                 <b>Teléfono 1:</b> {student.emergency_contact_phone_1}
               </p>
               <p>
-                <b>Parentesco con el alumno:</b> {student.emergency_contact_relationship_1}
+                <b>Parentesco con el alumno:</b>{" "}
+                {student.emergency_contact_relationship_1}
               </p>
               <p>
                 <b>Nombre 2:</b> {student.emergency_contact_name_2}
@@ -190,99 +219,159 @@ const ViewStudent = () => {
                 <b>Teléfono 2:</b> {student.emergency_contact_phone_2}
               </p>
               <p>
-                <b>Parentesco con el alumno:</b> {student.emergency_contact_relationship_2}
+                <b>Parentesco con el alumno:</b>{" "}
+                {student.emergency_contact_relationship_2}
               </p>
-
             </div>
           </div>
           <div className="row mb-2 mt-3">
             <hr className="border border-secondary border-1 opacity-75" />
           </div>
           <div className="more-data">
-            <div className="row mb-2">
+            <div className="row">
               <div className="add-comments col-4">
-                <button className='btn btn-more' onClick={() => {
-                  navigate(`/student/comments/${student.id}`)
-                }}>Agregar Comentario</button>
+                <button
+                  className="btn btn-more"
+                  onClick={() => {
+                    navigate(`/student/comments/${student.id}`);
+                  }}
+                >
+                  Agregar Comentario
+                </button>
               </div>
               <div className="academic-data col-4">
-                <button className='btn btn-more' onClick={() => {
-                  if (student.student_academic_data_id) {
-                    navigate(`/student/data/overview/${student.student_academic_data_id}`)
-                  } else {
-                    navigate(`/student/data/register/${student.id}`)
-                  }
-                }}>Datos Academicos</button>
+                <button
+                  className="btn btn-more"
+                  onClick={() => {
+                    if (student.student_academic_data_id) {
+                      navigate(
+                        `/student/data/overview/${student.student_academic_data_id}`
+                      );
+                    } else {
+                      navigate(`/student/data/register/${student.id}`);
+                    }
+                  }}
+                >
+                  Datos Academicos
+                </button>
               </div>
               <div className="learning-type col-4">
-                <p className='btn btn-more'>Tipo de Aprendizaje (SEP)</p>
+                <p className="btn btn-more">Tipo de Aprendizaje (SEP)</p>
               </div>
             </div>
             <div className="row mb-2">
               <div className="special-needs col-4">
-                <button className='btn btn-more' onClick={() => {
-                  if (student.student_special_needs_id) {
-                    console.log(student.student_special_needs_id)
-                    navigate(`/student/need/overview/${student.student_special_needs_id}`)
-                  } else {
-                    console.log(student.student_special_needs_id)
-                    navigate(`/student/need/register/${student.id}`)
-                  }
-                }}>Necesidades Especiales</button>
+                <button
+                  className="btn btn-more"
+                  onClick={() => {
+                    if (student.student_special_needs_id) {
+                      console.log(student.student_special_needs_id);
+                      navigate(
+                        `/student/need/overview/${student.student_special_needs_id}`
+                      );
+                    } else {
+                      console.log(student.student_special_needs_id);
+                      navigate(`/student/need/register/${student.id}`);
+                    }
+                  }}
+                >
+                  Necesidades Especiales
+                </button>
               </div>
               <div className="cognitive-skills col-4">
-                <button className='btn btn-more' onClick={() => {
-                  if (student.student_cognitive_skills_id) {
-                    console.log(student.student_cognitive_skills_id)
-                    navigate(`/student/cognitive/skills/overview/${student.student_cognitive_skills_id}`)
-                  } else {
-                    console.log(student.student_cognitive_skills_id)
-                    navigate(`/student/cognitive/skills/register/${student.id}`)
-                  }
-                }}>Habilidades Cognitivas</button>
+                <button
+                  className="btn btn-more"
+                  onClick={() => {
+                    if (student.student_cognitive_skills_id) {
+                      console.log(student.student_cognitive_skills_id);
+                      navigate(
+                        `/student/cognitive/skills/overview/${student.student_cognitive_skills_id}`
+                      );
+                    } else {
+                      console.log(student.student_cognitive_skills_id);
+                      navigate(
+                        `/student/cognitive/skills/register/${student.id}`
+                      );
+                    }
+                  }}
+                >
+                  Habilidades Cognitivas
+                </button>
               </div>
               <div className="social-skills col-4">
-                <button className='btn btn-more' onClick={() => {
-                  if (student.student_social_skills_id) {
-                    console.log(student.student_social_skills_id)
-                    navigate(`/student/social/skills/overview/${student.student_social_skills_id}`)
-                  } else {
-                    console.log(student.student_cognitive_skills_id)
-                    navigate(`/student/social/skills/register/${student.id}`)
-                  }
-                }}>Habilidades Sociales</button>
+                <button
+                  className="btn btn-more"
+                  onClick={() => {
+                    if (student.student_social_skills_id) {
+                      console.log(student.student_social_skills_id);
+                      navigate(
+                        `/student/social/skills/overview/${student.student_social_skills_id}`
+                      );
+                    } else {
+                      console.log(student.student_cognitive_skills_id);
+                      navigate(`/student/social/skills/register/${student.id}`);
+                    }
+                  }}
+                >
+                  Habilidades Sociales
+                </button>
               </div>
             </div>
             <div className="row mb-2">
               <div className="alternative-skills col-4">
-                <button className='btn btn-more' onClick={() => {
-                  if (student.student_alternative_skills_id) {
-                    console.log(student.student_alternative_skills_id)
-                    navigate(`/student/alternative/skills/overview/${student.student_alternative_skills_id}`)
-                  } else {
-                    console.log(student.student_cognitive_skills_id)
-                    navigate(`/student/alternative/skills/register/${student.id}`)
-                  }
-                }}>Habilidades Alternativas</button>
+                <button
+                  className="btn btn-more"
+                  onClick={() => {
+                    if (student.student_alternative_skills_id) {
+                      console.log(student.student_alternative_skills_id);
+                      navigate(
+                        `/student/alternative/skills/overview/${student.student_alternative_skills_id}`
+                      );
+                    } else {
+                      console.log(student.student_cognitive_skills_id);
+                      navigate(
+                        `/student/alternative/skills/register/${student.id}`
+                      );
+                    }
+                  }}
+                >
+                  Habilidades Alternativas
+                </button>
               </div>
               <div className="planning-skills col-4">
-                <button className='btn btn-more' onClick={() => {
-                  if (student.student_planning_skills_id) {
-                    console.log(student.student_planning_skills_id)
-                    navigate(`/student/planning/skills/overview/${student.student_planning_skills_id}`)
-                  } else {
-                    console.log(student.student_cognitive_skills_id)
-                    navigate(`/student/planning/skills/register/${student.id}`)
-                  }
-                }}>Habilidades de Planificación</button>
+                <button
+                  className="btn btn-more"
+                  onClick={() => {
+                    if (student.student_planning_skills_id) {
+                      console.log(student.student_planning_skills_id);
+                      navigate(
+                        `/student/planning/skills/overview/${student.student_planning_skills_id}`
+                      );
+                    } else {
+                      console.log(student.student_cognitive_skills_id);
+                      navigate(
+                        `/student/planning/skills/register/${student.id}`
+                      );
+                    }
+                  }}
+                >
+                  Habilidades de Planificación
+                </button>
               </div>
             </div>
           </div>
         </div>
       </div>
-      {showDeleteModal && <DeleteModal obj="Estudiante" show={showDeleteModal} onClose={() => setShowDeleteModal(false)} onDelete={() => handleDelete(student)} />}
-    </div >
-  )
-}
+      {showDeleteModal && (
+        <DeleteModal
+          obj="Estudiante"
+          show={showDeleteModal}
+          onClose={() => setShowDeleteModal(false)}
+          onDelete={() => handleDelete(student)}
+        />
+      )}
+    </div>
+  );
+};
 
 export default ViewStudent;

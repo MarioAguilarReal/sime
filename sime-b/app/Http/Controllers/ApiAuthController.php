@@ -27,18 +27,18 @@ class ApiAuthController extends Controller
 
         if (User::where('email', $request->email)->doesntExist()) {
             $response['status'] = 201;
-            $response['message'] = 'User does not exist';
+            $response['message'] = 'Credenciales incorrectas';
         } else {
             if (auth()->attempt($credentials)) {
                 $token = auth()->user()->createToken('authToken')->plainTextToken;
                 $response['status'] = 200;
-                $response['message'] = 'Login successful';
+                $response['message'] = 'Inicio de sesión exitoso';
                 $response['token'] = $token;
                 $response['user'] = auth()->user();
 
             } else {
                 $response['status'] = 201;
-                $response['message'] = 'Invalid credentials';
+                $response['message'] = 'Credenciales incorrectas';
             }
         }
         return response()->json($response, $response['status']);
@@ -49,7 +49,7 @@ class ApiAuthController extends Controller
         auth()->user()->tokens()->delete();
         $resonse = [
             'status' => 200,
-            'message' => 'Logged out'
+            'message' => 'Sesion cerrada con éxito'
         ];
         return response()->json($resonse, 200);
     }
@@ -62,10 +62,10 @@ class ApiAuthController extends Controller
             'user' => ''
         ];
         if (auth()->user()) {
-            $response['message'] = 'User found';
+            $response['message'] = 'Usuario encontrado';
             $response['user'] = auth()->user();
         } else {
-            $response['message'] = 'User not found';
+            $response['message'] = 'Usuario no encontrado';
             $response['status'] = 201;
             $response['user'] = null;
         }
@@ -121,7 +121,7 @@ class ApiAuthController extends Controller
         $user->save();
 
         $response['status'] = 200;
-        $response['message'] = 'User created successfully';
+        $response['message'] = 'Usuario registrado con éxito';
         $response['user'] = $user;
 
         return response()->json($response, $response['status']);
@@ -181,11 +181,11 @@ class ApiAuthController extends Controller
             $user->save();
 
             $response['status'] = 200;
-            $response['message'] = 'User updated successfully';
+            $response['message'] = 'Usuario actualizado con éxito';
             $response['user'] = $user;
         } else {
             $response['status'] = 201;
-            $response['message'] = 'User not found';
+            $response['message'] = 'Usuario no encontrado';
         }
 
         return response()->json($response, $response['status']);
@@ -203,11 +203,11 @@ class ApiAuthController extends Controller
 
         if ($user) {
             $response['status'] = 200;
-            $response['message'] = 'User found';
+            $response['message'] = 'Usuario encontrado';
             $response['user'] = $user;
         } else {
             $response['status'] = 201;
-            $response['message'] = 'User not found';
+            $response['message'] = 'Usuario no encontrado';
         }
 
         return response()->json($response, $response['status']);
@@ -237,10 +237,10 @@ class ApiAuthController extends Controller
 
             $user->delete();
             $response['status'] = 200;
-            $response['message'] = 'User deleted successfully';
+            $response['message'] = 'Usuario eliminado con éxito';
         } else {
             $response['status'] = 201;
-            $response['message'] = 'User not found';
+            $response['message'] = 'Usuario no encontrado';
         }
 
         return response()->json($response, $response['status']);
@@ -257,11 +257,11 @@ class ApiAuthController extends Controller
         $users = User::all();
         if ($users) {
             $response['status'] = 200;
-            $response['message'] = 'Users found';
+            $response['message'] = 'Usuarios encontrados';
             $response['users'] = $users;
         } else {
             $response['status'] = 201;
-            $response['message'] = 'Users not found';
+            $response['message'] = 'Usuarios no encontrados';
         }
 
         return response()->json($response, $response['status']);

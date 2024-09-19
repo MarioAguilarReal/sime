@@ -74,7 +74,7 @@ const StudentAcademicDataRegister = () => {
 
   return (
     <div className="student-data">
-      <h1>Registro de Datos Academicos</h1>
+      <h1>Registro de Datos Acádemicos</h1>
       <div className="form">
         <div className="row mb-2">
           <div className="col-2">
