@@ -16,7 +16,8 @@ class DatabaseSeeder extends Seeder
 
         \App\Models\User::create([
             'first_name' => 'Mario',
-            'last_name' => 'Aguilar',
+            'paternal_surname' => 'Aguilar',
+            'maternal_surname' => 'Real',
             'birth_date' => '1990-01-01',
             'age' => 30,
             'gender' => 1,
@@ -31,7 +32,8 @@ class DatabaseSeeder extends Seeder
 
         \App\Models\User::create([
             'first_name' => 'Fer',
-            'last_name' => 'Ugalde',
+            'paternal_surname' => 'Ugalde',
+            'maternal_surname' => 'Garduño',
             'birth_date' => '1990-01-01',
             'age' => 30,
             'gender' => 1,

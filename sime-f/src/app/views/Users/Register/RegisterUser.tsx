@@ -37,7 +37,8 @@ const RegisterUser = () => {
     const formData = new FormData();
     console.log(data);
     formData.append("first_name", data.first_name);
-    formData.append("last_name", data.last_name);
+    formData.append("maternal_surname", data.maternal_surname);
+    formData.append("paternal_surname", data.paternal_surname);
     formData.append("birth_date", data.birth_date.toString());
     formData.append("age", data.age.toString());
     formData.append("gender", data.gender.toString());
@@ -73,7 +74,7 @@ const RegisterUser = () => {
             <hr />
           </div>
           <div className="row mb-4">
-            <div className="col-6">
+            <div className="col-4">
               <TextField
                 label="Nombre"
                 field="first_name"
@@ -83,10 +84,20 @@ const RegisterUser = () => {
                 errors={errors}
               />
             </div>
-            <div className="col-6">
+            <div className="col-4">
               <TextField
                 label="Apellido Paterno"
-                field="last_name"
+                field="paternal_surname"
+                type="text"
+                register={register}
+                rules={{ required: "Este campo es requerido" }}
+                errors={errors}
+              />
+            </div>
+            <div className="col-4">
+              <TextField
+                label="Apellido Materno"
+                field="maternal_surname"
                 type="text"
                 register={register}
                 rules={{ required: "Este campo es requerido" }}

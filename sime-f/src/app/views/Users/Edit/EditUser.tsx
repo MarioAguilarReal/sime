@@ -44,7 +44,7 @@ const EditUser = () => {
     let resp = await UsersService.getUser(userId);
     if (resp.status === 200) {
       setUser(resp.user);
-    }else{
+    } else {
       toast.error(resp.message);
     }
     setLoading(false);
@@ -54,7 +54,8 @@ const EditUser = () => {
     setLoading(true);
     const formData = new FormData();
     formData.append("first_name", data.first_name);
-    formData.append("last_name", data.last_name);
+    formData.append("maternal_surname", data.maternal_surname);
+    formData.append("paternal_surname", data.paternal_surname);
     formData.append("birth_date", data.birth_date.toString());
     formData.append("age", data.age.toString());
     formData.append("gender", data.gender.toString());
@@ -90,7 +91,8 @@ const EditUser = () => {
   useEffect(() => {
     if (user) {
       setValue("first_name", user.first_name);
-      setValue("last_name", user.last_name);
+      setValue("maternal_surname", user.maternal_surname);
+      setValue("paternal_surname", user.paternal_surname);
       setValue("birth_date", user.birth_date);
       setValue("age", user.age);
       setValue("gender", user.gender);
@@ -113,7 +115,7 @@ const EditUser = () => {
             <hr className="border border-secondary border-1 opacity-75" />
           </div>
           <div className="row mb-4">
-            <div className="col-6">
+            <div className="col-4">
               <TextField
                 label="Nombre"
                 field="first_name"
@@ -123,10 +125,20 @@ const EditUser = () => {
                 errors={errors}
               />
             </div>
-            <div className="col-6">
+            <div className="col-4">
               <TextField
-                label="Apellido"
-                field="last_name"
+                label="Apellido Paterno"
+                field="paternal_surname"
+                type="text"
+                register={register}
+                rules={{ required: "Este campo es requerido" }}
+                errors={errors}
+              />
+            </div>
+            <div className="col-4">
+              <TextField
+                label="Apellido Materno"
+                field="maternal_surname"
                 type="text"
                 register={register}
                 rules={{ required: "Este campo es requerido" }}
@@ -221,24 +233,24 @@ const EditUser = () => {
               />
             </div>
           </div>
-          { !location.pathname.includes("auth") && (
+          {!location.pathname.includes("auth") && (
             <div>
-          <div className="row">
-            <h2>Roles:</h2>
-            <hr className="border border-secondary border-1 opacity-75" />
-          </div>
-          <div className="row">
-            <div className="col-3">
-              <SelectField
-                label="Rol"
-                field="role"
-                errors={errors}
-                control={control}
-                options={generalData.roles}
-                rules={{ required: "Este campo es requerido" }}
-              />
-            </div>
-          </div>
+              <div className="row">
+                <h2>Roles:</h2>
+                <hr className="border border-secondary border-1 opacity-75" />
+              </div>
+              <div className="row">
+                <div className="col-3">
+                  <SelectField
+                    label="Rol"
+                    field="role"
+                    errors={errors}
+                    control={control}
+                    options={generalData.roles}
+                    rules={{ required: "Este campo es requerido" }}
+                  />
+                </div>
+              </div>
             </div>
           )}
           <div className="row mb-2 mt-3">

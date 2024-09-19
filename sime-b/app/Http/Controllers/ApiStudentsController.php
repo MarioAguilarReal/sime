@@ -42,7 +42,8 @@ class ApiStudentsController extends Controller
 
         $request->validate([
             'first_name' => 'required',
-            'last_name' => 'required',
+            'maternal_surname' => 'required',
+            'paternal_surname' => 'required',
             //'photo' => 'required',
             'birth_date' => 'required',
             'gender' => 'required',
@@ -74,7 +75,8 @@ class ApiStudentsController extends Controller
 
         $student = Student::create ([
             'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
+            'maternal_surname' => $request->maternal_surname,
+            'paternal_surname' => $request->paternal_surname,
             'photo' => 'default.jpg',
             'birth_date' => $request->birth_date,
             'gender' => $request->gender,
@@ -153,7 +155,8 @@ class ApiStudentsController extends Controller
 
         $request->validate([
             'first_name' => 'required',
-            'last_name' => 'required',
+            'maternal_surname' => 'required',
+            'paternal_surname' => 'required',
             'birth_date' => 'required',
             'gender' => 'required',
             'address' => 'required',
@@ -184,7 +187,8 @@ class ApiStudentsController extends Controller
 
         if($student){
             $student->first_name = $request->first_name;
-            $student->last_name = $request->last_name;
+            $student->maternal_surname = $request->maternal_surname;
+            $student->paternal_surname = $request->paternal_surname;
             $student->birth_date = $request->birth_date;
             $student->gender = $request->gender;
             $student->address = $request->address;

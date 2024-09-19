@@ -54,7 +54,7 @@ const StudentsAll = () => {
                                     return (
                                         <tr key={index}>
                                             <td>{student.first_name}</td>
-                                            <td>{student.last_name}</td>
+                                            <td>{student.paternal_surname + " " + student.maternal_surname}</td>
                                             <td>{formatDate(student.birth_date)}</td>
                                             <td>{student.age}</td>
                                             <td>{student.tutor_name}</td>
