@@ -10,7 +10,7 @@ import { useLoader } from '../../../Global/Context/globalContext';
 import { generalData } from '../../../common/generalEnums';
 import { studentsData } from '../../../common/studentEnums';
 import { ToastContainer, toast } from 'react-toastify';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const StudentRegister = () => {
 
@@ -19,6 +19,9 @@ const StudentRegister = () => {
     handleSubmit,
     formState: { errors },
     control,
+    getValues,
+    setValue,
+    watch,
   } = useForm<Student>();
   const navigate = useNavigate();
   const { setLoading } = useLoader();
@@ -84,6 +87,12 @@ const StudentRegister = () => {
     setLoading(false);
   };
 
+  useEffect(() => {
+    let birthDate = getValues('birth_date');
+    let age = new Date().getFullYear() - new Date(birthDate).getFullYear();
+    setValue('age',age);
+  }, [watch('birth_date')]);
+
 
   return (
     <div className='student-register p-3'>
@@ -143,6 +152,7 @@ const StudentRegister = () => {
                 label='Edad'
                 field='age'
                 type='number'
+                disabled
                 register={register}
                 rules={{ required: 'This field is required' }}
                 errors={errors}
@@ -163,13 +173,26 @@ const StudentRegister = () => {
           {/* ----------------------------   New   ------------------------- */}
           <div className="row mb-4">
             <div className="col-6">
-              <TextField
+              {/* <TextField
                 label='Nacionalidad'
                 field='nationality'
                 type='text'
                 register={register}
                 rules={{ required: 'This field is required' }}
                 errors={errors}
+              /> */}
+              <SelectField
+                label='Nacionalidad'
+                field='nationality'
+                errors={errors}
+                control={control}
+                options={
+                  [
+                    { value: 'Mexicana', label: 'Mexicana' },
+                    { value: 'Estadounidense', label: 'Estadounidense' },
+                    { value: 'Otra', label: 'Otra' },
+                  ]
+                }
               />
             </div>
             <div className="col-6">
@@ -177,6 +200,7 @@ const StudentRegister = () => {
                 label='CURP'
                 field='curp'
                 type='text'
+                maxLength='18'
                 register={register}
                 rules={{ required: 'This field is required' }}
                 errors={errors}
@@ -278,6 +302,7 @@ const StudentRegister = () => {
                 field="tutor_phone"
                 register={register}
                 type='text'
+                maxLength='10'
                 rules={{ required: 'This field is required' }}
                 errors={errors}
               />
@@ -395,18 +420,30 @@ const StudentRegister = () => {
                 field="emergency_contact_phone_1"
                 register={register}
                 type='text'
+                maxLength='10'
                 rules={{ required: 'This field is required' }}
                 errors={errors}
               />
             </div>
             <div className="col-4">
-              <TextField
-                label="Parentesco"
-                field="emergency_contact_relationship_1"
-                register={register}
-                type='text'
-                rules={{ required: 'This field is required' }}
+              <SelectField
+                label='Parentesco'
+                field='emergency_contact_relationship_1'
                 errors={errors}
+                control={control}
+                options={
+                  [
+                    { value: 'Padre', label: 'Padre' },
+                    { value: 'Madre', label: 'Madre' },
+                    { value: 'Hermano', label: 'Hermano' },
+                    { value: 'Hermana', label: 'Hermana' },
+                    { value: 'Abuelo', label: 'Abuelo' },
+                    { value: 'Abuela', label: 'Abuela' },
+                    { value: 'Tio', label: 'Tio' },
+                    { value: 'Tia', label: 'Tia' },
+                    { value: 'Otro', label: 'Otro' },
+                  ]
+                }
               />
             </div>
           </div>
@@ -427,18 +464,30 @@ const StudentRegister = () => {
                 field="emergency_contact_phone_2"
                 register={register}
                 type='text'
+                maxLength='10'
                 rules={{ required: 'This field is required' }}
                 errors={errors}
               />
             </div>
             <div className="col-4">
-              <TextField
-                label="Parentesco"
-                field="emergency_contact_relationship_2"
-                register={register}
-                type='text'
-                rules={{ required: 'This field is required' }}
+              <SelectField
+                label='Parentesco'
+                field='emergency_contact_relationship_2'
                 errors={errors}
+                control={control}
+                options={
+                  [
+                    { value: 'Padre', label: 'Padre' },
+                    { value: 'Madre', label: 'Madre' },
+                    { value: 'Hermano', label: 'Hermano' },
+                    { value: 'Hermana', label: 'Hermana' },
+                    { value: 'Abuelo', label: 'Abuelo' },
+                    { value: 'Abuela', label: 'Abuela' },
+                    { value: 'Tio', label: 'Tio' },
+                    { value: 'Tia', label: 'Tia' },
+                    { value: 'Otro', label: 'Otro' },
+                  ]
+                }
               />
             </div>
           </div>

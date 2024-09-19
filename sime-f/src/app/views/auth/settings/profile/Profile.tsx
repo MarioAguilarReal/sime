@@ -42,7 +42,7 @@ const Profile = () => {
 
   useEffect(() => {
     loadData();
-  });
+  }, []);
 
   return (
     <div className='profile'>

@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { PATTERNS } from "../../../components/shared/FormInputs/patterns";
 import { generalData } from "../../../common/generalData";
 import { useLoader } from "../../../Global/Context/globalContext";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const RegisterUser = () => {
   const {
@@ -19,6 +19,7 @@ const RegisterUser = () => {
     formState: { errors },
     control,
     getValues,
+    setValue,
     watch,
   } = useForm<User>();
   const navigate = useNavigate();
@@ -64,6 +65,13 @@ const RegisterUser = () => {
     setLoading(false);
   };
 
+  useEffect(() => {
+    let birthDate = watch("birth_date");
+    let age = new Date().getFullYear() - new Date(birthDate).getFullYear();
+    setValue("age", age);
+
+  }, [watch("birth_date")]);
+
   return (
     <div className="User-Register p-3">
       <h1>Registrar Usuario</h1>
@@ -80,7 +88,7 @@ const RegisterUser = () => {
                 field="first_name"
                 type="text"
                 register={register}
-                rules={{ required: "Este campo es requerido" }}
+                rules={{ required: "Este campo es requerido"}}
                 errors={errors}
               />
             </div>
@@ -112,7 +120,7 @@ const RegisterUser = () => {
                 field="birth_date"
                 type="date"
                 register={register}
-                rules={{ required: "Este campo es requerido" }}
+                rules={{ required: "Este campo es requerido"}}
                 errors={errors}
               />
             </div>
@@ -124,6 +132,7 @@ const RegisterUser = () => {
                 register={register}
                 rules={{ required: "Este campo es requerido" }}
                 errors={errors}
+                disabled={true}
               />
             </div>
             <div className="col-4">
@@ -157,6 +166,7 @@ const RegisterUser = () => {
                 label="Telefono"
                 field="phone"
                 type="text"
+                maxLength="10"
                 register={register}
                 rules={{ required: "Este campo es requerido" }}
                 errors={errors}

@@ -6,7 +6,6 @@ import "./Login.scss";
 import { set, useForm } from "react-hook-form";
 import { ToastContainer, toast } from "react-toastify";
 import { PATTERNS } from "../../../components/shared/FormInputs/patterns";
-import { Link } from "react-router-dom";
 
 interface login {
   email: string;
@@ -91,7 +90,7 @@ const Login = () => {
                 className="form-control"
                 id="email"
                 aria-describedby="emailHelp"
-                placeholder="Email Address"
+                placeholder="Correo Electrónico"
                 {...register("email", {
                   required: true,
                   pattern: {
@@ -110,7 +109,7 @@ const Login = () => {
                   type={showPassword ? "text" : "password"}
                   className="form-control"
                   id="password"
-                  placeholder="Password"
+                  placeholder="Contraseña"
                   {...register("password", { required: true })}
                 />
                 <i

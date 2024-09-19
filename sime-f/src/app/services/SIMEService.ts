@@ -3,6 +3,7 @@ import { environment } from "../environment/environment";
 
 export class SimeService{
   static baseURL = environment.baseURL;
+  // static baseURL = environment.base_URL_Prod;
 
   public static post(path: string, obj:any, headers?: AxiosRequestConfig['headers']): Promise<any> {
     let resp = axios.post(this.baseURL + path, obj, { headers })

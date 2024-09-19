@@ -6,11 +6,10 @@ export const generalData = {
         { value: 3, label: 'Otro' }
     ],
     civil_status: [
-        { value: 1, label: 'Casado' },
-        { value: 2, label: 'Soltero' },
-        { value: 3, label: 'Divorciado' },
-        { value: 4, label: 'Viudo' },
-        { value: 5, label: 'Otro' }
+        { value: 1, label: 'Soltero/a' },
+        { value: 2, label: 'Casado/a' },
+        { value: 3, label: 'Divorciado/a' },
+        { value: 4, label: 'Viudo/a' },
     ],
     roles: [
         { value: 1, label: 'Administrador' },

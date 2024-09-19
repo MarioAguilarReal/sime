@@ -5,6 +5,9 @@ use Illuminate\Support\Facades\App;
 use App\Mail\ChangePasswordMail;
 use App\Models\User;
 
+Route::get('/{any}', function () {
+    return file_get_contents(public_path('index.html'));
+})->where('any', '.*');
 
 /*
 |--------------------------------------------------------------------------
