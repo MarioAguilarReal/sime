@@ -61,7 +61,7 @@ class GroupController extends Controller
             'grade' => 'required',
             'group' => 'required',
             'user_id' => 'required',
-            //'subjects_id' => 'required|array'
+            //'subject_id' => 'required|array'
         ]);
 
         $group = new Group();
@@ -71,7 +71,9 @@ class GroupController extends Controller
         $group->comments = $request->comments;
         $group->save();
 
-        $group->subjects()->attach($request->subjects_id);
+        if ($request->has('subject_id')) {
+            $group->subjects()->attach($request->subject_id);
+        }
 
         $response['data'] = $group;
         $response['message'] = 'Data saved';
@@ -91,7 +93,7 @@ class GroupController extends Controller
             'grade' => 'required',
             'group' => 'required',
             'user_id' => 'required',
-            //'subjects_id' => 'required|array',
+            //'subject_id' => 'required|array',
         ]);
 
         $group = Group::find($id);
@@ -101,7 +103,9 @@ class GroupController extends Controller
         $group->comments = $request->comments;
         $group->save();
 
-        $group->subjects()->sync($request->subjects_id);
+        if ($request->has('subject_id')) {
+            $group->subjects()->attach($request->subject_id);
+        }
 
         $response['data'] = $group;
         $response['message'] = 'Data updated';

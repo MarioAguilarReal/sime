@@ -9,6 +9,7 @@ import { Classe } from "../../../../interfaces/school/Classe";
 import { Group } from "../../../../interfaces/school/Group";
 import { User } from "../../../../interfaces/user/User";
 import { studentsData } from "../../../../common/studentEnums";
+import { ClassesService } from "../../../../services/school/ClassesService";
 
 interface ModalProps {
   show: boolean;
@@ -23,6 +24,7 @@ interface ModalProps {
 const ModalCreate = (props: ModalProps) => {
   const { show, type, onClose, onFunct, users, funct, propClass } = props;
   const [usersOptions, setUsers] = useState([] as User[]);
+  const [classesOptions, setClassesOptions] = useState([] as Classe[]);
 
   const titleMode = funct === "create" ? "Crear" : "Editar";
   const title = type === "group" ? `${titleMode} Grupo` : `${titleMode} Clase`;
@@ -37,6 +39,9 @@ const ModalCreate = (props: ModalProps) => {
   } = useForm<Classe & Group>();
 
   const handleOnSubmit = (data: Classe | Group) => {
+    if (data.subject_id) {
+      data.subject_id = data.subject_id.map(subject => subject.valueOf());
+    }
     reset();
     if (funct === "create") {
       onFunct(data);
@@ -46,6 +51,14 @@ const ModalCreate = (props: ModalProps) => {
   }
 
   useEffect(() => {
+
+    const fetchClasses = async () => {
+      const resp = await ClassesService.getClasses();
+      if (resp.status === 200) {
+        setClassesOptions(resp.data);
+      }
+    };
+    fetchClasses();
     setUsers(users);
     if (funct === "edit") {
       setValue("user_id", propClass.user_id);
@@ -54,6 +67,7 @@ const ModalCreate = (props: ModalProps) => {
         setValue("grade", group.grade);
         setValue("group", group.group);
         setValue("comments", group.comments);
+        setValue("subject_id", propClass.subject_id || []);
       }
       if (type === "classe") {
         const classe = propClass as Classe; // Add type assertion here
@@ -97,8 +111,6 @@ const ModalCreate = (props: ModalProps) => {
       );
     }
   };
-
-  useEffect(() => { }, [props]);
 
   return (
     <div>
@@ -199,6 +211,22 @@ const ModalCreate = (props: ModalProps) => {
                         field="comments"
                         type="text"
                         register={register}
+                      />
+                    </div>
+                  </div>
+                  <div className="row mb-4">
+                    <div className="col-12">
+                      <SelectField
+                        label="Materias"
+                        field="subject_id"
+                        errors={errors}
+                        control={control}
+                        options={classesOptions.map(subject => ({
+                          value: subject.id,
+                          label: subject.name
+                        }))}
+                        rules={{ required: "Este campo es requerido" }}
+                        multiSelect // Propiedad para habilitar la selección múltiple
                       />
                     </div>
                   </div>
