@@ -16,7 +16,8 @@ class DatabaseSeeder extends Seeder
 
         \App\Models\User::create([
             'first_name' => 'Mario',
-            'last_name' => 'Aguilar',
+            'paternal_surname' => 'Aguilar',
+            'maternal_surname' => 'Real',
             'birth_date' => '1990-01-01',
             'age' => 30,
             'gender' => 1,
@@ -27,6 +28,22 @@ class DatabaseSeeder extends Seeder
             'role' => 1,
             'email' => 'marioaguilar@mailinator.com',
             'password' => bcrypt('M4r10r34l'),
+        ]);
+
+        \App\Models\User::create([
+            'first_name' => 'Fer',
+            'paternal_surname' => 'Ugalde',
+            'maternal_surname' => 'Garduño',
+            'birth_date' => '1990-01-01',
+            'age' => 30,
+            'gender' => 1,
+            'photo' => '',
+            'address' => '123 Main St',
+            'phone' => '123-456-7890',
+            'civil_status' => 1,
+            'role' => 1,
+            'email' => 'fer@fer.com',
+            'password' => bcrypt('Fernanda123'),
         ]);
     }
 }

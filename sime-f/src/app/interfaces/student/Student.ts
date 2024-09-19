@@ -2,7 +2,8 @@ export interface Student{
     //Student
     id?: number;
     first_name: string;
-    last_name: string;
+    maternal_surname: string;
+    paternal_surname: string;
     photo?: string;
     birth_date: Date;
     gender: number;

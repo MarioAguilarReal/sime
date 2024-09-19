@@ -91,7 +91,7 @@ const ModalCreate = (props: ModalProps) => {
     }
   };
 
-  useEffect(() => {}, [props]);
+  useEffect(() => { }, [props]);
 
   return (
     <div>
@@ -132,7 +132,7 @@ const ModalCreate = (props: ModalProps) => {
                     errors={errors}
                     control={control}
                     options={usersOptions?.map((user) => {
-                      return { value: user.id, label: user.first_name + " " + user.last_name };
+                      return { value: user.id, label: user.first_name + " " + user.paternal_surname + " " + user.maternal_surname };
                     })}
                     rules={{ required: "Este campo es requerido" }}
                   />

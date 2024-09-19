@@ -47,7 +47,7 @@ const Profile = () => {
   return (
     <div className='profile'>
       <div className="navigation">
-        <button className='button' onClick={() => navigate('/dashboard') }>
+        <button className='button' onClick={() => navigate('/dashboard')}>
           <i className='bi bi-chevron-left' /><i className="bi bi-house" />
           Inicio
         </button>
@@ -59,7 +59,7 @@ const Profile = () => {
       </div>
       <div className="user-information">
         <div className="user-data">
-          <p className='name'>{user?.first_name} {user?.last_name}</p>
+          <p className='name'>{user?.first_name} {user?.paternal_surname} {user.maternal_surname}</p>
           <p className='mail'>{user?.email}</p>
           <p className='role'>{user?.role === 1 ? 'Administrador' : 'Usuario'}</p>
         </div>

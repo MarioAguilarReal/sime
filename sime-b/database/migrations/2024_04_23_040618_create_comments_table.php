@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer('commentType')->nullable()->constrained();
             $table->string('comment');
-            $table->integer('by');
+            $table->string('by');
             $table->integer('userRoleCreator');
             $table->integer('idStudent');
             $table->timestamps();

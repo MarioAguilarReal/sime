@@ -51,7 +51,7 @@ const ViewStudentComments = () => {
     const formData = new FormData();
     formData.append('comment', data.comment);
     formData.append('idStudent', student?.id?.toString() || '');
-    formData.append('by', user?.first_name + ' ' + user?.last_name || '');
+    formData.append('by', user?.first_name + ' ' + user?.paternal_surname + ' ' + user?.paternal_surname || '');
     formData.append('userRoleCreator', user?.role?.toString() || '');
 
     console.log(formData);
@@ -121,7 +121,7 @@ const ViewStudentComments = () => {
   return (
     <div className='student-comments'>
       <h1>Comentarios</h1>
-      <h5><b>Alumno: </b>{student?.first_name} {student?.last_name}</h5>
+      <h5><b>Alumno: </b>{student?.first_name + ' ' + student?.paternal_surname + ' ' + student?.maternal_surname}</h5>
       <div className="form">
         <div className="row mb-2">
           <div className="col-2">

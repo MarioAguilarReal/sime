@@ -83,7 +83,8 @@ class ApiAuthController extends Controller
 
         $request->validate([
             'first_name' => 'required',
-            'last_name' => 'required',
+            'maternal_surname' => 'required',
+            'paternal_surname' => 'required',
             'birth_date' => 'required|date',
             'age' => 'required',
             'gender' => 'required',
@@ -97,7 +98,8 @@ class ApiAuthController extends Controller
 
         $user = User::create([
             'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
+            'maternal_surname' => $request->maternal_surname,
+            'paternal_surname' => $request->paternal_surname,
             'birth_date' => $request->birth_date,
             'age' => $request->age,
             'gender' => $request->gender,
@@ -141,7 +143,8 @@ class ApiAuthController extends Controller
         if ($user) {
             $request->validate([
                 'first_name' => 'required',
-                'last_name' => 'required',
+                'maternal_surname' => 'required',
+                'paternal_surname' => 'required',
                 'birth_date' => 'required|date',
                 'age' => 'required',
                 'gender' => 'required',
@@ -152,7 +155,8 @@ class ApiAuthController extends Controller
             ]);
 
             $user->first_name = $request->first_name;
-            $user->last_name = $request->last_name;
+            $user->maternal_surname = $request->maternal_surname;
+            $user->paternal_surname = $request->paternal_surname;
             $user->birth_date = $request->birth_date;
             $user->age = $request->age;
             $user->gender = $request->gender;
