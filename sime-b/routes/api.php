@@ -36,12 +36,23 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 //Public Routes
 Route::post('/login', [ApiAuthController::class, 'login']);
-
+Route::post('reset-password', [ApiAuthController::class, 'resetPassword']);
 
 
 Route::get('/user/classes/{id}', [ClasseController::class, 'classes_by_user']);
 Route::get('/user/groups/{id}', [GroupController::class, 'groups_by_user']);
+
 //Email Routes
+Route::prefix('email')->group(function () {
+    Route::post('/forget-password', [EmailController::class, 'sendEmailToForgetPassword']);
+    // Route::post('/verify/{id}', [EmailController::class, 'verify']);
+});
+
+//check validate token
+route::prefix('token')->group(function () {
+    Route::post( '/verify-forget-password', [ApiAuthController::class, 'verifyTokenToChangePassword']);
+});
+
 
 
 //Private Routes
@@ -52,9 +63,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/change-password', [ApiAuthController::class, 'changePassword']);
 
-    Route::prefix('email')->group(function () {
-        Route::post('/change-password/{id}', [EmailController::class, 'sendEmailChangePassword']);
-    });
 
     Route::prefix('/user')->group(function () {
         Route::get('/all', [ApiAuthController::class, 'all']);

@@ -8,7 +8,6 @@ import TextField from '../../../components/shared/FormInputs/TextField';
 import SelectField from '../../../components/shared/FormInputs/SelectFIeld';
 import { generalData } from '../../../common/generalEnums';
 import { studentsData } from '../../../common/studentEnums';
-import { PATTERNS } from '../../../components/shared/FormInputs/patterns';
 import { useEffect, useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 
@@ -49,7 +48,8 @@ const EditStudent = () => {
     setLoading(true);
     const formData = new FormData();
     formData.append('first_name', data.first_name);
-    formData.append('last_name', data.last_name);
+    formData.append('maternal_surname', data.maternal_surname);
+    formData.append('paternal_surname', data.paternal_surname);
     formData.append('birth_date', data.birth_date.toString());
     formData.append('age', data.age.toString());
     formData.append('gender', data.gender.toString());
@@ -101,7 +101,8 @@ const EditStudent = () => {
   useEffect(() => {
     if (student) {
       setValue('first_name', student.first_name);
-      setValue('last_name', student.last_name);
+      setValue('maternal_surname', student.maternal_surname);
+      setValue('paternal_surname', student.paternal_surname);
       setValue('birth_date', student.birth_date);
       setValue('age', student.age);
       setValue('gender', student.gender);
@@ -174,19 +175,28 @@ const EditStudent = () => {
             <hr />
           </div>
           <div className="row mb-4">
-            <div className="col-6">
+            <div className="col-4">
               <TextField
-                label="Nombre"
+                label="Nombre(s)"
                 field="first_name"
                 register={register}
                 type='text'
                 errors={errors}
               />
             </div>
-            <div className="col-6">
+            <div className="col-4">
               <TextField
-                label="Apellido"
-                field="last_name"
+                label="Apellido Paterno"
+                field="paternal_surname"
+                register={register}
+                type='text'
+                errors={errors}
+              />
+            </div>
+            <div className="col-4">
+              <TextField
+                label="Apellido Materno"
+                field="maternal_surname"
                 register={register}
                 type='text'
                 errors={errors}
@@ -344,10 +354,10 @@ const EditStudent = () => {
             </div>
             <div className="col-4">
               <TextField
-                label="Edad"
-                field="tutor_age"
+                label="CURP"
+                field="tutor_curp"
                 register={register}
-                type='number'
+                type='text'
                 errors={errors}
               />
             </div>
@@ -387,10 +397,10 @@ const EditStudent = () => {
             </div>
             <div className="col-4">
               <TextField
-                label="CURP"
-                field="tutor_curp"
+                label="Edad"
+                field="tutor_age"
                 register={register}
-                type='text'
+                type='number'
                 errors={errors}
               />
             </div>

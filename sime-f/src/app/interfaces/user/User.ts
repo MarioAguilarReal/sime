@@ -1,7 +1,8 @@
 export interface User{
   id?: number;
   first_name: string;
-  last_name: string;
+  maternal_surname: string;
+  paternal_surname: string;
   birth_date: Date;
   age: number;
   gender:number;

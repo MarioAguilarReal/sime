@@ -33,6 +33,7 @@ import ViewStudentPlanningSkills from "../views/student/PlanningSkills/Overview/
 import EditStudentPlanningSkills from "../views/student/PlanningSkills/Edit/EditStudentPlanningSkills";
 import ViewStudentComments from "../views/student/Comments/ViewStudentComments";
 import SepForm from "../views/form/sepForm";
+import ForgetPassword from "../views/auth/settings/forgetPassword/ForgetPassword";
 
 export const routesConfig: IRoute[] = [
   // Public Routes
@@ -44,17 +45,23 @@ export const routesConfig: IRoute[] = [
   // Private Routes
   { title: 'dashboard', path: '/dashboard', element: Dashboard, private: true },
 
+  // Users
   { title: 'register-user', path: '/register/user', element: RegisterUser, private: true },
   { title: 'edit-user', path: '/edit/user/:id', element: EditUser, private: true },
   { title: 'list-users', path: '/list/users', element: UsersTable, private: true },
   { title: 'user-overview', path: '/user/overview/:id', element: UserOverview, private: true },
 
+  // Auth
+  { title: 'profile', path: '/auth/profile', element: Profile, private: true },
+  { title: 'edit-profile', path: '/auth/edit-profile/:id', element: EditUser, private: true },
+  { title: 'change-password', path: '/auth/change-password/:id', element: ChangePassword, private: true },
+  { title: 'forget-password', path: '/auth/forget-password', element: ForgetPassword, private: false },
+
+  // Students
   { title: 'student-register', path: '/register/student', element: StudentRegister, private: true },
   { title: 'list-students', path: '/list/students', element: StudentsAll, private: true },
   { title: 'student-overview', path: "/student/overview/:id", element: ViewStudent, private: true },
   { title: 'student-edit', path: '/edit/student/:id', element: EditStudent, private: true },
-  { title: 'profile', path: '/auth/profile', element: Profile, private: true },
-
   { title: 'student-data-register', path: '/student/data/register/:id', element: StudentAcademicDataRegister, private: true },
   { title: 'student-data-overview', path: '/student/data/overview/:id', element: ViewStudentAcademicData, private: true },
   { title: 'student-data-edit', path: '/student/data/edit/:id', element: EditStudentAcademicData, private: true },
@@ -81,6 +88,10 @@ export const routesConfig: IRoute[] = [
 
   { title: 'student-comments', path: '/student/comments/:id', element: ViewStudentComments, private: true },
 
+
+  // Groups
   { title: 'groups', path: '/list/groups', element: Groups, private: true },
+
+  // Classes
   { title: 'classes', path: '/list/classes', element: Classes, private: true },
 ]

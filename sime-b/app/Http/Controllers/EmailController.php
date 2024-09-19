@@ -13,28 +13,42 @@ class EmailController extends Controller
 {
     //
 
-    public function sendEmailChangePassword(Request $request, $id)
+    public function sendEmailToForgetPassword(Request $request)
     {
         $response = [
             'status' => 200,
             'message' => '',
         ];
 
-        $user = User::find($id);
+        $request->validate([
+            'email' => 'required|email'
+        ]);
+
+        $user = User::where('email', $request->email)->first();
         if (!$user) {
-            $response['status'] = 404;
-            $response['error'] = 'User not found';
-            return response()->json($response, 404);
+            $response['status'] = 203;
+            $response['message'] = 'El usuario no existe';
+            return response()->json($response, 203);
         }
         // generate token and save in password_reset_tokens table as cache
         $token = bin2hex(random_bytes(64));
         Cache::put('password_reset_token'. $user->email, $token, now()->addMinutes(30));
 
-        Mail::to($user->email)->send(new ChangePasswordMail($user, $token));
+        try {
+            Mail::send('mail.change-password', ['user' => $user, 'token' => $token], function ($message) use ($user) {
+                $message->to($user->email);
+                $message->subject('Restablecer contraseña');
+            });
 
-        $response['message'] = 'Email sent successfully';
+            $response['status'] = 200;
+            $response['message'] = 'Se ha enviado un correo electrónico para restablecer la contraseña';
+        } catch (\Exception $e) {
+            \Log::error('Error al enviar el correo_ electrónico: ' . $e->getMessage());
+            $response['status'] = 500;
+            $response['message'] = 'Error al enviar el correo electrónico';
+            return response()->json($response, 500);
+        }
 
         return response()->json($response);
-
     }
 }

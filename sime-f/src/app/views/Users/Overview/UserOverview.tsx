@@ -10,22 +10,22 @@ import { Link } from 'react-router-dom';
 
 const UserOverview = () => {
 
-  const {setLoading} = useLoader();
-  const {id} = useParams();
+  const { setLoading } = useLoader();
+  const { id } = useParams();
 
   const [user, setUser] = useState<User>({} as User);
 
-  const loadData = async (userId : number) => {
+  const loadData = async (userId: number) => {
     setLoading(true);
     let resp = await UsersService.getUser(userId);
-    if (resp.status === 200){
+    if (resp.status === 200) {
       setUser(resp.user);
     }
     setLoading(false);
   }
 
   useEffect(() => {
-    if (id){
+    if (id) {
       let userId = parseInt(id);
       loadData(userId);
     }
@@ -36,7 +36,7 @@ const UserOverview = () => {
       <div className="header">
         <h1 className="title">
           <i className="bi bi-person" />
-          Información del Usuario: {user.first_name} {user.last_name}
+          Información del Usuario: {user.first_name + " " + user.paternal_surname + " " + user.maternal_surname}
         </h1>
         <Link to="/list/users" className="btn btn-primary">
           <i className="bi bi-chevron-left" />
@@ -48,7 +48,7 @@ const UserOverview = () => {
           <UserData {...user} />
         </div>
         <div className="info">
-          <UserCard {...user}/>
+          <UserCard {...user} />
         </div>
       </div>
     </div>

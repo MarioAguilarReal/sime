@@ -102,7 +102,7 @@ const ViewStudent = () => {
               </div>
               <hr className="border border-secondary border-1 opacity-75" />
               <p>
-                <b>Nombre:</b> {student.first_name + " " + student.last_name}
+                <b>Nombre:</b> {student.first_name + " " + student.paternal_surname + " " + student.maternal_surname}
               </p>
               <p>
                 <b>Fecha de Nacimiento:</b> {formatDate(student.birth_date)}

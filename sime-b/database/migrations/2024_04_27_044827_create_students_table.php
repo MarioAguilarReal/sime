@@ -15,7 +15,8 @@ return new class extends Migration
             /** Student */
             $table->id();
             $table->string('first_name');
-            $table->string('last_name');
+            $table->string('maternal_surname');
+            $table->string('paternal_surname');
             $table->string('photo')->nullable();
             $table->date('birth_date');
             $table->integer('gender');

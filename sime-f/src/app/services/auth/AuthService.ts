@@ -43,17 +43,35 @@ export class AuthService{
     return resp.data;
   }
 
-  public static async sendEmailToChangePassword(id: number|any):Promise<any>{
+  public static async sendEmailToForgetPassword(email: string|any):Promise<any>{
+    // debugger;
     let resp;
-    if(!localStorage.getItem('token')){
-      return resp = {data: [], success: false, status: 401, message: 'Token not found'} as ApiResponse;
+    resp = await SimeService.post(`/email/forget-password`, {email});
+    if (resp.status === 200){
+      return resp.data;
     }else{
-      resp = await SimeService.post(`/email/change-password/${id}/`, {} , { Authorization: 'Bearer ' + localStorage.getItem('token') });
-      if (resp.status === 200){
-        return resp.data;
-      }else{
-        return resp.data;
-      }
+      return resp.data;
+    }
+}
+
+  public static async verifyToken(obj: any):Promise<any>{
+    let resp;
+    console.log(obj);
+    resp = await SimeService.post('/token/verify-forget-password', obj);
+    if (resp.status === 200){
+      return resp.data;
+    }else{
+      return resp.data;
+    }
+  }
+
+  public static async resetPassword(obj: any):Promise<any>{
+    let resp;
+    resp = await SimeService.post('/reset-password', obj);
+    if (resp.status === 200){
+      return resp.data;
+    }else{
+      return resp.data;
     }
   }
 
