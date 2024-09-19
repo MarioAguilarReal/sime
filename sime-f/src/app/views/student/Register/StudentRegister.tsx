@@ -284,10 +284,10 @@ const StudentRegister = () => {
             </div>
             <div className="col-4">
               <TextField
-                label="Edad"
-                field="tutor_age"
+                label="CURP"
+                field="tutor_curp"
                 register={register}
-                type='number'
+                type='text'
                 rules={{ required: 'This field is required' }}
                 errors={errors}
               />
@@ -331,10 +331,10 @@ const StudentRegister = () => {
             </div>
             <div className="col-4">
               <TextField
-                label="CURP"
-                field="tutor_curp"
+                label="Edad"
+                field="tutor_age"
                 register={register}
-                type='text'
+                type='number'
                 rules={{ required: 'This field is required' }}
                 errors={errors}
               />

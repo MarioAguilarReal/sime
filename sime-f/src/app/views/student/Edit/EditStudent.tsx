@@ -96,7 +96,7 @@ const EditStudent = () => {
     if (!id) return;
     let studentId = parseInt(id);
     loadStudent(studentId);
-  });
+  }, [id]);
 
   useEffect(() => {
     if (student) {
@@ -132,7 +132,7 @@ const EditStudent = () => {
       setValue('emergency_contact_phone_2', student.emergency_contact_phone_2);
       setValue('emergency_contact_relationship_2', student.emergency_contact_relationship_2);
     }
-  });
+  }, [student]);
 
   // const handleEdit = async (student: Student) => {
   //   console.log(student.id);
@@ -354,10 +354,10 @@ const EditStudent = () => {
             </div>
             <div className="col-4">
               <TextField
-                label="Edad"
-                field="tutor_age"
+                label="CURP"
+                field="tutor_curp"
                 register={register}
-                type='number'
+                type='text'
                 errors={errors}
               />
             </div>
@@ -397,10 +397,10 @@ const EditStudent = () => {
             </div>
             <div className="col-4">
               <TextField
-                label="CURP"
-                field="tutor_curp"
+                label="Edad"
+                field="tutor_age"
                 register={register}
-                type='text'
+                type='number'
                 errors={errors}
               />
             </div>
