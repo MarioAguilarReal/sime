@@ -13,6 +13,7 @@ class Group extends Model
         'grade',
         'group',
         'user_id',
+        'comments',
     ];
 
     public function user()

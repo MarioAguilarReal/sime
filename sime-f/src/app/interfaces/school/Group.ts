@@ -5,5 +5,6 @@ export interface Group{
     grade: number;
     group: number;
     user_id: string;
+    comments?: string;
     subjects?: Classe[];
 }

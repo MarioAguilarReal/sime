@@ -59,7 +59,7 @@ class GroupController extends Controller
 
         $request->validate([
             'grade' => 'required',
-            'description' => 'required',
+            'group' => 'required',
             'user_id' => 'required',
             //'subjects_id' => 'required|array'
         ]);
@@ -68,6 +68,7 @@ class GroupController extends Controller
         $group->grade = $request->grade;
         $group->group = $request->group;
         $group->user_id = $request->user_id;
+        $group->comments = $request->comments;
         $group->save();
 
         $group->subjects()->attach($request->subjects_id);
@@ -97,6 +98,7 @@ class GroupController extends Controller
         $group->grade = $request->grade;
         $group->group = $request->group;
         $group->user_id = $request->user_id;
+        $group->comments = $request->comments;
         $group->save();
 
         $group->subjects()->sync($request->subjects_id);

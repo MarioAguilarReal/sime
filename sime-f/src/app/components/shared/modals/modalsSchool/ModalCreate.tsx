@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import { Classe } from "../../../../interfaces/school/Classe";
 import { Group } from "../../../../interfaces/school/Group";
 import { User } from "../../../../interfaces/user/User";
+import { studentsData } from "../../../../common/studentEnums";
 
 interface ModalProps {
   show: boolean;
@@ -52,6 +53,7 @@ const ModalCreate = (props: ModalProps) => {
         const group = propClass as Group;
         setValue("grade", group.grade);
         setValue("group", group.group);
+        setValue("comments", group.comments);
       }
       if (type === "classe") {
         const classe = propClass as Classe; // Add type assertion here
@@ -107,42 +109,100 @@ const ModalCreate = (props: ModalProps) => {
         <Modal.Body>
           <form>
             <div className="row -mb-4">
-              <div className="col-12">
-                <TextField
-                  label="Nombre"
-                  field="name"
-                  type="text"
-                  register={register}
-                  rules={{ required: "Este campo es requerido" }}
-                />
-                <p className="text-danger">{errors.name?.message}</p>
-              </div>
-              <div className="row mb-4">
-                <div className="col-12">
-                  <TextField
-                    label="Descripción"
-                    field="description"
-                    type="text"
-                    register={register}
-                    rules={{ required: "Este campo es requerido" }}
-                  />
-                  <p className="text-danger">{errors.description?.message}</p>
+              {type === "classe" ?
+                <div>
+                  <div className="col-12">
+                    <TextField
+                      label="Nombre"
+                      field="name"
+                      type="text"
+                      register={register}
+                      rules={{ required: "Este campo es requerido" }}
+                    />
+                    <p className="text-danger">{errors.name?.message}</p>
+                  </div>
+                  <div className="row mb-4">
+                    <div className="col-12">
+                      <TextField
+                        label="Descripción"
+                        field="description"
+                        type="text"
+                        register={register}
+                        rules={{ required: "Este campo es requerido" }}
+                      />
+                      <p className="text-danger">{errors.description?.message}</p>
+                    </div>
+                  </div>
+                  <div className="row mb-4">
+                    <div className="col-12">
+                      <SelectField
+                        label="Usuario"
+                        field="user_id"
+                        errors={errors}
+                        control={control}
+                        options={usersOptions?.map((user) => {
+                          return { value: user.id, label: user.first_name + " " + user.last_name };
+                        })}
+                        rules={{ required: "Este campo es requerido" }}
+                      />
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div className="row mb-4">
-                <div className="col-12">
-                  <SelectField
-                    label="Usuario"
-                    field="user_id"
-                    errors={errors}
-                    control={control}
-                    options={usersOptions?.map((user) => {
-                      return { value: user.id, label: user.first_name + " " + user.last_name };
-                    })}
-                    rules={{ required: "Este campo es requerido" }}
-                  />
-                </div>
-              </div>
+                :
+                <div>
+                  <div className="row mb-4">
+                    <div className="col-12">
+                      <SelectField
+                        label="Grado"
+                        field="grade"
+                        errors={errors}
+                        control={control}
+                        options={studentsData.grade?.map((grade) => {
+                          return { value: grade.value, label: grade.label };
+                        })}
+                        rules={{ required: "Este campo es requerido" }}
+                      />
+                    </div>
+                  </div>
+                  <div className="row mb-4">
+                    <div className="col-12">
+                      <SelectField
+                        label="Grupo"
+                        field="group"
+                        errors={errors}
+                        control={control}
+                        options={studentsData.group?.map((group) => {
+                          return { value: group.value, label: group.label };
+                        })}
+                        rules={{ required: "Este campo es requerido" }}
+                      />
+                    </div>
+                  </div>
+                  <div className="row mb-4">
+                    <div className="col-12">
+                      <SelectField
+                        label="Tutor del Grupo"
+                        field="user_id"
+                        errors={errors}
+                        control={control}
+                        options={usersOptions?.map((user) => {
+                          return { value: user.id, label: user.first_name + " " + user.last_name };
+                        })}
+                        rules={{ required: "Este campo es requerido" }}
+                      />
+                    </div>
+                  </div>
+                  <div className="row mb-4">
+                    <div className="col-12">
+                      <TextField
+                        label="Comentarios hacia el grupo"
+                        field="comments"
+                        type="text"
+                        register={register}
+                      />
+                    </div>
+                  </div>
+                </div>}
             </div>
             {getModalType()}
           </form>

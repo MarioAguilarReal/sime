@@ -16,6 +16,7 @@ return new class extends Migration
             $table->integer('grade');
             $table->integer('group');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->text('comments')->nullable();
             $table->timestamps();
         });
     }

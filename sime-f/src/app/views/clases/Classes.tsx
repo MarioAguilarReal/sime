@@ -8,6 +8,7 @@ import { User } from "../../interfaces/user/User";
 import { useLoader } from "../../Global/Context/globalContext";
 import { toast } from "react-toastify";
 import { ClassesService } from "../../services/school/ClassesService";
+import { Group } from "../../interfaces/school/Group";
 
 const Classes = () => {
   const [classes, setClasses] = useState([] as Classe[]);
@@ -17,13 +18,13 @@ const Classes = () => {
   const [propClass, setPropClass] = useState({} as Classe)
 
   const navigate = useNavigate();
-  const {setLoading} = useLoader();
+  const { setLoading } = useLoader();
 
   const handleCreate = async (data: Classe) => {
     setLoading(true);
     const resp = await ClassesService.register(data);
 
-    if (resp.status === 200){
+    if (resp.status === 200) {
       toast.success("Materia creada correctamente");
       const newClasses = [...classes];//clonar el array
       let newId = resp.data.id;
@@ -32,7 +33,7 @@ const Classes = () => {
       setClasses(newClasses);//actualizar el estado con la finalidad de volver a cargar la tabla desde el servidor
       setShowModal(!showModal);
 
-    }else{
+    } else {
       toast.error("Error al crear la materia");
     }
     setLoading(false);
@@ -43,7 +44,7 @@ const Classes = () => {
     setLoading(true);
     const resp = await ClassesService.update(data, data.id as number);
 
-    if (resp.status === 200){
+    if (resp.status === 200) {
       toast.success("Materia actualizada correctamente");
       const newClasses = classes.map((classe) => {
         if (classe.id === data.id) {
@@ -52,7 +53,7 @@ const Classes = () => {
         return classe;
       });
       setClasses(newClasses);
-    }else{
+    } else {
       toast.error("Error al actualizar la materia");
     }
     setShowModal(!showModal);
@@ -63,11 +64,11 @@ const Classes = () => {
   const handleDelete = async (id: number) => {
     setLoading(true);
     const resp = await ClassesService.delete(id);
-    if (resp.status === 200){
+    if (resp.status === 200) {
       toast.success("Materia eliminada correctamente");
       const newClasses = classes.filter((classe) => classe.id !== id);
       setClasses(newClasses);
-    }else{
+    } else {
       toast.error("Error al eliminar la materia");
     }
     setLoading(false);
@@ -79,13 +80,13 @@ const Classes = () => {
     let resp = await UsersService.getUsers();
     if (resp.status === 200) {
       setUsers(resp.users);
-    }else{
+    } else {
       toast.error("Error al cargar los usuarios");
     }
     let resp2 = await ClassesService.getClasses();
     if (resp2.status === 200) {
       setClasses(resp2.data);
-    }else{
+    } else {
       toast.error("Error al cargar las materias");
     }
     setLoading(false);
@@ -133,13 +134,13 @@ const Classes = () => {
                       <td>{classe.id}</td>
                       <td>{classe.name}</td>
                       <td>{classe.description}</td>
-                      <td>{users.find((user) => user?.id === parseInt(classe?.user_id))?.first_name }</td>
+                      <td>{users.find((user) => user?.id === parseInt(classe?.user_id))?.first_name}</td>
                       <td>{classe.max_students}</td>
                       <td>{classe.status ? "Activo" : "Inactivo"}</td>
                       <td>
                         <button
                           className="btn btn-outline-primary me-2"
-                          onClick={() =>showModalType("edit", classe)}
+                          onClick={() => showModalType("edit", classe)}
                         >
                           <i className="bi bi-pencil"></i>
                         </button>
@@ -171,7 +172,13 @@ const Classes = () => {
         funct={funct}
         users={users}
         propClass={propClass}
-        onFunct={(data) => funct === "create" ? handleCreate(data) : handleUpdate(data)}
+        onFunct={(data: Classe | Group) => {
+          if (funct === "create") {
+            handleCreate(data as Classe);
+          } else {
+            handleUpdate(data as Classe);
+          }
+        }}
       />
     </div>
   );

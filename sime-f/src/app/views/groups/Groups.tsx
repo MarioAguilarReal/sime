@@ -18,9 +18,6 @@ const Groups = () => {
   const [funct, setFunct] = useState("create");
   const [propGroup, setPropGroup] = useState({} as Group);
 
-  const [grade, setGrade] = useState<String>();
-  const [groupName, setGroup] = useState<String>();
-
   const navigate = useNavigate();
   const { setLoading } = useLoader();
 
@@ -78,8 +75,6 @@ const Groups = () => {
   const loadData = async () => {
     setLoading(true);
     let resp = await UsersService.getUsers();
-    let grade = studentsData.grade.find(obj => obj.value === Number(resp.users.grade));
-    let group = studentsData.group.find(obj => obj.value === Number(resp.users.group));
     if (resp.status === 200) {
       setUsers(resp.users);
     } else {
@@ -88,8 +83,6 @@ const Groups = () => {
     let resp2 = await GroupsService.getGroups();
     if (resp2.status === 200) {
       setGroups(resp2.data);
-      setGrade(grade?.label);
-      setGroup(group?.label);
     } else {
       toast.error("Error al cargar los grupos");
     }
@@ -128,6 +121,7 @@ const Groups = () => {
                   <th scope="col">ID</th>
                   <th scope="col">Grado</th>
                   <th scope="col">Grupo</th>
+                  <th scope="col">Comentarios del Grupo</th>
                   <th scope="col">Acciones</th>
                 </tr>
               </thead>
@@ -136,21 +130,24 @@ const Groups = () => {
                   return (
                     <tr key={index}>
                       <td>{group.id}</td>
-                      <td>{grade}</td>
-                      <td>{groupName}</td>
+                      <td>{studentsData.grade.find(obj => obj.value === Number(group.grade))?.label}</td>
+                      <td>{studentsData.group.find(obj => obj.value === Number(group.group))?.label}</td>
+                      <td>{group.comments}</td>
                       <td>
-                        <button
-                          className="btn btn-outline-primary me-2"
-                          onClick={() => showModalType("edit", group)}
-                        >
-                          <i className="bi bi-pencil"></i>
-                        </button>
-                        <button
-                          className="btn btn-outline-danger me-2"
-                          onClick={() => handleDelete(group.id as number)}
-                        >
-                          <i className="bi bi-trash"></i>
-                        </button>
+                        <div className="btn-actions">
+                          <button
+                            className="btn btn-outline-primary me-2"
+                            onClick={() => showModalType("edit", group)}
+                          >
+                            <i className="bi bi-pencil"></i>
+                          </button>
+                          <button
+                            className="btn btn-outline-danger me-2"
+                            onClick={() => handleDelete(group.id as number)}
+                          >
+                            <i className="bi bi-trash"></i>
+                          </button>
+                        </div>
                         <button
                           className="btn btn-outline-primary me-2"
                           onClick={() => navigate(`/group/overview/${group.id}`)}
