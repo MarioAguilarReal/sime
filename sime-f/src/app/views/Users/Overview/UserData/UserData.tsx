@@ -5,19 +5,19 @@ import { UsersService } from '../../../../services/users/UsersService';
 import { Classe } from '../../../../interfaces/school/Classe';
 import { Group } from '../../../../interfaces/school/Group';
 
-const UserData = (user : User) => {
+const UserData = (user: User) => {
   const [classes, setClasses] = useState<Classe[]>([]);
   const [groups, setGroups] = useState<Group[]>([]);
 
   const loadData = async () => {
-    if(!user?.id) return;
+    if (!user?.id) return;
 
     let respClases = await UsersService.getUserClasses(user?.id);
     let respGroups = await UsersService.getUserGroups(user?.id);
-    if (respClases.status === 200){
+    if (respClases.status === 200) {
       setClasses(respClases.data);
     }
-    if (respGroups.status === 200){
+    if (respGroups.status === 200) {
       setGroups(respGroups.data);
     }
   }
@@ -46,8 +46,8 @@ const UserData = (user : User) => {
               {groups?.map(group => (
                 <tr key={group.id}>
                   <td>{group.id}</td>
-                  <td>{group.name}</td>
-                  <td>{group.description}</td>
+                  <td>{group.grade}</td>
+                  <td>{group.group}</td>
                   <td>
                     <button className="btn btn-primary">Ver</button>
                   </td>

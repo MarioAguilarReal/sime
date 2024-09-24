@@ -1,0 +1,21 @@
+.btn-actions {
+  display: flex;
+  
+}
+table{
+  thead{
+    .table-secondary{
+      th{
+        background-color: #812A1A;
+        color: #ffffff;
+      }
+    }
+  }
+  tbody{
+    tr{
+      td{
+        background-color: #fffdf5;
+      }
+    }
+  }
+}

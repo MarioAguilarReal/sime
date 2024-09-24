@@ -5,4 +5,5 @@ export interface Classe {
     user_id: string;
     max_students?: number;
     status?: boolean;
+    subject_id?: number[];
 }
