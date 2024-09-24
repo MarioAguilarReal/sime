@@ -1,6 +1,8 @@
 export interface Group{
     id?: number;
-    name: string;
-    description: string;
+    grade: number;
+    group: number;
     user_id: string;
+    comments?: string;
+    subject_id?: number[];
 }

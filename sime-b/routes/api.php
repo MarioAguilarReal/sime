@@ -82,6 +82,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
         Route::prefix('academic-data')->group(function () {
             Route::post('/register/{id}',[ApiStudentsAcademicDataController::class, 'register']);
+            Route::get('/all',[ApiStudentsAcademicDataController::class, 'showAll']);
             Route::get('/{id}',[ApiStudentsAcademicDataController::class, 'show']);
             Route::post('/update/{id}',[ApiStudentsAcademicDataController::class, 'update']);
         });

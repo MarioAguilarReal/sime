@@ -8,6 +8,8 @@ import { useForm } from "react-hook-form";
 import { Classe } from "../../../../interfaces/school/Classe";
 import { Group } from "../../../../interfaces/school/Group";
 import { User } from "../../../../interfaces/user/User";
+import { studentsData } from "../../../../common/studentEnums";
+import { ClassesService } from "../../../../services/school/ClassesService";
 
 interface ModalProps {
   show: boolean;
@@ -16,12 +18,13 @@ interface ModalProps {
   users: User[];
   propClass: Classe | Group;
   onClose: () => void;
-  onFunct: (data: Classe) => void;
+  onFunct: (data: Classe | Group) => void;
 }
 
 const ModalCreate = (props: ModalProps) => {
   const { show, type, onClose, onFunct, users, funct, propClass } = props;
   const [usersOptions, setUsers] = useState([] as User[]);
+  const [classesOptions, setClassesOptions] = useState([] as Classe[]);
 
   const titleMode = funct === "create" ? "Crear" : "Editar";
   const title = type === "group" ? `${titleMode} Grupo` : `${titleMode} Clase`;
@@ -35,7 +38,10 @@ const ModalCreate = (props: ModalProps) => {
     reset,
   } = useForm<Classe & Group>();
 
-  const handleOnSubmit = (data: Classe & Group) => {
+  const handleOnSubmit = (data: Classe | Group) => {
+    if (data.subject_id) {
+      data.subject_id = data.subject_id.map(subject => subject.valueOf());
+    }
     reset();
     if (funct === "create") {
       onFunct(data);
@@ -45,13 +51,29 @@ const ModalCreate = (props: ModalProps) => {
   }
 
   useEffect(() => {
+
+    const fetchClasses = async () => {
+      const resp = await ClassesService.getClasses();
+      if (resp.status === 200) {
+        setClassesOptions(resp.data);
+      }
+    };
+    fetchClasses();
     setUsers(users);
     if (funct === "edit") {
-      setValue("name", propClass.name);
-      setValue("description", propClass.description);
       setValue("user_id", propClass.user_id);
+      console.log(propClass);
+      if (type === "group") {
+        const group = propClass as Group;
+        setValue("grade", group.grade);
+        setValue("group", group.group);
+        setValue("comments", group.comments);
+        setValue("subject_id", propClass.subject_id || []);
+      }
       if (type === "classe") {
         const classe = propClass as Classe; // Add type assertion here
+        setValue("name", classe.name);
+        setValue("description", classe.description);
         setValue("max_students", classe.max_students);
         setValue("status", classe.status);
       }
@@ -91,8 +113,6 @@ const ModalCreate = (props: ModalProps) => {
     }
   };
 
-  useEffect(() => { }, [props]);
-
   return (
     <div>
       <Modal show={show} onHide={onClose}>
@@ -102,42 +122,119 @@ const ModalCreate = (props: ModalProps) => {
         <Modal.Body>
           <form>
             <div className="row -mb-4">
-              <div className="col-12">
-                <TextField
-                  label="Nombre"
-                  field="name"
-                  type="text"
-                  register={register}
-                  rules={{ required: "Este campo es requerido" }}
-                />
-                <p className="text-danger">{errors.name?.message}</p>
-              </div>
-              <div className="row mb-4">
-                <div className="col-12">
-                  <TextField
-                    label="Descripción"
-                    field="description"
-                    type="text"
-                    register={register}
-                    rules={{ required: "Este campo es requerido" }}
-                  />
-                  <p className="text-danger">{errors.description?.message}</p>
+              {type === "classe" ?
+                <div>
+                  <div className="col-12">
+                    <TextField
+                      label="Nombre"
+                      field="name"
+                      type="text"
+                      register={register}
+                      rules={{ required: "Este campo es requerido" }}
+                    />
+                    <p className="text-danger">{errors.name?.message}</p>
+                  </div>
+                  <div className="row mb-4">
+                    <div className="col-12">
+                      <TextField
+                        label="Descripción"
+                        field="description"
+                        type="text"
+                        register={register}
+                        rules={{ required: "Este campo es requerido" }}
+                      />
+                      <p className="text-danger">{errors.description?.message}</p>
+                    </div>
+                  </div>
+                  <div className="row mb-4">
+                    <div className="col-12">
+                      <SelectField
+                        label="Usuario"
+                        field="user_id"
+                        errors={errors}
+                        control={control}
+                        options={usersOptions?.map((user) => {
+                          return { value: user.id, label: user.first_name + " " + user.paternal_surname + " " + user.maternal_surname };
+                        })}
+                        rules={{ required: "Este campo es requerido" }}
+                      />
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div className="row mb-4">
-                <div className="col-12">
-                  <SelectField
-                    label="Usuario"
-                    field="user_id"
-                    errors={errors}
-                    control={control}
-                    options={usersOptions?.map((user) => {
-                      return { value: user.id, label: user.first_name + " " + user.paternal_surname + " " + user.maternal_surname };
-                    })}
-                    rules={{ required: "Este campo es requerido" }}
-                  />
-                </div>
-              </div>
+                :
+                <div>
+                  <div className="row mb-4">
+                    <div className="col-12">
+                      <SelectField
+                        label="Grado"
+                        field="grade"
+                        errors={errors}
+                        control={control}
+                        options={studentsData.grade?.map((grade) => {
+                          return { value: grade.value, label: grade.label };
+                        })}
+                        rules={{ required: "Este campo es requerido" }}
+                      />
+                    </div>
+                  </div>
+                  <div className="row mb-4">
+                    <div className="col-12">
+                      <SelectField
+                        label="Grupo"
+                        field="group"
+                        errors={errors}
+                        control={control}
+                        options={studentsData.group?.map((group) => {
+                          return { value: group.value, label: group.label };
+                        })}
+                        rules={{ required: "Este campo es requerido" }}
+                      />
+                    </div>
+                  </div>
+                  <div className="row mb-4">
+                    <div className="col-12">
+                      <SelectField
+                        label="Tutor del Grupo"
+                        field="user_id"
+                        errors={errors}
+                        control={control}
+                        options={usersOptions?.map((user) => {
+                          return { value: user.id, label: user.first_name + " " + user.paternal_surname + " " + user.maternal_surname };
+                        })}
+                        rules={{ required: "Este campo es requerido" }}
+                      />
+                    </div>
+                  </div>
+                  <div className="row mb-4">
+                    <div className="col-12">
+                      <TextField
+                        label="Comentarios hacia el grupo"
+                        field="comments"
+                        type="text"
+                        register={register}
+                      />
+                    </div>
+                  </div>
+                  <div className="row mb-4">
+                    <div className="col-12">
+                      <SelectField
+                        label="Materias"
+                        field="subject_id"
+                        errors={errors}
+                        control={control}
+                        options={classesOptions.map(subject => {
+                          const user = usersOptions.filter(user => Number(user.id) === Number(subject.user_id))[0];
+                          return {
+                            value: subject.id,
+                            label: subject.name + " por: " + (user ? user.first_name + " " + user.paternal_surname : "Usuario no encontrado")
+                          };
+                        })}
+                        rules={{ required: "Este campo es requerido" }}
+                        multiSelect // Propiedad para habilitar la selección múltiple
+                      />
+                    </div>
+                  </div>
+                </div>}
             </div>
             {getModalType()}
           </form>

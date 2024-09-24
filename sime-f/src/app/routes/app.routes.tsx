@@ -34,6 +34,7 @@ import EditStudentPlanningSkills from "../views/student/PlanningSkills/Edit/Edit
 import ViewStudentComments from "../views/student/Comments/ViewStudentComments";
 import SepForm from "../views/form/sepForm";
 import ForgetPassword from "../views/auth/settings/forgetPassword/ForgetPassword";
+import OverviewGroup from "../views/groups/OverviewGroup";
 
 export const routesConfig: IRoute[] = [
   // Public Routes
@@ -91,6 +92,7 @@ export const routesConfig: IRoute[] = [
 
   // Groups
   { title: 'groups', path: '/list/groups', element: Groups, private: true },
+  { title: 'group', path: 'group/overview/:id', element: OverviewGroup, private: true },
 
   // Classes
   { title: 'classes', path: '/list/classes', element: Classes, private: true },

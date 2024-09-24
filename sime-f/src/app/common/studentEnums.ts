@@ -34,17 +34,11 @@ export const studentsData = {
         { value: 1, label: '1ro' },
         { value: 2, label: '2do' },
         { value: 3, label: '3ro' },
-        { value: 4, label: '4to' },
-        { value: 5, label: '5to' },
-        { value: 6, label: '6to' },
     ],
     group: [
         { value: 1, label: 'A' },
         { value: 2, label: 'B' },
         { value: 3, label: 'C' },
-        { value: 4, label: 'D' },
-        { value: 5, label: 'E' },
-        { value: 6, label: 'F' },
     ],
     conductType: [
         { value: 1, label: 'Conducta' },

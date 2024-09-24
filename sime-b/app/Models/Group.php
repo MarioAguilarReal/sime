@@ -10,13 +10,18 @@ class Group extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name',
-        'description',
-        'user_id'
+        'grade',
+        'group',
+        'user_id',
+        'comments',
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+    public function subjects()
+    {
+        return $this->belongsToMany(Classe::class, 'group_subject', 'group_id', 'subject_id');
     }
 }

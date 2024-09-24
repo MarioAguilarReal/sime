@@ -44,4 +44,18 @@ export class StudentAcademicDataService{
             }
         }
     }
+
+    public static async getAll():Promise<any>{
+        let resp;
+        if(!localStorage.getItem('token')){
+            return resp = {data: [], success: false, status: 401, message: 'Token not found'} as ApiResponse;
+        } else {
+            resp = await SimeService.get('/students/academic-data/all', { Authorization: 'Bearer ' + localStorage.getItem('token') });
+            if (resp.status === 200){
+                return resp.data;
+            } else {
+                return resp.data;
+            }
+        }
+    }
 }
