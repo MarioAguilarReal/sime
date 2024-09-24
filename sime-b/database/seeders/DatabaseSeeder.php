@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
             'phone' => '123-456-7890',
             'civil_status' => 1,
             'role' => 1,
-            'email' => 'marioaguilar@mailinator.com',
+            'email' => 'mario.33a.r@gmail.com',
             'password' => bcrypt('M4r10r34l'),
         ]);
 
@@ -42,7 +42,7 @@ class DatabaseSeeder extends Seeder
             'phone' => '123-456-7890',
             'civil_status' => 1,
             'role' => 1,
-            'email' => 'fer@fer.com',
+            'email' => 'fernanda.ugalde@uabc.edu.mx',
             'password' => bcrypt('Fernanda123'),
         ]);
     }

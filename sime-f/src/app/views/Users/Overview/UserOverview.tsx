@@ -34,14 +34,17 @@ const UserOverview = () => {
   return (
     <div className="user-overview">
       <div className="header">
+        <Link to="/list/users" className="back-btn">
+          <i className="bi bi-chevron-left" />
+          &nbsp; Volver
+        </Link>
         <h1 className="title">
-          <i className="bi bi-person" />
+          <i className="bi bi-person" />&nbsp;
           Información del Usuario: {user.first_name + " " + user.paternal_surname + " " + user.maternal_surname}
         </h1>
-        <Link to="/list/users" className="btn btn-primary">
-          <i className="bi bi-chevron-left" />
-          Volver
-        </Link>
+        <div className="white-space">
+          <p>&nbsp;</p>
+        </div>
       </div>
       <div className="user-content">
         <div className="data">

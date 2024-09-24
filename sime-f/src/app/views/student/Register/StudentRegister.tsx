@@ -91,7 +91,12 @@ const StudentRegister = () => {
     let birthDate = getValues('birth_date');
     let age = new Date().getFullYear() - new Date(birthDate).getFullYear();
     setValue('age',age);
-  }, [watch('birth_date')]);
+
+    let tutorBirthDate = getValues('tutor_birth_date');
+    let tutorAge = new Date().getFullYear() - new Date(tutorBirthDate).getFullYear();
+    setValue('tutor_age', tutorAge);
+
+  }, [watch('birth_date'), watch('tutor_birth_date')]);
 
 
   return (
@@ -357,6 +362,7 @@ const StudentRegister = () => {
             <div className="col-4">
               <TextField
                 label="Edad"
+                disabled
                 field="tutor_age"
                 register={register}
                 type='number'
