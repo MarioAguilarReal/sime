@@ -1,5 +1,5 @@
 export const MASKS = {
-  USPhoneMask : '(999) 999-9999',
+  USPhoneMask : '(664) 444-4444',
   globalPhoneMask : '+9 (999) 999-9999',
 
   zipCodeMask : '99999',

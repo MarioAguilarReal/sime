@@ -60,7 +60,17 @@ const UserCard = (user: User) => {
       </h4>
       <hr className="border border-secondary border-1 opacity-75" />
       <div className="image">
-        <img src={user.photo} alt="student" className="student-photo" />
+        <img src={
+          user.photo ? user.photo : "/assets/images/default-user.jpg"
+        } alt="student" className="student-photo" />
+      </div>
+      <div className="interaction">
+        <button className="btn-ov edit" onClick={() => navigate(`/edit/user/${user?.id}`)}>
+          <i className="bi bi-pencil" /> Editar
+        </button>
+        <button className="btn-ov delete" onClick={() => setShowDeleteModal(true)}>
+          <i className="bi bi-trash" /> Eliminar
+        </button>
       </div>
       <hr className="border border-secondary border-1 opacity-75" />
       <h4>
@@ -95,8 +105,6 @@ const UserCard = (user: User) => {
         {getCivilStatus(user.civil_status)}
       </p>
       <hr className="border border-secondary border-1 opacity-75" />
-      <button className="btn btn-primary me-2" onClick={() => navigate(`/edit/user/${user?.id}`)}>Editar Usuario</button>
-      <button className="btn btn-danger" onClick={() => setShowDeleteModal(true)}>Eliminar Usuario</button>
     </div>
   );
 };

@@ -14,7 +14,6 @@ export const generalData = {
     roles: [
         { value: 1, label: 'Administrador' },
         { value: 2, label: 'Profesor' },
-        { value: 3, label: 'Tutor' }
     ]
 };
 

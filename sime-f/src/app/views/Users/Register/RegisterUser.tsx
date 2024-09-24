@@ -3,7 +3,6 @@ import { User } from "../../../interfaces/user/User";
 import { useForm } from "react-hook-form";
 import TextField from "../../../components/shared/FormInputs/TextField";
 import SelectField from "../../../components/shared/FormInputs/SelectFIeld";
-import { CheckboxList } from "../../../components/shared/FormInputs/CheckBox";
 import { UsersService } from "../../../services/users/UsersService";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";

@@ -15,6 +15,28 @@
       object-fit: scale-down;
     }
   }
+
+  .interaction{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    .btn-ov{
+      border: none;
+      background-color: white;
+      color: var(--primary-color);
+      font-size: 1rem;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.3s ease-in-out;
+
+      &:hover{
+        background-color: var(--primary-color);
+        color: white;
+      }
+    }
+  }
   .u-info{
     font-size: 1.1rem;
     font-weight: 400;
