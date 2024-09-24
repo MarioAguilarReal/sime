@@ -62,6 +62,7 @@ const ModalCreate = (props: ModalProps) => {
     setUsers(users);
     if (funct === "edit") {
       setValue("user_id", propClass.user_id);
+      console.log(propClass);
       if (type === "group") {
         const group = propClass as Group;
         setValue("grade", group.grade);
@@ -221,10 +222,13 @@ const ModalCreate = (props: ModalProps) => {
                         field="subject_id"
                         errors={errors}
                         control={control}
-                        options={classesOptions.map(subject => ({
-                          value: subject.id,
-                          label: subject.name
-                        }))}
+                        options={classesOptions.map(subject => {
+                          const user = usersOptions.filter(user => Number(user.id) === Number(subject.user_id))[0];
+                          return {
+                            value: subject.id,
+                            label: subject.name + " por: " + (user ? user.first_name + " " + user.paternal_surname : "Usuario no encontrado")
+                          };
+                        })}
                         rules={{ required: "Este campo es requerido" }}
                         multiSelect // Propiedad para habilitar la selección múltiple
                       />

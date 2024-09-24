@@ -61,6 +61,26 @@ class ApiStudentsAcademicDataController extends Controller
         return response()->json($response, $response['status']);
     }
 
+    public function showAll(){
+        $response = [
+            'status' => 0,
+            'message' => '',
+            'students_academic_data' => ''
+        ];
+
+        $students_academic_data = StudentAcademicData::all();
+        if ($students_academic_data){
+            $response['status'] = 200;
+            $response['message'] = 'Students academic data fetched successfully';
+            $response['students_academic_data'] = $students_academic_data;
+        }
+        else {
+            $response['status'] = 201;
+            $response['message'] = 'No students academic data found';
+        }
+        return response()->json($response, $response['status']);
+    }
+
     public function show($id_student){
         $response = [
             'status' => 0,

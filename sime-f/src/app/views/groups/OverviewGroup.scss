@@ -1,0 +1,53 @@
+.view-group{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  h1{
+    margin-top: 2rem;
+    color: #812A1A;
+  }
+  .container{
+    display: flex;
+    gap: 4rem;
+    width: 95%;
+    margin: 1rem 0;
+    hr{
+      border: 1.8px solid #B0942D;
+    }
+    b{
+      color: #812A1A;
+    }
+    .btn{
+      background-color: #812A1A;
+      border-color: #812A1A;
+      color: #ffffff;
+    }
+    table{
+      thead{
+        .table-secondary{
+          th{
+            background-color: #812A1A;
+            color: #ffffff;
+          }
+        }
+      }
+      tbody{
+        tr{
+          td{
+            background-color: #fffdf5;
+          }
+        }
+      }
+    }
+    .students-list{
+      flex: 3;
+    }
+    .subjects-list{
+      flex: 2;
+    }
+    .comments{
+      flex: 1;
+    }
+  }
+}
