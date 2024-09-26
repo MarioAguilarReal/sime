@@ -31,6 +31,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+//Configure ENV Frontend URL
+Route::get('/env', function () {
+    return response()->json([
+        'FRONTEND_URL' => env('FRONTEND_URL'),
+    ]);
+});
+
 
 //Auth Routes------------------------------------------
 
