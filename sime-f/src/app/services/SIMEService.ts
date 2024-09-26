@@ -1,9 +1,7 @@
 import axios, { AxiosRequestConfig } from "axios";
-import { environment } from "../environment/environment";
 
 export class SimeService{
-  static baseURL = environment.baseURL;
-  // static baseURL = environment.base_URL_Prod;
+  static baseURL = process.env.REACT_APP_API_URL;
 
   public static post(path: string, obj:any, headers?: AxiosRequestConfig['headers']): Promise<any> {
     let resp = axios.post(this.baseURL + path, obj, { headers })

@@ -36,7 +36,7 @@ class DatabaseSeeder extends Seeder
             'maternal_surname' => 'Garduño',
             'birth_date' => '1990-01-01',
             'age' => 30,
-            'gender' => 1,
+            'gender' => 2,
             'photo' => '',
             'address' => '123 Main St',
             'phone' => '123-456-7890',
@@ -44,6 +44,38 @@ class DatabaseSeeder extends Seeder
             'role' => 1,
             'email' => 'fernanda.ugalde@uabc.edu.mx',
             'password' => bcrypt('Fernanda123'),
+        ]);
+
+        \App\Models\User::create([
+            'first_name' => 'Samantha',
+            'paternal_surname' => 'Jiménez',
+            'maternal_surname' => 'Calleros',
+            'birth_date' => '1990-01-01',
+            'age' => 30,
+            'gender' => 2,
+            'photo' => '',
+            'address' => '123 Main St',
+            'phone' => '123-456-7890',
+            'civil_status' => 1,
+            'role' => 1,
+            'email' => 'samantha.jimenez@uabc.edu.mx',
+            'password' => bcrypt('Samantha123'),
+        ]);
+
+        \App\Models\User::create([
+            'first_name' => 'Gissel',
+            'paternal_surname' => 'Candolfi',
+            'maternal_surname' => 'Arballo',
+            'birth_date' => '1990-01-01',
+            'age' => 30,
+            'gender' => 2,
+            'photo' => '',
+            'address' => '123 Main St',
+            'phone' => '123-456-7890',
+            'civil_status' => 2,
+            'role' => 1,
+            'email' => 'gcandolfi@uabc.edu.mx',
+            'password' => bcrypt('Gissel123'),
         ]);
     }
 }
