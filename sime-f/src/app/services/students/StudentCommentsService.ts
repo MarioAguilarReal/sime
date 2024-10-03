@@ -3,12 +3,12 @@ import { ApiResponse } from "../../interfaces/response/ApiResponse";
 
 export class StudentCommentsService{
 
-  public static async register(obj: FormData, id: number):Promise<any>{
+  public static async register(obj: any, id: number):Promise<any>{
     let resp;
     if (!localStorage.getItem('token')){
       return  resp = {data: [], success: false, status: 401, message: "Token not found"} as ApiResponse;
     } else {
-      resp = await SimeService.post('/students/comments/register/' + id, obj, { Authorization: 'Bearer ' + localStorage.getItem('token'), 'Content-Type': 'multipart/form-data' });
+      resp = await SimeService.post('/students/comments/register/' + id, obj, { Authorization: 'Bearer ' + localStorage.getItem('token'), 'Content-Type': 'application/json' });
       if (resp.status === 200){
           return resp.data;
       } else {
