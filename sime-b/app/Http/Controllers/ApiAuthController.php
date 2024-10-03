@@ -49,7 +49,7 @@ class ApiAuthController extends Controller
         auth()->user()->tokens()->delete();
         $resonse = [
             'status' => 200,
-            'message' => 'Sesion cerrada con éxito'
+            'message' => 'Sesión cerrada con éxito'
         ];
         return response()->json($resonse, 200);
     }

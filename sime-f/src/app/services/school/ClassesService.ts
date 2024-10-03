@@ -9,7 +9,7 @@ export class ClassesService {
     if(!localStorage.getItem('token')){
       return resp = {data: [], success: false, status: 401, message: 'Token not found'} as ApiResponse;
     }else{
-      resp = await SimeService.post('/class/register/', obj, { Authorization: 'Bearer ' + localStorage.getItem('token')});
+      resp = await SimeService.post('/class/register', obj, { Authorization: 'Bearer ' + localStorage.getItem('token')});
       if (resp.status === 200){
         return resp.data;
       }else{
