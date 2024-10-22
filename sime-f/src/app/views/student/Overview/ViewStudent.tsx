@@ -92,7 +92,7 @@ const ViewStudent = () => {
           <div className="buttons">
             <button
               className="btn-edit"
-              onClick={() => navigate(`/edit/student/${student.id}`)}
+              onClick={() => navigate(`/manage/student/${student.id}`)}
             >
               <i className="bi bi-pencil" />
               Editar Estudiante
@@ -243,13 +243,7 @@ const ViewStudent = () => {
                 <button
                   className="btn btn-more"
                   onClick={() => {
-                    if (student.student_academic_data_id) {
-                      navigate(
-                        `/student/data/overview/${student.student_academic_data_id}`
-                      );
-                    } else {
-                      navigate(`/student/data/register/${student.id}`);
-                    }
+                    navigate(`/student/data/overview/${student.id}`);
                   }}
                 >
                   Datos Academicos
@@ -264,15 +258,7 @@ const ViewStudent = () => {
                 <button
                   className="btn btn-more"
                   onClick={() => {
-                    if (student.student_special_needs_id) {
-                      console.log(student.student_special_needs_id);
-                      navigate(
-                        `/student/need/overview/${student.student_special_needs_id}`
-                      );
-                    } else {
-                      console.log(student.student_special_needs_id);
-                      navigate(`/student/need/register/${student.id}`);
-                    }
+                    navigate(`/student/need/overview/${student.id}`);
                   }}
                 >
                   Necesidades Especiales
@@ -290,7 +276,7 @@ const ViewStudent = () => {
                     } else {
                       console.log(student.student_cognitive_skills_id);
                       navigate(
-                        `/student/cognitive/skills/register/${student.id}`
+                        `/student/cognitive/skills/management/${student.id}`
                       );
                     }
                   }}
@@ -309,7 +295,7 @@ const ViewStudent = () => {
                       );
                     } else {
                       console.log(student.student_cognitive_skills_id);
-                      navigate(`/student/social/skills/register/${student.id}`);
+                      navigate(`/student/social/skills/management/${student.id}`);
                     }
                   }}
                 >
@@ -330,7 +316,7 @@ const ViewStudent = () => {
                     } else {
                       console.log(student.student_cognitive_skills_id);
                       navigate(
-                        `/student/alternative/skills/register/${student.id}`
+                        `/student/alternative/skills/management/${student.id}`
                       );
                     }
                   }}
@@ -342,17 +328,7 @@ const ViewStudent = () => {
                 <button
                   className="btn btn-more"
                   onClick={() => {
-                    if (student.student_planning_skills_id) {
-                      console.log(student.student_planning_skills_id);
-                      navigate(
-                        `/student/planning/skills/overview/${student.student_planning_skills_id}`
-                      );
-                    } else {
-                      console.log(student.student_cognitive_skills_id);
-                      navigate(
-                        `/student/planning/skills/register/${student.id}`
-                      );
-                    }
+                    navigate(`/student/planning/skills/overview/${student.id}`);
                   }}
                 >
                   Habilidades de Planificación

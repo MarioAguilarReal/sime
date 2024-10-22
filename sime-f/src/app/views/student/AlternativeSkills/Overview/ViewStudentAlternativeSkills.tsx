@@ -68,10 +68,10 @@ const ViewStudentAlternativeSkills = () => {
       <div className="form">
         <div className="row mb-2">
           <div className="col-2">
-            <button className='btn btn-secondary' onClick={() => navigate(`/student/overview/${student}`)}>Volver</button>
+            <button className='btn btn-secondary' onClick={() => navigate(`/student/overview/${student}`)} disabled={!student}>Volver</button>
           </div>
           <div className="col-4 btn-edit">
-            <button className='btn' onClick={() => navigate(`/student/alternative/skills/edit/${id}`)}>Editar Datos</button>
+            <button className='btn' onClick={() => navigate(`/student/alternative/skills/management/${student}`)} disabled={!student}>Editar Datos</button>
           </div>
         </div>
         <div className="row mb-2 mt-3">
