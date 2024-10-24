@@ -27,10 +27,8 @@ const OverviewGroup = () => {
   const loadGroup = async (groupId: number) => {
     setLoading(true);
     let resp = await GroupsService.getGroup(groupId);
-    //console.log(resp);
     if (resp.status === 200) {
       setGroup(resp.data);
-      console.log(resp.data.subjects);
       setSubjects(resp.data.subjects);
     } else {
       console.log(resp.message);
@@ -41,9 +39,8 @@ const OverviewGroup = () => {
   const loadStudent = async () => {
     setLoading(true);
     let resp = await StudentService.getAll();
-    //console.log(resp.students);
     if (resp.status === 200) {
-      setStudent(resp.students);
+      setStudent(resp.data);
     } else {
       console.log(resp.message);
     }
@@ -156,7 +153,7 @@ const OverviewGroup = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {subjects.length && users.length ? (
+                  {subjects?.length && users?.length ? (
                     subjects.map((subject, index) => {
                       const user = users.find(user => Number(user.id) === Number(subject.user_id));
                       return (

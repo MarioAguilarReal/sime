@@ -37,20 +37,20 @@ const ViewStudent = () => {
     setLoading(true);
     let resp = await StudentService.getStudent(studentId);
     let gender = generalData.gender.find(
-      (obj) => obj.value === Number(resp.student.gender)
+      (obj) => obj.value === Number(resp.data.gender)
     );
     let civil = generalData.civilStatus.find(
-      (obj) => obj.value === Number(resp.student.civil_status)
+      (obj) => obj.value === Number(resp.data.civil_status)
     );
     let trans = studentsData.transType.find(
-      (obj) => obj.value === Number(resp.student.trans_type)
+      (obj) => obj.value === Number(resp.data.trans_type)
     );
     let live = studentsData.booleanType.find(
-      (obj) => obj.value === Number(resp.student.tutor_live_student)
+      (obj) => obj.value === Number(resp.data.tutor_live_student)
     );
 
     if (resp.status === 200) {
-      setStudent(resp.student);
+      setStudent(resp.data);
       setGenderIndex(gender?.label);
       setCivilIndex(civil?.label);
       setTransportIndex(trans?.label);

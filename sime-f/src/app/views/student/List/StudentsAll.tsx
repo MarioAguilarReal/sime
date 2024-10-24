@@ -15,7 +15,7 @@ const StudentsAll = () => {
 
         let resp = await StudentService.getAll();
         if (resp.status === 200) {
-            setStudents(resp.students);
+            setStudents(resp.data);
         }
         setLoading(false);
     }
@@ -50,7 +50,7 @@ const StudentsAll = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {students.map((student, index) => {
+                                {students?.map((student, index) => {
                                     return (
                                         <tr key={index}>
                                             <td>{student.first_name}</td>

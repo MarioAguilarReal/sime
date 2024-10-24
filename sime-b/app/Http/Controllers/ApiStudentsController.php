@@ -13,33 +13,28 @@ use App\Models\SocialSkills;
 
 class ApiStudentsController extends Controller
 {
-    public function all(){
-        $response = [
-            'status' => 0,
-            'message' => '',
-            'students' => ''
-        ];
 
+    private function createResponse($status = 200, $message = '', $data = [])
+    {
+        return response()->json([
+            'status' => $status,
+            'message' => $message,
+            'data' => $data
+        ], $status);
+    }
+
+    public function all(){
         $students = Student::all();
-        if ($students){
-            $response['status'] = 200;
-            $response['message'] = 'Students fetched successfully';
-            $response['students'] = $students;
+
+        if($students->isNotEmpty()){
+            return $this->createResponse(200, 'Estudiantes encontrados', $students);
         }
         else {
-            $response['status'] = 201;
-            $response['message'] = 'No students found';
+            return $this->createResponse(201, 'No hay estudiantes disponibles');
         }
-        return response()->json($response, $response['status']);
     }
 
     public function register(Request $request){
-        $response = [
-            'status' => 0,
-            'message' => '',
-            'students' => ''
-        ];
-
         $request->validate([
             'first_name' => 'required',
             'maternal_surname' => 'required',
@@ -73,38 +68,7 @@ class ApiStudentsController extends Controller
             'emergency_contact_relationship_2' => 'required',
         ]);
 
-        $student = Student::create ([
-            'first_name' => $request->first_name,
-            'maternal_surname' => $request->maternal_surname,
-            'paternal_surname' => $request->paternal_surname,
-            'photo' => 'default.jpg',
-            'birth_date' => $request->birth_date,
-            'gender' => $request->gender,
-            'address' => $request->address,
-            'trans_type' => $request->trans_type,
-            'age' => $request->age,
-            'civil_status' => $request->civil_status,
-            'birth_place' => $request->birth_place,
-            'nationality' => $request->nationality,
-            'curp' => $request->curp,
-            'transport_time' => $request->transport_time,
-            'tutor_name' => $request->tutor_name,
-            'tutor_phone' => $request->tutor_phone,
-            'tutor_age' => $request->tutor_age,
-            'tutor_address' => $request->tutor_address,
-            'tutor_email' => $request->tutor_email,
-            'tutor_birth_date' => $request->tutor_birth_date,
-            'tutor_occupation' => $request->tutor_occupation,
-            'tutor_schooling' => $request->tutor_schooling,
-            'tutor_live_student' => $request->tutor_live_student,
-            'tutor_curp' => $request->tutor_curp,
-            'emergency_contact_name_1' => $request->emergency_contact_name_1,
-            'emergency_contact_phone_1' => $request->emergency_contact_phone_1,
-            'emergency_contact_relationship_1' => $request->emergency_contact_relationship_1,
-            'emergency_contact_name_2' => $request->emergency_contact_name_2,
-            'emergency_contact_phone_2' => $request->emergency_contact_phone_2,
-            'emergency_contact_relationship_2' => $request->emergency_contact_relationship_2,
-        ]);
+        $student = Student::create($request->except('photo'));
 
         if ($request->has('photo')) {
             $baseURL = url('/');
@@ -115,43 +79,32 @@ class ApiStudentsController extends Controller
 
         $student->save();
 
-        $response['status'] = 200;
-        $response['message'] = 'Student registered successfully';
-        $response['students'] = $student;
-
-        return response()->json($response, $response['status']);
+        return $this->createResponse(
+            $student ? 200 : 201,
+            $student ? 'Estudiante registrado' : 'Error al registrar el estudiante',
+            $student
+        );
     }
 
     public function show($id){
-        $response = [
-            'status' => 0,
-            'message' => '',
-            'student' => ''
-        ];
 
         $student = Student::find($id);
 
-        if ($student){
-            $response['status'] = 200;
-            $response['message'] = 'Student fetched successfully';
-            $response['student'] = $student;
+        if($student){
+            return $this->createResponse(200, 'Estudiante encontrado', $student);
         }
         else {
-            $response['status'] = 201;
-            $response['message'] = 'No student found';
+            return $this->createResponse(201, 'Estudiante no encontrado');
         }
-
-        return response()->json($response, $response['status']);
     }
 
-    public function update(Request $request, $id){
-        $response = [
-            'status' == 0,
-            'message' => '',
-            'student' => ''
-        ];
-
+    public function update(Request $request, $id)
+    {
         $student = Student::find($id);
+
+        if(!$student){
+            return $this->createResponse(201, 'Estudiante no encontrado');
+        }
 
         $request->validate([
             'first_name' => 'required',
@@ -185,95 +138,49 @@ class ApiStudentsController extends Controller
             'emergency_contact_relationship_2' => 'required',
         ]);
 
-        if($student){
-            $student->first_name = $request->first_name;
-            $student->maternal_surname = $request->maternal_surname;
-            $student->paternal_surname = $request->paternal_surname;
-            $student->birth_date = $request->birth_date;
-            $student->gender = $request->gender;
-            $student->address = $request->address;
-            $student->trans_type = $request->trans_type;
-            $student->age = $request->age;
-            $student->civil_status = $request->civil_status;
-            $student->birth_place = $request->birth_place;
-            $student->nationality = $request->nationality;
-            $student->curp = $request->curp;
-            $student->transport_time = $request->transport_time;
-            $student->tutor_name = $request->tutor_name;
-            $student->tutor_phone = $request->tutor_phone;
-            $student->tutor_age = $request->tutor_age;
-            $student->tutor_address = $request->tutor_address;
-            $student->tutor_email = $request->tutor_email;
-            $student->tutor_birth_date = $request->tutor_birth_date;
-            $student->tutor_occupation = $request->tutor_occupation;
-            $student->tutor_schooling = $request->tutor_schooling;
-            $student->tutor_live_student = $request->tutor_live_student;
-            $student->tutor_curp = $request->tutor_curp;
-            $student->emergency_contact_name_1 = $request->emergency_contact_name_1;
-            $student->emergency_contact_phone_1 = $request->emergency_contact_phone_1;
-            $student->emergency_contact_relationship_1 = $request->emergency_contact_relationship_1;
-            $student->emergency_contact_name_2 = $request->emergency_contact_name_2;
-            $student->emergency_contact_phone_2 = $request->emergency_contact_phone_2;
-            $student->emergency_contact_relationship_2 = $request->emergency_contact_relationship_2;
+        $student->update($request->except('photo'));
 
-            if($request->has('photo')){
-                //delete old photo
-                if ($student->photo){
-                    $photo = explode('/', $student->photo);
-                    $photo = end($photo);
-                    $path = public_path('images/students/'.$photo);
-                    if (file_exists($path)){
-                        unlink($path);
-                    }
-                }
-                // save photo to storage
-                $baseURL = url('/');
-                $imageName = $baseURL.'/images/students/'.time().$request->first_name.'_student.'.$request->photo->extension();
-                $request->photo->move(public_path('images/students/'),$imageName);
-                $student->photo = $imageName;
-            }
-
-            $student->save();
-
-            $response['status'] = 200;
-            $response['message'] = 'Student updated successfully';
-            $response['student'] = $student;
-
-        } else {
-            $response['status'] = 201;
-            $response['message'] = 'Student not found';
-        }
-
-        return response()->json($response, $response['status']);
-    }
-
-    function delete($id){
-        $response = [
-            'status' => 0,
-            'message' => '',
-            'student' => ''
-        ];
-
-        $student = Student::find($id);
-
-        if ($student){
+        if($request->has('photo')){
+            //delete old photo
             if ($student->photo){
                 $photo = explode('/', $student->photo);
                 $photo = end($photo);
-                $path = public_path('images/student/'.$photo);
+                $path = public_path('images/students/'.$photo);
                 if (file_exists($path)){
                     unlink($path);
                 }
             }
-            $student->delete();
-            $response['status'] = 200;
-            $response['message'] = 'Student deleted successfully';
-        }
-        else {
-            $response['status'] = 201;
-            $response['message'] = 'Student not found';
+
+            // save photo to storage
+            $baseURL = url('/');
+            $imageName = $baseURL.'/images/students/'.time().$request->first_name.'_student.'.$request->photo->extension();
+            $request->photo->move(public_path('images/students/'),$imageName);
+            $student->photo = $imageName;
         }
 
-        return response()->json($response, $response['status']);
+        $student->save();
+
+        return $this->createResponse(200, 'Estudiante actualizado', $student);
+    }
+
+    function delete($id)
+    {
+        $student = Student::find($id);
+
+        if(!$student){
+            return $this->createResponse(201, 'Estudiante no encontrado');
+        }
+
+        if ($student->photo){
+            $photo = explode('/', $student->photo);
+            $photo = end($photo);
+            $path = public_path('images/student/'.$photo);
+            if (file_exists($path)){
+                unlink($path);
+            }
+        }
+        $student->delete();
+
+        return $this->createResponse(200, 'Estudiante eliminado');
     }
 }

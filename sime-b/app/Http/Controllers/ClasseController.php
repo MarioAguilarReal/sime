@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Group;
 use Illuminate\Http\Request;
 use App\Models\Classe;
 use App\Models\User;
@@ -10,158 +11,135 @@ use Illuminate\Support\Facades\Log;
 
 class ClasseController extends Controller
 {
-    //
+    private function createResponse($status=200, $message ='', $data = []){
+        return response() -> json([
+            'status' => $status,
+            'message' => $message,
+            'data' => $data
+        ], $status);
+    }
 
     public function all()
     {
-        $response = [
-            'status' => 200,
-            'message' => '',
-            'data' => []
-        ];
-
         $classes = Classe::all();
-        if($classes) {
-            $response['data'] = $classes;
-            $response['message'] = 'Data found';
-        }else{
-            $response['status'] = 201;
-            $response['message'] = 'No data found';
-        }
-        return response()->json($response, $response['status']);
+
+        return $this->createResponse(
+            $classes->isNotEmpty() ? 200 : 201,
+            $classes->isNotEmpty() ? 'Clases encontradas' : 'No hay clases disponibles',
+            $classes
+        );
     }
 
     public function show($id)
     {
-        $response = [
-            'status' => 200,
-            'message' => '',
-            'data' => []
-        ];
+        $classe = Classe::findOrFail($id);
 
-        $classe = Classe::find($id);
-
-        if($classe) {
-            $response['data'] = $classe;
-            $response['message'] = 'Data found';
-        }else{
-            $response['status'] = 201;
-            $response['message'] = 'No data found';
-        }
-
-        return response()->json($response, $response['status']);
+        return $this->createResponse(
+            $classe ? 200 : 201,
+            $classe ? 'Clase encontrada' : 'Clase no encontrada',
+            $classe
+        );
     }
 
     public function register(Request $request)
     {
-        $response = [
-            'status' => 200,
-            'message' => '',
-            'data' => ''
-        ];
-
         $request->validate([
             'name' => 'required',
             'description' => 'required',
             'user_id' => 'required',
             'max_students' => 'required',
-            'status' => 'required'
         ]);
 
-        $classe = new Classe();
-        $classe->name = $request->name;
-        $classe->description = $request->description;
-        $classe->user_id = $request->user_id;
-        $classe->max_students = $request->max_students;
-        $classe->status = $request->status;
-        $classe->save();
+        $classe = Classe::create($request->except('status')); // create() is a method to insert a record to the database
 
-        $response['data'] = $classe;
-        $response['message'] = 'Data saved successfully';
-
-        return response()->json($response, $response['status']);
+        return $this->createResponse(
+            $classe ? 200 : 201,
+            $classe ? 'Clase registrada' : 'Error al registrar la clase',
+            $classe
+        );
     }
 
     public function edit(Request $request, $id)
     {
-        $response = [
-            'status' => 200,
-            'message' => '',
-            'data' => ''
-        ];
-
         $request->validate([
             'name' => 'required',
             'description' => 'required',
             'user_id' => 'required',
             'max_students' => 'required',
-            'status' => 'required'
         ]);
 
-        $classe = Classe::find($id);
-        $classe->name = $request->name;
-        $classe->description = $request->description;
-        $classe->user_id = $request->user_id;
-        $classe->max_students = $request->max_students;
-        $classe->status = $request->status;
-        $classe->save();
+        $classe = Classe::findOrFail($id);
+        $classe->update($request->except('status'));
 
-        $response['data'] = $classe;
-        $response['message'] = 'Data updated successfully';
-
-        return response()->json($response, $response['status']);
+        return $this->createResponse(
+            $classe ? 200 : 201,
+            $classe ? 'Clase actualizada' : 'Error al actualizar la clase',
+            $classe
+        );
     }
 
     public function delete($id)
     {
-        $response = [
-            'status' => 200,
-            'message' => '',
-            'data' => ''
-        ];
-
-        $classe = Classe::find($id);
+        $classe = Classe::findOrFail($id);
         $classe->delete();
 
-        $response['data'] = $classe;
-        $response['message'] = 'Data deleted successfully';
-
-        return response()->json($response, $response['status']);
+        return $this->createResponse(
+            200,
+            'Clase eliminada'
+        );
     }
 
 
     public function classes_by_user($id)
     {
-        $response = [
-            'status' => 200,
-            'message' => '',
-            'data' => []
-        ];
+        $user = User::findOrFail($id);
+        $classes = $user->classes()->get();
 
-        Log::info('classes_by_user called with user ID: ' . $id);
-
-        $user = User::find($id);
-        if ($user) {
-            Log::info('User found: ' . $user->name);
-
-            $classes = $user->classes;
-            if ($classes->isNotEmpty()) {
-
-                $response['data'] = $classes;
-                $response['message'] = 'Data found';
-            } else {
-
-                $response['status'] = 201;
-                $response['message'] = 'No data found';
-            }
-        } else {
-
-            $response['status'] = 201;
-            $response['message'] = 'No data found';
-        }
-
-        return response()->json($response, $response['status']);
+        return $this->createResponse(
+            $classes->isNotEmpty() ? 200 : 201,
+            $classes->isNotEmpty() ? 'Clases encontradas' : 'No hay clases disponibles',
+            $classes
+        );
     }
 
+    public function available_classes(){
+        $available_classes = Classe::doesntHave('groups')->get();
 
+        return $this->createResponse(
+            $available_classes->isNotEmpty() ? 200 : 201,
+            $available_classes->isNotEmpty() ? 'Clases disponibles' : 'No hay clases disponibles',
+            $available_classes
+        );
+    }
+
+    public function classes_by_group($id){
+        $group = Group::findOrFail($id);
+        $classes = $group->subjects()->get();
+
+        return $this->createResponse(
+            $classes->isNotEmpty() ? 200 : 201,
+            $classes->isNotEmpty() ? 'Clases encontradas' : 'No hay clases disponibles',
+            $classes
+        );
+    }
+
+    public function add_classes_to_group(Request $request, $id){
+        $group = Group::findOrFail($id);
+        $group->subjects()->attach($request->class_id);
+
+        return $this->createResponse(
+            200,
+            count($request->class_id) > 1 ? 'Clases agregadas al grupo' : 'Clase agregada al grupo'
+        );
+    }
+
+    public function remove_classes_from_group(Request $request, $id){
+        $group = Group::findOrFail($id);
+        $group->subjects()->detach($request->class_id);
+
+        return $this->createResponse(
+            200,
+            count($request->class_id) > 1 ? 'Clases eliminadas del grupo' : 'Clase eliminada del grupo'
+        );
+    }
 }

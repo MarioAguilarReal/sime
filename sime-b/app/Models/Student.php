@@ -64,32 +64,32 @@ class Student extends Model
 
     public function learningType()
     {
-        return $this->hasOne(LearningType::class);
+        return $this->hasOne(StudentLearningType::class);
     }
 
     public function cognitiveSkills()
     {
-        return $this->hasOne(CognitiveSkills::class);
+        return $this->hasOne(StudentCognitiveSkills::class);
     }
 
     public function specialNeeds()
     {
-        return $this->hasOne(SpecialNeeds::class);
+        return $this->hasOne(StudentSpecialNeeds::class);
     }
 
     public function socialSkills()
     {
-        return $this->hasOne(SocialSkills::class);
+        return $this->hasOne(StudentSocialSkills::class);
     }
 
     public function alternativeSkills()
     {
-        return $this->hasOne(AlternativeSkills::class);
+        return $this->hasOne(StudentAlternativeSkills::class);
     }
 
     public function planningSkills()
     {
-        return $this->hasOne(PlanningSkills::class);
+        return $this->hasOne(StudentPlanningSkills::class);
     }
 
     public function comments()
