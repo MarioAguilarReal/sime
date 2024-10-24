@@ -9,6 +9,7 @@ import { useLoader } from "../../Global/Context/globalContext";
 import { toast } from "react-toastify";
 import { ClassesService } from "../../services/school/ClassesService";
 import { Group } from "../../interfaces/school/Group";
+import DeleteModal from "../../components/shared/modals/modalDelete/DeleteModal";
 
 const Classes = () => {
   const [classes, setClasses] = useState([] as Classe[]);
@@ -22,6 +23,7 @@ const Classes = () => {
 
   const handleCreate = async (data: Classe) => {
     setLoading(true);
+    data.status = true;//por defecto la materia se crea activa
     const resp = await ClassesService.register(data);
 
     if (resp.status === 200) {
@@ -105,11 +107,15 @@ const Classes = () => {
   }, []);
 
   return (
-    <div className="groups-table">
+    <div className="classes-table">
       <div className="container">
-        <div className="divider d-flex">
+        <div className="divider">
           <h2 className="title">Materias</h2>
-          <button className="btn btn-primary" onClick={() => showModalType('create')}>
+          <button className="btn btn-add"
+            onClick={() => showModalType('create')}
+          >
+            <i className="bi bi-plus-lg"></i>
+            &nbsp;
             Crear Materia
           </button>
         </div>
@@ -138,24 +144,26 @@ const Classes = () => {
                       <td>{classe.max_students}</td>
                       <td>{classe.status ? "Activo" : "Inactivo"}</td>
                       <td>
-                        <button
-                          className="btn btn-outline-primary me-2"
-                          onClick={() => showModalType("edit", classe)}
-                        >
-                          <i className="bi bi-pencil"></i>
-                        </button>
-                        <button
-                          className="btn btn-outline-danger"
-                          onClick={() => handleDelete(classe.id as number)}
-                        >
-                          <i className="bi bi-trash"></i>
-                        </button>
-                        <button
-                          className="btn btn-outline-info"
-                          onClick={() => navigate(`/clases/${classe.id}`)}
-                        >
-                          <i className="bi bi-eye"></i>
-                        </button>
+                        <div className="btn-actions">
+                          <button
+                            className="btn btn-outline-primary me-2"
+                            onClick={() => showModalType("edit", classe)}
+                            >
+                            <i className="bi bi-pencil"></i>
+                          </button>
+                          <button
+                            className="btn btn-outline-danger me-2"
+                            onClick={() => handleDelete(classe.id as number)}
+                            >
+                            <i className="bi bi-trash"></i>
+                          </button>
+                          <button
+                            className="btn btn-outline-info me-2"
+                            onClick={() => navigate(`/clases/${classe.id}`)}
+                            >
+                            <i className="bi bi-eye"></i>
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   );
@@ -180,6 +188,12 @@ const Classes = () => {
           }
         }}
       />
+      {/* <DeleteModal
+        obj="Materia"
+        show={showDeleteModal}
+        onClose={() => setShowDeleteModal(!showDeleteModal)}
+        onDelete={() => handleDelete(propClass.id as number)}
+      /> */}
     </div>
   );
 };

@@ -1,0 +1,54 @@
+.classes-table{
+  .container{
+    padding: 0;
+
+    .divider{
+      display: flex;
+      justify-content: start;
+      align-items: center;
+      gap: 2rem;
+      height: 6rem;
+
+      .title{
+        font-size: 2.5rem;
+        font-weight: 400;
+        color: #812A1A;
+      }
+      .btn-add{
+        background-color: #812A1A;
+        color: #ffffff;
+        border: none;
+        border-radius: 5px;
+        padding: 0.5rem 1rem;
+        font-size: 1rem;
+        font-weight: 400;
+        cursor: pointer;
+        transition: background-color 0.5s;
+
+        &:hover{
+          background-color: #6d2016;
+        }
+      }
+    }
+    .btn-actions {
+      display: flex;
+    }
+  table{
+    thead{
+      .table-secondary{
+        th{
+          background-color: #812A1A;
+          color: #ffffff;
+        }
+      }
+    }
+    tbody{
+      tr{
+        td{
+          background-color: #fffdf5;
+        }
+      }
+    }
+  }
+}
+}

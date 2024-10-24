@@ -8,144 +8,101 @@ use App\Models\Group;
 class GroupController extends Controller
 {
     //
+    private function createResponse($status = 200, $message = '', $data = [])
+    {
+        return response()->json([
+            'status' => $status,
+            'message' => $message,
+            'data' => $data
+        ], $status);
+    }
 
     public function all()
     {
-        $response = [
-            'status' => 200,
-            'message' => '',
-            'data' => []
-        ];
-
         $groups = Group::all();
-        if($groups) {
-            $response['data'] = $groups;
-            $response['message'] = 'Data found';
-        }else{
-            $response['status'] = 201;
-            $response['message'] = 'No data found';
-        }
-        return response()->json($response, $response['status']);
+
+        return $this->createResponse(
+            $groups->isNotEmpty() ? 200 : 201,
+            $groups->isNotEmpty() ? 'Grupos encontrados' : 'No hay grupos disponibles',
+            $groups
+        );
     }
 
     public function show($id)
     {
-        $response = [
-            'status' => 200,
-            'message' => '',
-            'data' => []
-        ];
+        $group = Group::findOrFail($id);
+        $group->subjects;
 
-        $group = Group::with('subjects')->find($id);
-
-        if($group) {
-            $response['data'] = $group;
-            $response['message'] = 'Data found';
-        }else{
-            $response['status'] = 201;
-            $response['message'] = 'No data found';
-        }
-
-        return response()->json($response, $response['status']);
+        return $this->createResponse(
+            $group ? 200 : 201,
+            $group ? 'Grupo encontrado' : 'Grupo no encontrado',
+            $group
+        );
     }
 
     public function register(Request $request)
     {
-        $response = [
-            'status' => 200,
-            'message' => '',
-            'data' => ''
-        ];
-
         $request->validate([
             'grade' => 'required',
             'group' => 'required',
             'user_id' => 'required',
-            //'subject_id' => 'required|array'
         ]);
 
-        $group = new Group();
-        $group->grade = $request->grade;
-        $group->group = $request->group;
-        $group->user_id = $request->user_id;
-        $group->comments = $request->comments;
-        $group->save();
+        $group = Group::create($request->all());
 
         if ($request->has('subject_id')) {
             $group->subjects()->attach($request->subject_id);
         }
 
-        $response['data'] = $group;
-        $response['message'] = 'Data saved';
-
-        return response()->json($response, $response['status']);
+        return $this->createResponse(
+            $group ? 200 : 201,
+            $group ? 'Grupo registrado' : 'Error al registrar el grupo',
+            $group
+        );
     }
 
     public function edit(Request $request, $id)
     {
-        $response = [
-            'status' => 200,
-            'message' => '',
-            'data' => ''
-        ];
-
         $request->validate([
             'grade' => 'required',
             'group' => 'required',
             'user_id' => 'required',
-            //'subject_id' => 'required|array',
         ]);
 
-        $group = Group::find($id);
-        $group->grade = $request->grade;
-        $group->group = $request->group;
-        $group->user_id = $request->user_id;
-        $group->comments = $request->comments;
-        $group->save();
+        $group = Group::findOrFail($id);
+        $group->update($request->all());
 
         if ($request->has('subject_id')) {
-            $group->subjects()->attach($request->subject_id);
+            $group->subjects()->sync($request->subject_id);
         }
 
-        $response['data'] = $group;
-        $response['message'] = 'Data updated';
-
-        return response()->json($response, $response['status']);
+        return $this->createResponse(
+            $group ? 200 : 201,
+            $group ? 'Grupo actualizado' : 'Error al actualizar el grupo',
+            $group
+        );
     }
 
     public function delete($id)
     {
-        $response = [
-            'status' => 200,
-            'message' => '',
-            'data' => ''
-        ];
-
-        $group = Group::find($id);
+        $group = Group::findOrFail($id);
         $group->delete();
 
-        $response['message'] = 'Data deleted';
-
-        return response()->json($response, $response['status']);
+        return $this->createResponse(
+            200,
+            'Grupo eliminado'
+        );
     }
 
 
     public function groups_by_user($id)
     {
-        $response = [
-            'status' => 200,
-            'message' => '',
-            'data' => []
-        ];
-
         $groups = Group::where('user_id', $id)->get();
-        if($groups) {
-            $response['data'] = $groups;
-            $response['message'] = 'Data found';
-        }else{
-            $response['status'] = 201;
-            $response['message'] = 'No data found';
-        }
-        return response()->json($response, $response['status']);
+
+        return $this->createResponse(
+            $groups->isNotEmpty() ? 200 : 201,
+            $groups->isNotEmpty() ? 'Grupos encontrados' : 'No hay grupos disponibles',
+            $groups
+        );
     }
 }

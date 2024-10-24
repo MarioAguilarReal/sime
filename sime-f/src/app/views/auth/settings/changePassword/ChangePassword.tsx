@@ -1,8 +1,8 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import "./ChangePassword.scss";
-import { useLoader } from "../../../../Global/Context/globalContext";
+import { AuthContext, useLoader } from "../../../../Global/Context/globalContext";
 import { useForm } from "react-hook-form";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { AuthService } from "../../../../services/auth/AuthService";
 import { User } from "../../../../interfaces/user/User";
@@ -16,6 +16,7 @@ interface ChangePasswordForm {
 const ChangePassword = () => {
   const navigate = useNavigate();
   const { setLoading } = useLoader();
+  const { dispatchUser }: any = useContext(AuthContext);
   // const location = useLocation();
 
   const [user, setUser] = useState<User>({} as User);
@@ -48,15 +49,27 @@ const ChangePassword = () => {
 
     let payload = { ...data, email: user?.email };
     let resp = await AuthService.changePassword(payload);
+    console.log(resp);
     if (resp.status === 200) {
+      console.log("Contraseña cambiada");
       toast.success(
-        "Contraseña cambiada. Esta ventana se cerrará automaticamente en 5 segundos"
+        "Contraseña cambiada. Por favor, inicie sesión nuevamente."
       );
-      // wait for the toast to show
-      await new Promise((resolve) => setTimeout(resolve, 5000));
-      window.close();
+      logout();
     } else {
       toast.error(resp.message);
+    }
+    setLoading(false);
+  };
+
+  const logout = async () => {
+    setLoading(true);
+    const resp = await AuthService.logout();
+    if (resp.status === 200) {
+      dispatchUser({ type: "LOGOUT" });
+      navigate("/");
+    } else {
+      console.log(resp.message);
     }
     setLoading(false);
   };
@@ -91,8 +104,9 @@ const ChangePassword = () => {
                   <input
                     type={showPassword ? "text" : "password"}
                     className="form-control"
-                    id="password"
-                    placeholder="Password"
+                    id="current-password"
+                    placeholder="Current Password"
+                    autoComplete='off'
                     {...register("currentPassword", { required: true })}
                   />
                   <i
@@ -108,8 +122,9 @@ const ChangePassword = () => {
                   <input
                     type={showPassword ? "text" : "password"}
                     className="form-control"
-                    id="password"
-                    placeholder="Password"
+                    id="new-password"
+                    placeholder="New Password"
+                    autoComplete='off'
                     {...register("newPassword", { required: true })}
                   />
                   <i
@@ -125,8 +140,9 @@ const ChangePassword = () => {
                   <input
                   type={showPassword ? "text" : "password"}
                   className="form-control"
-                  id="confirmPassword"
-                  placeholder="Confirm Password"
+                  id="confirm-new-password"
+                  placeholder="Confirm New Password"
+                  autoComplete='off'
                   {...register("confirmPassword", {
                     required: true,
                     validate: (value) =>

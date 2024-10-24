@@ -45,7 +45,7 @@ Route::get('/env', function () {
 Route::post('/login', [ApiAuthController::class, 'login']);
 Route::post('reset-password', [ApiAuthController::class, 'resetPassword']);
 
-
+// TODO : Add the following routes to the Auth Routes
 Route::get('/user/classes/{id}', [ClasseController::class, 'classes_by_user']);
 Route::get('/user/groups/{id}', [GroupController::class, 'groups_by_user']);
 
@@ -80,7 +80,7 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     //Students Routes
-    Route::prefix('students')->group(function () {
+    Route::prefix('/students')->group(function () {
         Route::get('/all',[ApiStudentsController::class, 'all']);
         Route::post('/register',[ApiStudentsController::class, 'register']);
         Route::get('/{id}',[ApiStudentsController::class, 'show']);
@@ -140,12 +140,16 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/delete/{id}', [GroupController::class, 'delete']);
     });
 
+    Route::get('/class/available-classes/', [ClasseController::class, 'available_classes']);
+
     Route::prefix('/class')->group(function () {
         Route::get('/all', [ClasseController::class, 'all']);
         Route::post('/register', [ClasseController::class, 'register']);
         Route::post('/edit/{id}', [ClasseController::class, 'edit']);
         Route::get('/{id}', [ClasseController::class, 'show']);
         Route::delete('/delete/{id}', [ClasseController::class, 'delete']);
+        //get classes without groups assigned vvvv
+        Route::get('/group/{id}', [ClasseController::class, 'classes_by_group']);
     });
 });
 

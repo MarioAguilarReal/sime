@@ -10,6 +10,7 @@ import { UsersService } from "../../services/users/UsersService";
 import ModalCreate from "../../components/shared/modals/modalsSchool/ModalCreate";
 import { studentsData } from "../../common/studentEnums";
 import { Classe } from "../../interfaces/school/Classe";
+import ModalGroup from "../../components/shared/modals/modalGroup/ModalGroup";
 
 const Groups = () => {
   const [groups, setGroups] = useState([] as Group[]);
@@ -20,6 +21,7 @@ const Groups = () => {
 
   const navigate = useNavigate();
   const { setLoading } = useLoader();
+
 
   const handleCreate = async (data: Group) => {
     setLoading(true);
@@ -37,15 +39,17 @@ const Groups = () => {
       toast.error("Error al crear el grupo");
     }
     setLoading(false);
-  }
+  };
 
   const handleUpdate = async (data: Group) => {
     setLoading(true);
+    console.log(data);
     const resp = await GroupsService.update(data, data.id as number);
+    console.log("data", resp);
     console.log(resp);
     if (resp.status === 200) {
       toast.success("Grupo actualizado correctamente");
-      const newGroups = groups.map(group => {
+      const newGroups = groups.map((group) => {
         if (group.id === data.id) {
           return data;
         }
@@ -57,20 +61,20 @@ const Groups = () => {
     }
     setShowModal(!showModal);
     setLoading(false);
-  }
+  };
 
   const handleDelete = async (id: number) => {
     setLoading(true);
     const resp = await GroupsService.delete(id);
     if (resp.status === 200) {
       toast.success("Grupo eliminado correctamente");
-      const newGroups = groups.filter(group => group.id !== id);
+      const newGroups = groups.filter((group) => group.id !== id);
       setGroups(newGroups);
     } else {
       toast.error("Error al eliminar el grupo");
     }
     setLoading(false);
-  }
+  };
 
   const loadData = async () => {
     setLoading(true);
@@ -87,19 +91,19 @@ const Groups = () => {
       toast.error("Error al cargar los grupos");
     }
     setLoading(false);
-  }
+  };
 
   const showModalType = (funct: string, group?: Group) => {
     setFunct(funct);
     if (funct === "edit") {
-      setPropGroup(group as Group);
+      setPropGroup(group as Group);// si se editara un grupo se setea el grupo para enviarlo como prop al modal
     }
-    setShowModal(!showModal);
-  }
+    setShowModal(!showModal);// se muestra el modal
+  };
 
   useEffect(() => {
     loadData();
-  }, [])
+  }, []);
 
   return (
     <div className="groups-table">
@@ -107,10 +111,12 @@ const Groups = () => {
         <div className="divider">
           <h1 className="title">Grupos</h1>
           <button
-            className="btn btn-primary"
+            className="btn btn-add"
             onClick={() => showModalType("create")}
           >
-            Crear Grupo
+            <i className={`bi ${!showModal ? 'bi-plus' : 'bi-x'}`}></i>
+            &nbsp;
+            { !showModal ? 'Crear Grupo' : 'Cerrar' }
           </button>
         </div>
         <div className="row">
@@ -130,8 +136,20 @@ const Groups = () => {
                   return (
                     <tr key={index}>
                       <td>{group.id}</td>
-                      <td>{studentsData.grade.find(obj => obj.value === Number(group.grade))?.label}</td>
-                      <td>{studentsData.group.find(obj => obj.value === Number(group.group))?.label}</td>
+                      <td>
+                        {
+                          studentsData.grade.find(
+                            (obj) => obj.value === Number(group.grade)
+                          )?.label
+                        }
+                      </td>
+                      <td>
+                        {
+                          studentsData.group.find(
+                            (obj) => obj.value === Number(group.group)
+                          )?.label
+                        }
+                      </td>
                       <td>{group.comments}</td>
                       <td>
                         <div className="btn-actions">
@@ -147,13 +165,15 @@ const Groups = () => {
                           >
                             <i className="bi bi-trash"></i>
                           </button>
+                          <button
+                            className="btn btn-outline-primary me-2"
+                            onClick={() =>
+                              navigate(`/group/overview/${group.id}`)
+                            }
+                          >
+                            <i className="bi bi-eye"></i>
+                          </button>
                         </div>
-                        <button
-                          className="btn btn-outline-primary me-2"
-                          onClick={() => navigate(`/group/overview/${group.id}`)}
-                        >
-                          <i className="bi bi-eye"></i>
-                        </button>
                       </td>
                     </tr>
                   );
@@ -163,24 +183,19 @@ const Groups = () => {
           </div>
         </div>
       </div>
-      <ModalCreate
+      <ModalGroup
         show={showModal}
-        onClose={() => setShowModal(!showModal)}
-        type="group"
-        funct={funct}
+        type={funct}
         users={users}
-        propClass={propGroup}
-        onFunct={(data: Group | Classe) => {
+        propGroup={propGroup}
+        onFunction={(data: Group) => {//function to save or edit a group
           if (funct === "create") {
-            if (data.hasOwnProperty('grade') && data.hasOwnProperty('group')) {
-              handleCreate(data as Group);
-            }
+            handleCreate(data);
           } else {
-            if (data.hasOwnProperty('grade') && data.hasOwnProperty('group')) {
-              handleUpdate(data as Group);
-            }
+            handleUpdate(data);
           }
         }}
+        onClose={() => setShowModal(!showModal)}
       />
     </div>
   );

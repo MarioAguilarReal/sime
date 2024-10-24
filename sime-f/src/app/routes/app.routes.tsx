@@ -3,12 +3,11 @@ import Login from "../views/auth/login/Login";
 import StudentRegister from "../views/student/Register/StudentRegister";
 import Dashboard from "../views/dashboard/Dashboard";
 import StudentsAll from "../views/student/List/StudentsAll";
-import RegisterUser from "../views/Users/Register/RegisterUser";
+import FormUser from "../views/Users/Form/FormUser";
 import UsersTable from "../views/Users/UsersTable/UsersTable";
 import UserOverview from "../views/Users/Overview/UserOverview";
 import ViewStudent from "../views/student/Overview/ViewStudent";
 import EditStudent from "../views/student/Edit/EditStudent";
-import EditUser from "../views/Users/Edit/EditUser";
 import ChangePassword from "../views/auth/settings/changePassword/ChangePassword";
 import Profile from "../views/auth/settings/profile/Profile";
 import Groups from "../views/groups/Groups";
@@ -47,14 +46,14 @@ export const routesConfig: IRoute[] = [
   { title: 'dashboard', path: '/dashboard', element: Dashboard, private: true },
 
   // Users
-  { title: 'register-user', path: '/register/user', element: RegisterUser, private: true },
-  { title: 'edit-user', path: '/edit/user/:id', element: EditUser, private: true },
+  { title: 'register-user', path: '/register/user', element: FormUser, private: true },
+  { title: 'edit-user', path: '/edit/user/:id', element: FormUser, private: true },
   { title: 'list-users', path: '/list/users', element: UsersTable, private: true },
   { title: 'user-overview', path: '/user/overview/:id', element: UserOverview, private: true },
 
   // Auth
   { title: 'profile', path: '/auth/profile', element: Profile, private: true },
-  { title: 'edit-profile', path: '/auth/edit-profile/:id', element: EditUser, private: true },
+  { title: 'edit-profile', path: '/auth/edit-profile/:id', element:FormUser, private: true },
   { title: 'change-password', path: '/auth/change-password/:id', element: ChangePassword, private: true },
   { title: 'forget-password', path: '/auth/forget-password', element: ForgetPassword, private: false },
 

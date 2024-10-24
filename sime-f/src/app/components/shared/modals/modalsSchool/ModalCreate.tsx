@@ -98,7 +98,7 @@ const ModalCreate = (props: ModalProps) => {
               <p className="text-danger">{errors.max_students?.message}</p>
             </div>
           </div>
-          <div className="row mb-4">
+          {/* <div className="row mb-4">
             <div className="col-12">
               <Checkbox
                 label="¿Activo?"
@@ -107,7 +107,7 @@ const ModalCreate = (props: ModalProps) => {
               />
             </div>
             <p className="text-danger">{errors.status?.message}</p>
-          </div>
+          </div> */}
         </div>
       );
     }
@@ -149,7 +149,7 @@ const ModalCreate = (props: ModalProps) => {
                   <div className="row mb-4">
                     <div className="col-12">
                       <SelectField
-                        label="Usuario"
+                        label="Profesor"
                         field="user_id"
                         errors={errors}
                         control={control}

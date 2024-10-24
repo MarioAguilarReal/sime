@@ -317,6 +317,7 @@ const StudentRegister = () => {
                 label="CURP"
                 field="tutor_curp"
                 register={register}
+                maxLength='18'
                 type='text'
                 rules={{ required: 'This field is required' }}
                 errors={errors}
