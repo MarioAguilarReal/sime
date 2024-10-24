@@ -122,24 +122,4 @@ class ClasseController extends Controller
             $classes
         );
     }
-
-    public function add_classes_to_group(Request $request, $id){
-        $group = Group::findOrFail($id);
-        $group->subjects()->attach($request->class_id);
-
-        return $this->createResponse(
-            200,
-            count($request->class_id) > 1 ? 'Clases agregadas al grupo' : 'Clase agregada al grupo'
-        );
-    }
-
-    public function remove_classes_from_group(Request $request, $id){
-        $group = Group::findOrFail($id);
-        $group->subjects()->detach($request->class_id);
-
-        return $this->createResponse(
-            200,
-            count($request->class_id) > 1 ? 'Clases eliminadas del grupo' : 'Clase eliminada del grupo'
-        );
-    }
 }

@@ -157,12 +157,6 @@ const Classes = () => {
                             >
                             <i className="bi bi-trash"></i>
                           </button>
-                          <button
-                            className="btn btn-outline-info me-2"
-                            onClick={() => navigate(`/clases/${classe.id}`)}
-                            >
-                            <i className="bi bi-eye"></i>
-                          </button>
                         </div>
                       </td>
                     </tr>

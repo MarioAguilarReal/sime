@@ -140,16 +140,16 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/delete/{id}', [GroupController::class, 'delete']);
     });
 
-    Route::get('/class/available-classes/', [ClasseController::class, 'available_classes']);
 
-    Route::prefix('/class')->group(function () {
-        Route::get('/all', [ClasseController::class, 'all']);
-        Route::post('/register', [ClasseController::class, 'register']);
-        Route::post('/edit/{id}', [ClasseController::class, 'edit']);
-        Route::get('/{id}', [ClasseController::class, 'show']);
-        Route::delete('/delete/{id}', [ClasseController::class, 'delete']);
+    Route::prefix('class/')->group(function () {
+        Route::get('available-classes/', [ClasseController::class, 'available_classes']);
+        Route::get('all', [ClasseController::class, 'all']);
+        Route::post('register', [ClasseController::class, 'register']);
+        Route::post('edit/{id}', [ClasseController::class, 'edit']);
+        Route::get('{id}', [ClasseController::class, 'show']);
+        Route::delete('delete/{id}', [ClasseController::class, 'delete']);
         //get classes without groups assigned vvvv
-        Route::get('/group/{id}', [ClasseController::class, 'classes_by_group']);
+        Route::get('group/{id}', [ClasseController::class, 'classes_by_group']);
     });
 });
 

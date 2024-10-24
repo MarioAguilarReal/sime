@@ -103,6 +103,7 @@ const ModalGroup = (props: ModalProps) => {
         setValue("grade", propGroup.grade);
         setValue("group", propGroup.group);
         setValue("user_id", propGroup.user_id);
+        setValue("comments", propGroup.comments);
       }
     }else {
       reset();

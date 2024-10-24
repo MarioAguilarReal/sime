@@ -92,6 +92,8 @@ const ModalCreate = (props: ModalProps) => {
                 label="Maximo de Estudiantes"
                 field="max_students"
                 type="number"
+                visible={false}
+                value="30"
                 register={register}
                 rules={{ required: "Este campo es requerido" }}
               />
