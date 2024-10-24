@@ -122,6 +122,7 @@ class ApiStudentsAcademicDataController extends Controller
 
         if ($student_academic_data){
             $student_academic_data->grade_level = $request->grade_level;
+            $student_academic_data->student_id = $request->student_id;
             $student_academic_data->last_grade_average = $request->last_grade_average;
             $student_academic_data->actual_grade_average = $request->actual_grade_average;
             $student_academic_data->behavior = $request->behavior;
