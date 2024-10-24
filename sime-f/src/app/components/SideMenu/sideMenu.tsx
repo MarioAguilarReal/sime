@@ -27,7 +27,7 @@ const SideMenu = (user: User) => {
     setLoading(false);
   };
 
-  useEffect(() => {}, []);
+  useEffect(() => { }, []);
 
   const getMenuItems = () => {
     return [
@@ -55,7 +55,7 @@ const SideMenu = (user: User) => {
       {
         title: "Agregar",
         icon: "bi bi-plus",
-        link: "/register/student/",
+        link: "/manage/student",
         visible: user.role === Roles.ADMIN,
         division: true,
       },
@@ -93,9 +93,8 @@ const SideMenu = (user: User) => {
                 <li className="nav-item" key={index}>
                   <Link
                     to={item.link}
-                    className={`nav-link link-light ${
-                      location.pathname === item.link ? "active" : ""
-                    }`}
+                    className={`nav-link link-light ${location.pathname === item.link ? "active" : ""
+                      }`}
                   >
                     <i className={item.icon} />
                     <p className="item-name">{item.title}</p>

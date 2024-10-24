@@ -21,9 +21,10 @@ const ViewStudentCognitiveSkills = () => {
   const getStudent = async (dataId: number) => {
     setLoading(true);
     let resp = await StudentService.getAll();
-    let returnStudent = resp.students.find((student: Student) => student.student_cognitive_skills_id === dataId);
     if (resp.status === 200) {
-      setStudent(returnStudent.id);
+      let returnStudent = resp.students.find((student: Student) => student.student_cognitive_skills_id === dataId);
+      console.log(returnStudent.id);
+      setStudent(returnStudent);
     }
     setLoading(false);
   }
@@ -67,10 +68,10 @@ const ViewStudentCognitiveSkills = () => {
       <div className="form">
         <div className="row mb-2">
           <div className="col-2">
-            <button className='btn btn-secondary' onClick={() => navigate(`/student/overview/${student}`)}>Volver</button>
+            <button className='btn btn-secondary' onClick={() => navigate(`/student/overview/${student?.id}`)} disabled={!student?.id}>Volver</button>
           </div>
           <div className="col-4 btn-edit">
-            <button className='btn' onClick={() => navigate(`/student/cognitive/skills/edit/${id}`)}>Editar Datos</button>
+            <button className='btn' onClick={() => navigate(`/student/cognitive/skills/management/${student?.id}`)} disabled={!student?.id}>Editar Datos</button>
           </div>
         </div>
         <div className="row mb-2 mt-3">

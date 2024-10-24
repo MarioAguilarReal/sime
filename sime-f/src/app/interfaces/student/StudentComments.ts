@@ -2,7 +2,7 @@ export interface StudentComments{
   id?: number;
   commentType?: number;
   comment: string;
-  by: string;
+  by: number;
   userRoleCreator: number;
   idStudent: number;
 }
