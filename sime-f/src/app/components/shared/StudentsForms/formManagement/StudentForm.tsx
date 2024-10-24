@@ -438,7 +438,6 @@ const StudentForm = (props: FormStudenProps) => {
                 label="CURP"
                 field="tutor_curp"
                 register={register}
-                maxLength='18'
                 type='text'
                 maxLength='18'
                 rules={{ required: 'This field is required' }}

@@ -28,6 +28,12 @@ const Login = () => {
   let email = watch("email");
   let password = watch("password");
 
+  const handleKeyDown = (e: any) => {
+    if (e.key === "Enter" && canLogin) {
+      handleSubmit((data) => handleLogin(data))();
+    }
+  };
+
   const handleLogin = async (data: login) => {
     setLoading(true);
 
@@ -41,9 +47,9 @@ const Login = () => {
     setLoading(false);
   };
 
-  const handleForgetPassword = async  () => {
+  const handleForgetPassword = async () => {
     setLoading(true);
-    if(email){
+    if (email) {
       let resp = await AuthService.sendEmailToForgetPassword(email);
       console.log("resp: ", resp);
       if (resp.status === 200) {
@@ -55,7 +61,7 @@ const Login = () => {
       toast.error("Por favor ingrese su correo electrónico");
     }
     setLoading(false);
-  }
+  };
 
   useEffect(() => {
     if (email && password) {
@@ -66,14 +72,9 @@ const Login = () => {
   }, [email, password]);
 
   useEffect(() => {
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Enter" && canLogin) {
-        handleSubmit((data) => handleLogin(data))();
-      }
-    });
-
+    document.addEventListener("keydown", handleKeyDown);
     return () => {
-      document.removeEventListener("keydown", () => {});
+      document.removeEventListener("keydown", handleKeyDown);
     };
   }, [canLogin]);
 
@@ -123,7 +124,9 @@ const Login = () => {
           </form>
           <div className="forgot-password">
             {/* <a href="/forgot-password">Recuperar Contraseña</a> */}
-            <p role="button" onClick={handleForgetPassword}>Recuperar Contraseña</p>
+            <p role="button" onClick={handleForgetPassword}>
+              Recuperar Contraseña
+            </p>
           </div>
           <button
             className="btn-xl"

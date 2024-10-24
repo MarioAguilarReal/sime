@@ -183,4 +183,42 @@ class ApiStudentsController extends Controller
 
         return $this->createResponse(200, 'Estudiante eliminado');
     }
+
+
+    /**
+     * Functions to manage student group and grade -from here-
+     */
+    function getStudentsWithoutGroupAndGrade(){
+        $students = Student::where('group_id', null)->where('grade_id', null)->get();
+
+        if($students->isNotEmpty()){
+            return $this->createResponse(200, 'Estudiantes encontrados', $students);
+        }
+        else {
+            return $this->createResponse(201, 'No hay estudiantes disponibles');
+        }
+    }
+
+    function setStudentGradeAndGrouop(Request $request, $id){
+        $student = Student::find($id);
+
+        if(!$student){
+            return $this->createResponse(201, 'Estudiante no encontrado');
+        }
+
+        $request->validate([
+            'group_id' => 'required',
+            'grade_id' => 'required',
+        ]);
+
+        $student->group_id = $request->group_id;
+        $student->grade_id = $request->grade_id;
+        $student->save();
+
+        return $this->createResponse(200, 'Estudiante actualizado', $student);
+    }
+
+    /**
+     * Functions to manage student grade and group -up to here-
+     */
 }
