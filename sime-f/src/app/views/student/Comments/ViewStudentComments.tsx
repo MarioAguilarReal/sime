@@ -20,7 +20,7 @@ const ViewStudentComments = () => {
     let resp = await StudentService.getStudent(studentId);
     console.log(resp);
     if (resp.status === 200) {
-      setStudent(resp.student);
+      setStudent(resp.data);
     } else {
       console.log(resp.status);
     }

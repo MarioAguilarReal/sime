@@ -110,7 +110,7 @@ const CommentForm = (props: FormCommentProps) => {
     setLoading(true);
     let resp = await StudentService.getStudent(studentId);
     if (resp.status === 200) {
-      setStudent(resp.student);
+      setStudent(resp.data);
     } else {
       console.log(resp.status);
     }

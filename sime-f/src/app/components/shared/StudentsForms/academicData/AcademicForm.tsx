@@ -135,6 +135,7 @@ const AcademicForm = (props: FormAcademicDataProps) => {
                 errors={errors}
                 control={control}
                 options={studentsData.grade}
+                rules={{ required: 'This field is required' }}
               />
             </div>
             <div className="col-4">
@@ -144,6 +145,7 @@ const AcademicForm = (props: FormAcademicDataProps) => {
                 errors={errors}
                 control={control}
                 options={studentsData.group}
+                rules={{ required: 'This field is required' }}
               />
             </div>
           </div>
@@ -175,6 +177,7 @@ const AcademicForm = (props: FormAcademicDataProps) => {
                 errors={errors}
                 control={control}
                 options={studentsData.conduct}
+                rules={{ required: 'This field is required' }}
               />
             </div>
           </div>

@@ -95,7 +95,7 @@ const ModalGroup = (props: ModalProps) => {
 
 
   useEffect(() => {
-    if(show){
+    if (show) {
 
       loadData();
       setUsers(users);
@@ -105,12 +105,12 @@ const ModalGroup = (props: ModalProps) => {
         setValue("user_id", propGroup.user_id);
         setValue("comments", propGroup.comments);
       }
-    }else {
+    } else {
       reset();
       setAvailableClasses([]);
       setGroupClasses([]);
     }
-    }, [users, show]);
+  }, [users, show]);
 
   return (
     <div className={`modal-group ${show ? "modal-show" : "modal-hide"}`}>
@@ -212,7 +212,7 @@ const ModalGroup = (props: ModalProps) => {
                     {GroupClasses.map((classe, index) => {
                       return (
                         <div key={index} className="class">
-                          <button className="btn-remove" onClick={()=>handleRemoveClass( classe.id )} >
+                          <button className="btn-remove" onClick={() => handleRemoveClass(classe.id)} >
                             <i className="bi bi-x"></i>
                           </button>
                           <p>{classe.name}</p>

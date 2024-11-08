@@ -12,6 +12,7 @@ import { StudentAcademicDataService } from "../../services/students/StudentAcade
 import { studentsData } from "../../common/studentEnums";
 import { User } from "../../interfaces/user/User";
 import { UsersService } from "../../services/users/UsersService";
+import ModalAddStudentToGroup from './../../components/shared/modals/modalAddStudentToGroup/ModalAddStudentToGroup';
 
 const OverviewGroup = () => {
   const { setLoading } = useLoader();
@@ -23,6 +24,8 @@ const OverviewGroup = () => {
   const [academicData, setAcademicData] = useState<StudentAcademicData[]>([]);
   const [studentGroup, setStudentGroup] = useState<Student[]>([]);
   const [users, setUsers] = useState<User[]>([]);
+  const [showModal, setShowModal] = useState(false);
+  const [addStudentsData, setAddStudentsData] = useState<Student[]>([]);
 
   const loadGroup = async (groupId: number) => {
     setLoading(true);
@@ -79,6 +82,10 @@ const OverviewGroup = () => {
     }
   }
 
+  const addStudent = async () => {
+    setShowModal(true);
+  }
+
   useEffect(() => {
     if (id) {
       let groupId = parseInt(id);
@@ -100,8 +107,13 @@ const OverviewGroup = () => {
       <h4>Tutor: {users.filter(user => user.id === group?.user_id).map(user => `${user.first_name} ${user.paternal_surname} ${user.maternal_surname}`).join(', ')}</h4>
       <div className="container">
         <div className="students-list">
-          <h2>Estudiantes</h2>
-          <div className="row mb-2 mt-3">
+          <div className="content-btn">
+            <h2>Estudiantes</h2>
+            <button className="btn btn-add" onClick={() => addStudent()}>
+              <i className={`bi bi-plus`}></i>&nbsp;{'Agregar Alumno'}
+            </button>
+          </div>
+          <div className="row mb-2 mt-2">
             <hr />
           </div>
           <div className="row">
@@ -186,6 +198,13 @@ const OverviewGroup = () => {
           </div>
         </div>
       </div>
+      <ModalAddStudentToGroup
+        show={showModal}
+        studentsList={students}
+        group={group?.group as number}
+        grade={group?.grade as number}
+        onClose={() => setShowModal(false)}
+      />
     </div>
   );
 };

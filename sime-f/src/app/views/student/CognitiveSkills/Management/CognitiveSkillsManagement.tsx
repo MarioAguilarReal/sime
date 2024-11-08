@@ -15,7 +15,7 @@ const CognitiveSkillsManagement = () => {
     setLoading(true);
     let resp = await StudentService.getStudent(dataId);
     if (resp.status === 200) {
-      setStudent(resp.student);
+      setStudent(resp.data);
     }
     setLoading(false);
   };

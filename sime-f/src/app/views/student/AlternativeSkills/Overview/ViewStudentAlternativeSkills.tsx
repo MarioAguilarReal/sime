@@ -21,7 +21,8 @@ const ViewStudentAlternativeSkills = () => {
   const getStudent = async (dataId: number) => {
     setLoading(true);
     let resp = await StudentService.getAll();
-    let returnStudent = resp.students.find((student: Student) => student.student_alternative_skills_id === dataId);
+    console.log(resp);
+    let returnStudent = resp.data.find((student: Student) => student.student_alternative_skills_id === dataId);
     console.log(returnStudent.id);
     if (resp.status === 200) {
       setStudent(returnStudent.id);
@@ -35,7 +36,6 @@ const ViewStudentAlternativeSkills = () => {
     console.log(resp);
 
     console.log(resp.students_alternative_skills.alternative_list);
-    console.log(selectedSkills);
 
     if (resp.status === 200) {
       const alternativeList = resp.students_alternative_skills.alternative_list.map(Number);

@@ -110,7 +110,7 @@ const StudentForm = (props: FormStudenProps) => {
     console.log(resp);
     if (resp.status === 200) {
       toast.success(resp.message);
-      navigate("/student/overview/" + resp.students.id);
+      navigate("/student/overview/" + resp.data.id);
     } else {
       toast.error(resp.message);
     }
@@ -125,9 +125,10 @@ const StudentForm = (props: FormStudenProps) => {
   const loadStudent = async (studentId: number) => {
     setLoading(true);
     const resp = await StudentService.getStudent(studentId);
+    console.log(resp);
     if (resp.status === 200) {
-      setStudent(resp.student);
-      fillForm(resp.student);
+      setStudent(resp.data);
+      fillForm(resp.data);
     } else {
       toast.error(resp.message);
     }

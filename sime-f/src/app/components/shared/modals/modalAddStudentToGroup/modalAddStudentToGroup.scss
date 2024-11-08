@@ -1,0 +1,91 @@
+.modal-add-student {
+  position: fixed;
+  top: 0;
+  height: 90vh;
+  width: 700px;
+  background-color: #812a1af3;
+  box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.2);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  .modal-content {
+    display: flex;
+    align-items: center;
+    .modal-header{
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      width: 100%;
+      .btn-close-modal {
+        background-color: #460a00;
+        color: #ffffff;
+        border: none;
+        margin-bottom: 1%;
+        border-radius: 5px;
+        padding: 0.5rem 1rem;
+        font-size: 1rem;
+        font-weight: 400;
+        cursor: pointer;
+        transition: background-color 0.5s;
+        align-self: flex-end;
+        &:hover{
+          background-color: #3a0800;
+        }
+      }
+      .modal-title{
+        font-size: 2.5rem;
+        font-weight: 400;
+        color: #ffffff;
+        text-align: center;
+      }
+    }
+    .select-students{
+      width: 95%;
+      background-color: #f0e8ce;
+      overflow-y: auto;
+      border-radius: 1%;
+      padding: 1rem;
+      .student{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem;
+        margin-bottom: 1%;
+        background-color: #ffffff;
+        border-radius: 5px;
+        .student-info{
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          gap: 1rem;
+        }
+        .btn{
+          width: 30%;
+        }
+        .btn-add, .btn-add-data{
+          background-color: #007419;
+          color: #ffffff;
+          border: none;
+          border-radius: 5px;
+          padding: 0.5rem 1rem;
+          font-size: 1rem;
+          font-weight: 400;
+          cursor: pointer;
+          transition: background-color 0.5s;
+          &:hover{
+            background-color: #005f15;
+          }
+        }
+        .btn-add-data{
+          background-color: #d5ae0f;
+          &:hover{
+            background-color: #aa8a09;
+          }
+        }
+      }
+    }
+  }
+}

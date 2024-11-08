@@ -16,7 +16,7 @@ const ViewStudentAcademicData = () => {
     setLoading(true);
     let resp = await StudentService.getStudent(dataId);
     if (resp.status === 200) {
-      setStudentData(resp.student);
+      setStudentData(resp.data);
     }
     setLoading(false);
   };
