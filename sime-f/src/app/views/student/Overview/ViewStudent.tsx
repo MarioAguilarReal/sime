@@ -36,6 +36,7 @@ const ViewStudent = () => {
   const loadStudent = async (studentId: number) => {
     setLoading(true);
     let resp = await StudentService.getStudent(studentId);
+    console.log(resp.data);
     let gender = generalData.gender.find(
       (obj) => obj.value === Number(resp.data.gender)
     );
@@ -118,7 +119,7 @@ const ViewStudent = () => {
               </div>
               <div className="image">
                 <img
-                  src={student.photo ? student.photo : "/assets/images/default-user.jpg"}
+                  src={student.photo !== null ? student.photo : "/assets/images/default-user.jpg"}
                   alt="student"
                   className="student-photo"
                 />
@@ -228,7 +229,7 @@ const ViewStudent = () => {
             <hr className="border border-secondary border-1 opacity-75" />
           </div>
           <div className="more-data">
-            <div className="row">
+            <div className="row mb-2 buttons-extra">
               <div className="add-comments col-4">
                 <button
                   className="btn btn-more"
@@ -250,10 +251,14 @@ const ViewStudent = () => {
                 </button>
               </div>
               <div className="learning-type col-4">
-                <p className="btn btn-more">Tipo de Aprendizaje (SEP)</p>
+                <button className="btn btn-more"
+                  onClick={() => navigate(`/private/forms/learning-test/${student.id}`)}
+                >
+                  Tipo de Aprendizaje (Test)
+                </button>
               </div>
             </div>
-            <div className="row mb-2">
+            <div className="row mb-2 buttons-extra">
               <div className="special-needs col-4">
                 <button
                   className="btn btn-more"
@@ -268,13 +273,13 @@ const ViewStudent = () => {
                 <button
                   className="btn btn-more"
                   onClick={() => {
-                    if (student.student_cognitive_skills_id) {
-                      console.log(student.student_cognitive_skills_id);
+                    if (student.cognitiveSkills) {
+                      console.log(student.cognitiveSkills);
                       navigate(
-                        `/student/cognitive/skills/overview/${student.student_cognitive_skills_id}`
+                        `/student/cognitive/skills/overview/${student.cognitiveSkills}`
                       );
                     } else {
-                      console.log(student.student_cognitive_skills_id);
+                      console.log(student.cognitiveSkills);
                       navigate(
                         `/student/cognitive/skills/management/${student.id}`
                       );
@@ -288,13 +293,11 @@ const ViewStudent = () => {
                 <button
                   className="btn btn-more"
                   onClick={() => {
-                    if (student.student_social_skills_id) {
-                      console.log(student.student_social_skills_id);
+                    if (student.socialSkills) {
                       navigate(
-                        `/student/social/skills/overview/${student.student_social_skills_id}`
+                        `/student/social/skills/overview/${student.id}`
                       );
                     } else {
-                      console.log(student.student_cognitive_skills_id);
                       navigate(`/student/social/skills/management/${student.id}`);
                     }
                   }}
@@ -303,18 +306,16 @@ const ViewStudent = () => {
                 </button>
               </div>
             </div>
-            <div className="row mb-2">
+            <div className="row mb-2 buttons-extra">
               <div className="alternative-skills col-4">
                 <button
                   className="btn btn-more"
                   onClick={() => {
-                    if (student.student_alternative_skills_id) {
-                      console.log(student.student_alternative_skills_id);
+                    if (student.alternativeSkills) {
                       navigate(
-                        `/student/alternative/skills/overview/${student.student_alternative_skills_id}`
+                        `/student/alternative/skills/overview/${student.id}`
                       );
                     } else {
-                      console.log(student.student_cognitive_skills_id);
                       navigate(
                         `/student/alternative/skills/management/${student.id}`
                       );

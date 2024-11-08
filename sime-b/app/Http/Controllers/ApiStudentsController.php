@@ -88,7 +88,42 @@ class ApiStudentsController extends Controller
 
     public function show($id){
 
-        $student = Student::find($id);
+        $student = Student::findOrFail($id);
+
+        $academicData = $student->studentAcademicData()->first();
+        if($academicData){
+            $student->academicData = $academicData;
+        }
+
+        $learningType = $student->learningType()->first();
+        if($learningType){
+            $student->learningType = $learningType;
+        }
+
+        $coments = $student->comments()->first();
+        if($coments){
+            $student->comments = $coments;
+        }
+
+        $socialSkills = $student->socialSkills()->first();
+        if($socialSkills){
+            $student->socialSkills = $socialSkills;
+        }
+
+        $cognitiveSkills = $student->cognitiveSkills()->first();
+        if($cognitiveSkills){
+            $student->cognitiveSkills = $cognitiveSkills;
+        }
+
+        $specialNeeds = $student->specialNeeds()->first();
+        if($specialNeeds){
+            $student->specialNeeds = $specialNeeds;
+        }
+
+        $planningSkills = $student->planningSkills()->first();
+        if($planningSkills){
+            $student->planningSkills = $planningSkills;
+        }
 
         if($student){
             return $this->createResponse(200, 'Estudiante encontrado', $student);
@@ -218,7 +253,28 @@ class ApiStudentsController extends Controller
         return $this->createResponse(200, 'Estudiante actualizado', $student);
     }
 
-    /**
-     * Functions to manage student grade and group -up to here-
-     */
+    function setLearningType(Request $request, $id){
+        // create and relate learning type
+        $student = Student::find($id);
+
+        if(!$student){
+            return $this->createResponse(201, 'Estudiante no encontrado');
+        }
+
+        $request->validate([
+            'name' => 'required',
+        ]);
+
+
+        if(!$student->learningType){
+            $learningType = LearningType::create($request->all());
+            $student->learningType()->associate($learningType);
+        }else {
+            $student->learningType->update($request->all());
+        }
+
+        $student->save();
+
+        return $this->createResponse(200, 'Tipo de aprendizaje asignado', $student);
+    }
 }

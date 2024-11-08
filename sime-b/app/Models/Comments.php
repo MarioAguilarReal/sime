@@ -14,7 +14,6 @@ class Comments extends Model
         'comment',
         'by',
         'userRoleCreator',
-        'idStudent',
     ];
 
     public function student()

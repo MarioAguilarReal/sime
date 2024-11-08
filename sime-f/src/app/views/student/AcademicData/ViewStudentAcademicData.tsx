@@ -16,24 +16,24 @@ const ViewStudentAcademicData = () => {
     setLoading(true);
     let resp = await StudentService.getStudent(dataId);
     if (resp.status === 200) {
-      setStudentData(resp.student);
+      setStudentData(resp.data);
+      console.log(resp.data);
     }
     setLoading(false);
   };
 
   useEffect(() => {
     if (id) {
-      let dataId = parseInt(id);
-      getStudent(dataId);
+      getStudent(+id);
     }
   }, [id]);
 
   return (
     <div>
-      {!studentData?.student_academic_data_id ? (
-        <AcademicForm mode="register" academicId={studentData?.id} studentId={studentData?.id} />
+      {!studentData?.academicData ? (
+        <AcademicForm mode="register" studentId={studentData?.id} />
       ) : (
-        <AcademicForm mode="edit" academicId={studentData.student_academic_data_id} studentId={studentData.id} />
+        <AcademicForm mode="edit" academicData={studentData.academicData} studentId={studentData.id} />
       )}
     </div>
   );

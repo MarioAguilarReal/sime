@@ -10,6 +10,7 @@ return new class extends Migration
     {
         Schema::create('student_planning_skills', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('student_id')->constrained('students')->onDelete('cascade');
             $table->integer('focus');
             $table->integer('detect');
             $table->integer('correlation');

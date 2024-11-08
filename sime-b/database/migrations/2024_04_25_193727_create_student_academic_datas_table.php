@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('student_academic_datas', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('student_id')->constrained('students')->onDelete('cascade');
+            $table->string('matricula');
             $table->integer('grade_level');
-            $table->string('student_id');
             $table->float('last_grade_average');
             $table->float('actual_grade_average');
             $table->integer('behavior');

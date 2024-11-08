@@ -30,10 +30,10 @@ const ViewStudentPlanningSkills = () => {
 
   return (
     <div>
-      {!student?.student_planning_skills_id ? (
+      {!student?.planningSkills ? (
         <PlanningSkillsForm mode="register" planningId={student?.id} studentId={student?.id} />
       ) : (
-        <PlanningSkillsForm mode="edit" planningId={student.student_planning_skills_id} studentId={student.id} />
+        <PlanningSkillsForm mode="edit" planningId={student.planningSkills.id} studentId={student.id} />
       )}
     </div>
   );

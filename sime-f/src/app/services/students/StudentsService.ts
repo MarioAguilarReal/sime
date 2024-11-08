@@ -17,7 +17,7 @@ export class StudentService{
             }
         }
     }
-    
+
     public static async update(obj: FormData, id: number):Promise<any>{
         let resp;
         if(!localStorage.getItem('token')){
@@ -31,7 +31,7 @@ export class StudentService{
             }
         }
     }
-    
+
     public static async delete(id: number):Promise<any>{
         let resp;
         if(!localStorage.getItem('token')){
@@ -45,7 +45,7 @@ export class StudentService{
             }
         }
     }
-    
+
     public static async getStudent(id: number):Promise<any>{
         let resp;
         if(!localStorage.getItem('token')){
@@ -59,13 +59,27 @@ export class StudentService{
             }
         }
     }
-    
+
     public static async getAll():Promise<any>{
         let resp;
         if(!localStorage.getItem('token')){
             return resp = {data: [], success: false, status: 401, message: 'Token not found'} as ApiResponse;
         } else {
             resp = await SimeService.get('/students/all/', { Authorization: 'Bearer ' + localStorage.getItem('token') });
+            if (resp.status === 200){
+                return resp.data;
+            } else {
+                return resp.data;
+            }
+        }
+    }
+
+    public static async setLearningType(learningType: string, id: number):Promise<any>{
+        let resp;
+        if(!localStorage.getItem('token')){
+            return resp = {data: [], success: false, status: 401, message: 'Token not found'} as ApiResponse;
+        } else {
+            resp = await SimeService.post('/students/set-learning-type/' + id, {name: learningType}, { Authorization: 'Bearer ' + localStorage.getItem('token') });
             if (resp.status === 200){
                 return resp.data;
             } else {

@@ -16,12 +16,12 @@ class ApiStudentsAcademicDataController extends Controller
         $response = [
             'status' => 0,
             'message' => '',
-            'students_academic_data' => ''
+            'data' => ''
         ];
 
         $request->validate([
             'grade_level' => 'required',
-            'student_id' => 'required',
+            'matricula' => 'required',
             'last_grade_average' => 'required',
             'actual_grade_average' => 'required',
             'behavior' => 'required',
@@ -35,24 +35,23 @@ class ApiStudentsAcademicDataController extends Controller
             $response['message'] = 'No student found';
             return response()->json($response, $response['status']);
         }
-        
-        $student_academic_data = StudentAcademicData::create ([
+
+        $student_academic_data = new StudentAcademicData ([
             'grade_level' => $request->grade_level,
-            'student_id' => $request->student_id,
+            'matricula' => $request->matricula,
             'last_grade_average' => $request->last_grade_average,
             'actual_grade_average' => $request->actual_grade_average,
             'behavior' => $request->behavior,
             'group_id' => $request->group_id,
             'attendance' => $request->attendance,
         ]);
-        
+
         if ($student_academic_data){
-            $student->student_academic_data_id = $student_academic_data->id;
-            $student->save();
+            $student->studentAcademicData()->save($student_academic_data);
 
             $response['status'] = 200;
             $response['message'] = 'Student academic data registered successfully';
-            $response['students_academic_data'] = $student_academic_data;
+            $response['data'] = $student_academic_data;
         }
         else {
             $response['status'] = 201;
@@ -65,14 +64,14 @@ class ApiStudentsAcademicDataController extends Controller
         $response = [
             'status' => 0,
             'message' => '',
-            'students_academic_data' => ''
+            'data' => ''
         ];
 
         $students_academic_data = StudentAcademicData::all();
         if ($students_academic_data){
             $response['status'] = 200;
             $response['message'] = 'Students academic data fetched successfully';
-            $response['students_academic_data'] = $students_academic_data;
+            $response['data'] = $students_academic_data;
         }
         else {
             $response['status'] = 201;
@@ -85,14 +84,16 @@ class ApiStudentsAcademicDataController extends Controller
         $response = [
             'status' => 0,
             'message' => '',
-            'students_academic_data' => ''
+            'data' => ''
         ];
 
-        $student_academic_data = StudentAcademicData::find($id_student);
+        $student = Student::find($id_student);
+
+        $student_academic_data = $student->studentAcademicData()->first();
         if ($student_academic_data){
             $response['status'] = 200;
             $response['message'] = 'Student academic data fetched successfully';
-            $response['students_academic_data'] = $student_academic_data;
+            $response['data'] = $student_academic_data;
         }
         else {
             $response['status'] = 201;
@@ -105,12 +106,12 @@ class ApiStudentsAcademicDataController extends Controller
         $response = [
             'status' => 0,
             'message' => '',
-            'students_academic_data' => ''
+            'data' => ''
         ];
-        
+
         $request->validate([
             'grade_level' => 'required',
-            'student_id' => 'required',
+            'matricula' => 'required',
             'last_grade_average' => 'required',
             'actual_grade_average' => 'required',
             'behavior' => 'required',
@@ -118,22 +119,22 @@ class ApiStudentsAcademicDataController extends Controller
             'attendance' => 'required',
         ]);
 
-        $student_academic_data = StudentAcademicData::find($id_student);
+        $student_academic_data = StudentAcademicData::where('student_id', $id_student)->first();
 
         if ($student_academic_data){
-            $student_academic_data->grade_level = $request->grade_level;
-            $student_academic_data->student_id = $request->student_id;
-            $student_academic_data->last_grade_average = $request->last_grade_average;
-            $student_academic_data->actual_grade_average = $request->actual_grade_average;
-            $student_academic_data->behavior = $request->behavior;
-            $student_academic_data->group_id = $request->group_id;
-            $student_academic_data->attendance = $request->attendance;
-
-            $student_academic_data->save();
+            $student_academic_data->update([
+                'grade_level' => $request->grade_level,
+                'matricula' => $request->matricula,
+                'last_grade_average' => $request->last_grade_average,
+                'actual_grade_average' => $request->actual_grade_average,
+                'behavior' => $request->behavior,
+                'group_id' => $request->group_id,
+                'attendance' => $request->attendance,
+            ]);
 
             $response['status'] = 200;
             $response['message'] = 'Student academic data updated successfully';
-            $response['students_academic_data'] = $student_academic_data;
+            $response['data'] = $student_academic_data;
         }
         else {
             $response['status'] = 201;
