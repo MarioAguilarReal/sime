@@ -11,11 +11,11 @@ import { CheckboxList } from '../../FormInputs/CheckBox';
 
 interface FormCognitiveProps {
   mode: 'register' | 'edit';
-  cognitiveId: any;
+  cognitive?: StudentCognitiveSkills;
   studentId: any;
 }
 const CognitiveSkillsForm = (props: FormCognitiveProps) => {
-  const { mode, cognitiveId, studentId } = props;
+  const { mode, cognitive, studentId } = props;
   const {
     register,
     handleSubmit,
@@ -45,7 +45,8 @@ const CognitiveSkillsForm = (props: FormCognitiveProps) => {
   const handleUpdate = async () => {
     setLoading(true);
     const selectedCognitiveSkills = createSendData();
-    const resp = await StudentCognitiveSkillsService.update(selectedCognitiveSkills, cognitiveId);
+    if(!cognitive?.id) return;
+    const resp = await StudentCognitiveSkillsService.update(selectedCognitiveSkills, cognitive?.id);
     handleResponse(resp);
     setLoading(false);
   };
@@ -65,16 +66,7 @@ const CognitiveSkillsForm = (props: FormCognitiveProps) => {
     }
   };
 
-  const loadCognitiveSkills = async () => {
-    setLoading(true);
-    let resp = await StudentCognitiveSkillsService.get(cognitiveId);
-    if (resp.status === 200) {
-      fillSendData(resp.students_cognitive_skills);
-    } else {
-      toast.error(resp.status);
-    }
-    setLoading(false);
-  };
+
   const fillSendData = (data: StudentCognitiveSkills) => {
     data.cognitive_list.forEach((skillId: number) => {
       setValue(`cognitiveSkills_${skillId}`, true);
@@ -83,7 +75,7 @@ const CognitiveSkillsForm = (props: FormCognitiveProps) => {
 
   useEffect(() => {
     if (mode === 'edit') {
-      loadCognitiveSkills();
+      // loadCognitiveSkills();
     }
   }, [mode]);
 
@@ -95,7 +87,7 @@ const CognitiveSkillsForm = (props: FormCognitiveProps) => {
           <div className="row mb-2">
             <div className="col-2">
               <div className="col-4 btn-edit">
-                <button className='btn btn-secondary' onClick={() => mode === 'edit' ? navigate(`/student/cognitive/skills/overview/${cognitiveId}`) : navigate(`/student/overview/${studentId}`)} disabled={mode === 'edit' ? !cognitiveId : !studentId} >Volver</button>
+                <button className='btn btn-secondary' onClick={() => mode === 'edit' ? navigate(`/student/cognitive/skills/overview/${studentId}`) : navigate(`/student/overview/${studentId}`)} disabled={mode === 'edit' ? !cognitive : !studentId} >Volver</button>
               </div>
             </div>
           </div>

@@ -33,10 +33,11 @@ const ViewStudentSocialSkills = () => {
 
   const [student, setStudent] = useState<Student>();
 
+  // Creo que este metodo se va a tener que modificar
   const getStudent = async (dataId: number) => {
     setLoading(true);
     let resp = await StudentService.getAll();
-    let returnStudent = resp.students.find((student: Student) => student.student_social_skills_id === dataId);
+    let returnStudent = resp.data.find((student: Student) => student.socialSkills?.id === dataId);
     if (resp.status === 200) {
       setStudent(returnStudent.id);
     }

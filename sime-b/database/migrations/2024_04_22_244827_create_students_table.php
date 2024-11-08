@@ -46,15 +46,7 @@ return new class extends Migration
             $table->string('emergency_contact_name_2');
             $table->string('emergency_contact_phone_2');
             $table->string('emergency_contact_relationship_2');
-            /** More */
-            $table->foreignId('comments_id')->nullable()->constrained();
-            $table->foreignId('student_academic_data_id')->nullable()->constrained();
-            $table->foreignId('student_learning_type_id')->nullable()->constrained();
-            $table->foreignId('student_cognitive_skills_id')->nullable()->constrained();
-            $table->foreignId('student_special_needs_id')->nullable()->constrained();
-            $table->foreignId('student_social_skills_id')->nullable()->constrained();
-            $table->foreignId('student_alternative_skills_id')->nullable()->constrained();
-            $table->foreignId('student_planning_skills_id')->nullable()->constrained();
+
             $table->timestamps();
         });
     }

@@ -20,47 +20,26 @@ const ViewStudentAlternativeSkills = () => {
 
   const getStudent = async (dataId: number) => {
     setLoading(true);
-    let resp = await StudentService.getAll();
-    let returnStudent = resp.students.find((student: Student) => student.student_alternative_skills_id === dataId);
-    console.log(returnStudent.id);
+
+    const resp = await StudentService.getStudent(dataId);
     if (resp.status === 200) {
-      setStudent(returnStudent.id);
-    }
-    setLoading(false);
-  }
-
-  const loadStudentAlternative = async (dataId: number) => {
-    setLoading(true);
-    let resp = await StudentAlternativeSkillsService.get(dataId);
-    console.log(resp);
-
-    console.log(resp.students_alternative_skills.alternative_list);
-    console.log(selectedSkills);
-
-    if (resp.status === 200) {
-      const alternativeList = resp.students_alternative_skills.alternative_list.map(Number);
-      setStudentAlternative(alternativeList);
-      console.log(studentAlternative);
-    } else {
-      console.log(resp.status);
+      setStudent(resp.data as Student);
     }
     setLoading(false);
   }
 
   useEffect(() => {
     if (id) {
-      let dataId = parseInt(id);
-      loadStudentAlternative(dataId);
-      getStudent(dataId);
+      getStudent(+id);
     }
   }, [id]);
 
   useEffect(() => {
-    if (studentAlternative.length > 0) {
-      const filteredSkills = studentsData.alternativeSkills.filter(skill => studentAlternative.includes(skill.value));
-      setSelectedSkills(filteredSkills);
+    if(!student?.alternativeSkills?.alternative_list)return;
+    if (student?.alternativeSkills?.alternative_list.length > 0) {
+      console.log(student);
     }
-  }, [studentAlternative]);
+  }, [student]);
 
   return (
     <div className="view-skills">

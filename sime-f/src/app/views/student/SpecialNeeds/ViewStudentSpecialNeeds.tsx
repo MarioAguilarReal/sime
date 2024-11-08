@@ -16,7 +16,7 @@ const ViewStudentSpecialNeeds = () => {
 		setLoading(true);
 		let resp = await StudentService.getStudent(dataId);
 		if (resp.status === 200) {
-			setStudent(resp.student);
+			setStudent(resp.data);
 		}
 		setLoading(false);
 	};
@@ -30,10 +30,10 @@ const ViewStudentSpecialNeeds = () => {
 
 	return (
 		<div>
-			{!student?.student_special_needs_id ? (
+			{!student?.specialNeeds ? (
 				<SpecialNeedsForm mode="register" needsId={student?.id} studentId={student?.id} />
 			) : (
-				<SpecialNeedsForm mode="edit" needsId={student.student_special_needs_id} studentId={student.id} />
+				<SpecialNeedsForm mode="edit" needsId={student.specialNeeds} studentId={student.id} />
 			)}
 		</div>
 	);

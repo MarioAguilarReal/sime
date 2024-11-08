@@ -1,0 +1,153 @@
+.learningForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+
+  .form {
+    width: 70%;
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 19px 0px rgba(0, 0, 0, 0.8);
+    margin: 20px 0;
+    padding: 60px 40px;
+    .form-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 60%;
+      margin: 0 auto;
+      .sep-logo {
+        width: 6rem;
+      }
+
+      .title {
+        text-align: center;
+        .formTitle {
+          font-size: 1rem;
+          margin-bottom: 10px;
+        }
+        .formSubTitle {
+          font-size: 1.5rem;
+          margin-bottom: 10px;
+        }
+      }
+    }
+
+    .student-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 20px auto;
+      width: 90%;
+    }
+
+    .instructions {
+      font-size: 1rem;
+      text-align: center;
+    }
+
+    .formGroup {
+      .row {
+        max-width: 90%;
+        margin: 4rem auto;
+
+        .col-12 {
+          .question {
+            font-size: 1rem;
+            margin-bottom: 35px;
+            height: 6rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: end;
+            margin: 0 30px;
+          }
+        }
+      }
+      .submitButton {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+        .btn {
+          width: 400px;
+          height: 50px;
+          font-size: 1rem;
+          background-color: #007bff;
+          color: white;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+          transition: 0.3s;
+          &:hover {
+            background-color: #0056b3;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .sepForm {
+    margin: 0;
+    .form {
+      width: 100%;
+      margin: 0;
+      padding: 40px 20px;
+      .form-header {
+        width: 100%;
+        flex-direction: column;
+        .sep-logo {
+          width: 4rem;
+        }
+        .title {
+          .formTitle {
+            font-size: 0.8rem;
+          }
+          .formSubTitle {
+            font-size: 1.0rem;
+          }
+        }
+      }
+
+      .student-info {
+        flex-direction: column;
+        margin: 20px auto;
+        font-size: .7rem;
+        width: 100%;
+      }
+
+      .instructions {
+        font-size: 0.8rem;
+      }
+
+      .formGroup {
+        .row {
+          max-width: 100%;
+          margin: 2rem auto;
+
+          .col-12 {
+            .question {
+              font-size: 0.8rem;
+              margin-bottom: 25px;
+              height: 5rem;
+              display: flex;
+              flex-direction: column;
+              justify-content: end;
+              margin: 5px 5px;
+            }
+          }
+        }
+        .submitButton {
+          .btn {
+            width: 300px;
+            height: 40px;
+            font-size: 0.8rem;
+          }
+        }
+      }
+    }
+  }
+}

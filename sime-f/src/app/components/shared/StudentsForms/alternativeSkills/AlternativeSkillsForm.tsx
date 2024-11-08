@@ -11,11 +11,11 @@ import { CheckboxList } from '../../FormInputs/CheckBox';
 
 interface FormAlternativeProps {
   mode: 'register' | 'edit';
-  alternativeId: any;
-  studentId: any;
+  alternativeSkills?: StudentAlternativeSkills;
+  studentId: number | undefined;
 }
 const AlternativeSkillsForm = (props: FormAlternativeProps) => {
-  const { mode, alternativeId, studentId } = props;
+  const { mode, alternativeSkills, studentId } = props;
   const {
     register,
     handleSubmit,
@@ -36,17 +36,21 @@ const AlternativeSkillsForm = (props: FormAlternativeProps) => {
     }
     setLoading(false);
   };
+
   const handleCreate = async () => {
     setLoading(true);
     const selectedAlternativeSkills = createSendData();
+    if(!studentId) return;
     const resp = await StudentAlternativeSkillsService.register(selectedAlternativeSkills, studentId);
     handleResponse(resp);
     setLoading(false);
   };
+
   const handleUpdate = async () => {
     setLoading(true);
     const selectedAlternativeSkills = createSendData();
-    const resp = await StudentAlternativeSkillsService.update(selectedAlternativeSkills, alternativeId);
+    if(!alternativeSkills?.id) return;
+    const resp = await StudentAlternativeSkillsService.update(selectedAlternativeSkills, alternativeSkills?.id);
     handleResponse(resp);
     setLoading(false);
   };
@@ -66,16 +70,6 @@ const AlternativeSkillsForm = (props: FormAlternativeProps) => {
     }
   };
 
-  const loadAlternativeSkills = async () => {
-    setLoading(true);
-    let resp = await StudentAlternativeSkillsService.get(alternativeId);
-    if (resp.status === 200) {
-      fillSendData(resp.students_alternative_skills);
-    } else {
-      toast.error(resp.status);
-    }
-    setLoading(false);
-  };
   const fillSendData = (data: StudentAlternativeSkills) => {
     data.alternative_list.forEach((skillId: number) => {
       setValue(`alternativeSkills_${skillId}`, true);
@@ -83,8 +77,8 @@ const AlternativeSkillsForm = (props: FormAlternativeProps) => {
   };
 
   useEffect(() => {
-    if (mode === 'edit') {
-      loadAlternativeSkills();
+    if (mode === 'edit' && alternativeSkills) {
+      fillSendData(alternativeSkills as StudentAlternativeSkills);
     }
   }, [mode]);
 
@@ -96,7 +90,7 @@ const AlternativeSkillsForm = (props: FormAlternativeProps) => {
           <div className="row mb-2">
             <div className="col-2">
               <div className="col-4">
-                <button className='btn btn-secondary' onClick={() => mode === 'edit' ? navigate(`/student/alternative/skills/overview/${alternativeId}`) : navigate(`/student/overview/${studentId}`)} disabled={mode === 'edit' ? !alternativeId : !studentId}>Volver</button>
+                <button className='btn btn-secondary' onClick={() => mode === 'edit' ? navigate(`/student/alternative/skills/overview/${studentId}`) : navigate(`/student/overview/${studentId}`)} disabled={mode === 'edit' ? !alternativeSkills?.id : !studentId}>Volver</button>
               </div>
             </div>
           </div>

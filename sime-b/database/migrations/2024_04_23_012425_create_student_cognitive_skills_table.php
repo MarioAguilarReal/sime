@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('student_cognitive_skills', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('student_id')->nullable()->constrained('students')->onDelete('cascade');
             $table->json('cognitive_list');
             $table->timestamps();
         });

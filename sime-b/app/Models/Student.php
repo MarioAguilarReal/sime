@@ -47,14 +47,6 @@ class Student extends Model
         'emergency_contact_phone_2',
         'emergency_contact_relationship_2',
         //More
-        'student_academic_data_id',
-        'learning_type_id',
-        'cognitive_skills_id',
-        'special_needs_id',
-        'social_skills_id',
-        'alternative_skills_id',
-        'planning_skills_id',
-        'comments_id',
     ];
 
     public function studentAcademicData()

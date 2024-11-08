@@ -110,7 +110,7 @@ const StudentForm = (props: FormStudenProps) => {
     console.log(resp);
     if (resp.status === 200) {
       toast.success(resp.message);
-      navigate("/student/overview/" + resp.students.id);
+      navigate("/student/overview/" + resp.data.id);
     } else {
       toast.error(resp.message);
     }

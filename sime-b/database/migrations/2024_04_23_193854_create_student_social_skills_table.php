@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('student_social_skills', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('student_id')->nullable()->constrained('students')->onDelete('cascade');
             $table->json('basic');
             $table->json('advanced');
             $table->json('feelings');

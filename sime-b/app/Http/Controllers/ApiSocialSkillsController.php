@@ -13,7 +13,7 @@ class ApiSocialSkillsController extends Controller
         $response = [
             'status' => 0,
             'message' => '',
-            'students_social_skills' => ''
+            'data' => ''
         ];
 
         $request->validate([
@@ -31,8 +31,8 @@ class ApiSocialSkillsController extends Controller
             $response['message'] = 'No student found';
             return response()->json($response, $response['status']);
         }
-        
-        $student_social_skills = StudentSocialSkills::create ([
+
+        $student_social_skills = new StudentSocialSkills ([
             'basic' => json_encode($request->basic),
             'advanced' => json_encode($request->advanced),
             'feelings' => json_encode($request->feelings),
@@ -40,14 +40,13 @@ class ApiSocialSkillsController extends Controller
             'stress' => json_encode($request->stress),
             'planning' => json_encode($request->planning),
         ]);
-        
+
         if ($student_social_skills){
-            $student->student_social_skills_id = $student_social_skills->id;
-            $student->save();
+            $student->socialSkills()->save($student_social_skills);
 
             $response['status'] = 200;
             $response['message'] = 'Student social skills registered successfully';
-            $response['students_social_skills'] = $student_social_skills;
+            $response['data'] = $student_social_skills;
         }
         else {
             $response['status'] = 201;
@@ -60,10 +59,12 @@ class ApiSocialSkillsController extends Controller
         $response = [
             'status' => 0,
             'message' => '',
-            'students_social_skills' => ''
+            'data' => ''
         ];
 
-        $student_social_skills = StudentSocialSkills::find($id);
+        $student = Student::find($id);
+
+        $student_social_skills = $student->socialSkills()->first();
         if($student_social_skills){
             $student_social_skills->basic = json_decode($student_social_skills->basic, true);
             $student_social_skills->advanced = json_decode($student_social_skills->advanced, true);
@@ -71,7 +72,7 @@ class ApiSocialSkillsController extends Controller
             $student_social_skills->assault = json_decode($student_social_skills->assault, true);
             $student_social_skills->stress = json_decode($student_social_skills->stress, true);
             $student_social_skills->planning = json_decode($student_social_skills->planning, true);
-            
+
             $response['status'] = 200;
             $response['message'] = 'Student social skills found';
             $response['students_social_skills'] = $student_social_skills;
@@ -87,9 +88,9 @@ class ApiSocialSkillsController extends Controller
         $response = [
             'status' => 0,
             'message' => '',
-            'students_social_skills' => ''
+            'data' => ''
         ];
-        
+
         $request->validate([
             'basic' => 'required|array',
             'advanced' => 'required|array',
@@ -99,20 +100,21 @@ class ApiSocialSkillsController extends Controller
             'planning' => 'required|array',
         ]);
 
-        $student_social_skills = StudentSocialSkills::find($id);
+        $student_social_skills = StudentSocialSkills::where('student_id', $id)->first();
 
         if($student_social_skills){
-            $student_social_skills->basic = json_encode($request->basic);
-            $student_social_skills->advanced = json_encode($request->advanced);
-            $student_social_skills->feelings = json_encode($request->feelings);
-            $student_social_skills->assault = json_encode($request->assault);
-            $student_social_skills->stress = json_encode($request->stress);
-            $student_social_skills->planning = json_encode($request->planning);
-            $student_social_skills->save();
+            $student_social_skills->update([
+                'basic' => json_encode($request->basic),
+                'advanced' => json_encode($request->advanced),
+                'feelings' => json_encode($request->feelings),
+                'assault' => json_encode($request->assault),
+                'stress' => json_encode($request->stress),
+                'planning' => json_encode($request->planning),
+            ]);
 
             $response['status'] = 200;
             $response['message'] = 'Student social skills updated successfully';
-            $response['students_social_skills'] = $student_social_skills;
+            $response['data'] = $student_social_skills;
         }
         else {
             $response['status'] = 201;

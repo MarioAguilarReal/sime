@@ -20,11 +20,9 @@ const ViewStudentCognitiveSkills = () => {
 
   const getStudent = async (dataId: number) => {
     setLoading(true);
-    let resp = await StudentService.getAll();
+    let resp = await StudentService.getStudent(dataId);
     if (resp.status === 200) {
-      let returnStudent = resp.students.find((student: Student) => student.student_cognitive_skills_id === dataId);
-      console.log(returnStudent.id);
-      setStudent(returnStudent);
+      setStudent(resp.data);
     }
     setLoading(false);
   }

@@ -18,20 +18,20 @@ import ViewStudentSocialSkills from "../views/student/SocialSkills/Overview/View
 import ViewStudentAlternativeSkills from "../views/student/AlternativeSkills/Overview/ViewStudentAlternativeSkills";
 import ViewStudentPlanningSkills from "../views/student/PlanningSkills/ViewStudentPlanningSkills";
 import ViewStudentComments from "../views/student/Comments/ViewStudentComments";
-import SepForm from "../views/form/sepForm";
 import ForgetPassword from "../views/auth/settings/forgetPassword/ForgetPassword";
 import OverviewGroup from "../views/groups/OverviewGroup";
 import StudentManagement from "../views/student/Management/StudentManagement";
 import SocialSkillsManagement from "../views/student/SocialSkills/Management/SocialSkillsManagement";
 import AlternativeSkillsManagement from "../views/student/AlternativeSkills/Management/AlternativeSkillsManagement";
+import LearningForm from './../views/form/LearningForm';
 
 export const routesConfig: IRoute[] = [
   // Public Routes
   { title: 'login', path: '/auth/login', element: Login, private: false },
   { title: 'change-password', path: '/auth/change-password/:id', element: ChangePassword, private: false },
 
-  { title: 'sepForm', path: '/forms/sep-test', element: SepForm, private: false },
-
+  { title: 'learning-private', path: '/private/forms/learning-test/:id', element: LearningForm, private: true },
+  { title: 'learning', path: '/forms/learning-test/:id/', element: LearningForm, private: false }, //require Token to access
   // Private Routes
   { title: 'dashboard', path: '/dashboard', element: Dashboard, private: true },
 

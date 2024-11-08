@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('student_special_needs', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('student_id')->nullable()->constrained('students')->onDelete('cascade');
             $table->integer('usaer_status');
             $table->string('learning_problems');
             $table->string('diseases');

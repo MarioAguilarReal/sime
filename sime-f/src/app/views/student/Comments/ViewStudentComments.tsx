@@ -18,9 +18,8 @@ const ViewStudentComments = () => {
   const loadStudent = async (studentId: number) => {
     setLoading(true);
     let resp = await StudentService.getStudent(studentId);
-    console.log(resp);
     if (resp.status === 200) {
-      setStudent(resp.student);
+      setStudent(resp.data);
     } else {
       console.log(resp.status);
     }
@@ -37,10 +36,10 @@ const ViewStudentComments = () => {
 
   return (
     <div>
-      {!student?.comments_id ? (
-        <CommentForm mode="register" commentId={student?.id} studentId={student?.id} />
+      {!student?.comments ? (
+        <CommentForm mode="register" studentId={student?.id} />
       ) : (
-        <CommentForm mode="edit" commentId={student.comments_id} studentId={student.id} />
+        <CommentForm mode="edit" comment={student.comments} studentId={student.id} />
       )}
     </div>
   );
