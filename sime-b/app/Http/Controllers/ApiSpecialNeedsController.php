@@ -10,14 +10,14 @@ use App\Models\StudentSpecialNeeds;
 class ApiSpecialNeedsController extends Controller
 {
   public function register(Request $request, $id){
-      
+
     $response = [
       'status' => 0,
       'message' => '',
-      'students_special_needs' => ''
+      'data' => ''
     ];
 
-    
+
     $request->validate([
       'usaer_status' => 'required',
       'learning_problems' => 'required',
@@ -25,29 +25,28 @@ class ApiSpecialNeedsController extends Controller
       'treatment_place' => 'required',
       'special_treatment' => 'required',
     ]);
-    
+
     $student = Student::find($id);
     if(!$student){
       $response['status'] = 201;
       $response['message'] = 'No student found';
       return response()->json($response, $response['status']);
     }
-    
-    $student_special_needs = StudentSpecialNeeds::create ([
+
+    $student_special_needs = new StudentSpecialNeeds ([
       'usaer_status' => $request->usaer_status,
       'learning_problems' => $request->learning_problems,
       'diseases' => $request->diseases,
       'treatment_place' => $request->treatment_place,
       'special_treatment' => $request->special_treatment,
     ]);
-    
+
     if ($student_special_needs){
-      $student->student_special_needs_id = $student_special_needs->id;
-      $student->save();
-      
+      $student->specialNeeds()->save($student_special_needs);
+
       $response['status'] = 200;
       $response['message'] = 'Student special needs registered successfully';
-      $response['students_special_needs'] = $student_special_needs;
+      $response['data'] = $student_special_needs;
     }
     else {
       $response['status'] = 201;
@@ -60,14 +59,16 @@ class ApiSpecialNeedsController extends Controller
     $response = [
       'status' => 0,
       'message' => '',
-      'students_special_needs' => ''
+      'data' => ''
     ];
 
-    $student_special_needs = StudentSpecialNeeds::find($id_student);
+    $student = Student::find($id_student);
+
+    $student_special_needs = $student->specialNeeds()->first();
     if($student_special_needs){
       $response['status'] = 200;
       $response['message'] = 'Student special needs found';
-      $response['students_special_needs'] = $student_special_needs;
+      $response['data'] = $student_special_needs;
     }
     else {
       $response['status'] = 201;
@@ -80,9 +81,9 @@ class ApiSpecialNeedsController extends Controller
     $response = [
       'status' => 0,
       'message' => '',
-      'students_special_needs' => ''
+      'data' => ''
     ];
-    
+
     $request->validate([
       'usaer_status' => 'required',
       'learning_problems' => 'required',
@@ -90,20 +91,21 @@ class ApiSpecialNeedsController extends Controller
       'treatment_place' => 'required',
       'special_treatment' => 'required',
     ]);
-    
-    $student_special_needs = StudentSpecialNeeds::find($id_student);
+
+    $student_special_needs = StudentSpecialNeeds::where('student_id', $id_student)->first();
 
     if ($student_special_needs){
-      $student_special_needs->usaer_status = $request->usaer_status;
-      $student_special_needs->learning_problems = $request->learning_problems;
-      $student_special_needs->diseases = $request->diseases;
-      $student_special_needs->treatment_place = $request->treatment_place;
-      $student_special_needs->special_treatment = $request->special_treatment;
-      $student_special_needs->save();
+      $student_special_needs->update([
+        'usaer_status' => $request->usaer_status,
+        'learning_problems' => $request->learning_problems,
+        'diseases' => $request->diseases,
+        'treatment_place' => $request->treatment_place,
+        'special_treatment' => $request->special_treatment,
+      ]);
 
       $response['status'] = 200;
       $response['message'] = 'Student special needs updated successfully';
-      $response['students_special_needs'] = $student_special_needs;
+      $response['data'] = $student_special_needs;
     }
     else {
       $response['status'] = 201;

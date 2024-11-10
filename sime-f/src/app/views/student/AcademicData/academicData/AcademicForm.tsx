@@ -1,22 +1,27 @@
 import { useForm } from 'react-hook-form';
 import './AcademicForm.scss';
 import { StudentAcademicData } from '../../../../interfaces/student/StudentAcademicData';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useLoader } from '../../../../Global/Context/globalContext';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { StudentAcademicDataService } from '../../../../services/students/StudentAcademicDataService';
 import { toast, ToastContainer } from 'react-toastify';
-import TextField from '../../FormInputs/TextField';
-import SelectField from '../../FormInputs/SelectFIeld';
+import SelectField from '../../../../components/shared/FormInputs/SelectFIeld';
+import TextField from '../../../../components/shared/FormInputs/TextField';
 import { studentsData } from '../../../../common/studentEnums';
 
 interface FormAcademicDataProps {
   mode: 'register' | 'edit';
-  academicId: any;
+  academicData?: StudentAcademicData;
   studentId: any;
 }
 const AcademicForm = (props: FormAcademicDataProps) => {
-  const { mode, academicId, studentId } = props;
+  const { mode, academicData } = props;
+
+  const [studentId, setStudentId] = useState(0 as number);
+
+  const { id } = useParams();
+
   const {
     register,
     handleSubmit,
@@ -24,6 +29,7 @@ const AcademicForm = (props: FormAcademicDataProps) => {
     control,
     setValue,
   } = useForm<StudentAcademicData>();
+
   const navigate = useNavigate();
   const { setLoading } = useLoader();
 
@@ -44,18 +50,19 @@ const AcademicForm = (props: FormAcademicDataProps) => {
     handleResponse(resp);
     setLoading(false);
   };
+
   const handleUpdate = async (data: StudentAcademicData) => {
     setLoading(true);
     const formData = createFormData(data);
     console.log(formData);
-    const resp = await StudentAcademicDataService.update(formData, academicId);
+    const resp = await StudentAcademicDataService.update(formData, academicData?.id as number);
     handleResponse(resp);
     setLoading(false);
   };
 
   const createFormData = (data: StudentAcademicData) => {
     const formData = new FormData();
-    formData.append('student_id', data.student_id);
+    formData.append('matricula', data.matricula);
     formData.append('grade_level', data.grade_level.toString());
     formData.append('group_id', data.group_id.toString());
     formData.append('last_grade_average', data.last_grade_average.toString());
@@ -65,6 +72,7 @@ const AcademicForm = (props: FormAcademicDataProps) => {
 
     return formData;
   };
+
   const handleResponse = (resp: any) => {
     if (resp.status === 200) {
       if (mode === 'register') {
@@ -79,9 +87,10 @@ const AcademicForm = (props: FormAcademicDataProps) => {
 
   const loadAcademicData = async () => {
     setLoading(true);
-    const resp = await StudentAcademicDataService.get(academicId);
+    const resp = await StudentAcademicDataService.get(academicData?.id as number);
+    console.log(resp);
     if (resp.status === 200) {
-      fillForm(resp.students_academic_data);
+      fillForm(resp.data);
     } else {
       console.log(resp.status);
     }
@@ -89,7 +98,7 @@ const AcademicForm = (props: FormAcademicDataProps) => {
   };
 
   const fillForm = (data: StudentAcademicData) => {
-    setValue('student_id', data.student_id);
+    setValue('matricula', data.matricula);
     setValue('grade_level', data.grade_level);
     setValue('group_id', data.group_id);
     setValue('last_grade_average', data.last_grade_average);
@@ -99,10 +108,23 @@ const AcademicForm = (props: FormAcademicDataProps) => {
   };
 
   useEffect(() => {
+
+    if (id) {
+      setStudentId(+id);
+    }
+
     if (mode === 'edit') {
       loadAcademicData();
     }
-  }, [mode]);
+
+  }, [mode, id]);
+
+
+  useEffect(() => {
+    if (mode === 'edit' && academicData) {
+      console.log(academicData);
+    }
+  }, [academicData]);
 
   return (
     <div className="edit-data">
@@ -121,7 +143,7 @@ const AcademicForm = (props: FormAcademicDataProps) => {
             <div className="col-4">
               <TextField
                 label={"Matricula"}
-                field={'student_id'}
+                field={'matricula'}
                 register={register}
                 type='text'
                 rules={{ required: 'This field is required' }}

@@ -7,15 +7,15 @@ import { StudentCognitiveSkillsService } from '../../../../services/students/Stu
 import { studentsData } from '../../../../common/studentEnums';
 import { toast, ToastContainer } from 'react-toastify';
 import { useEffect } from 'react';
-import { CheckboxList } from '../../FormInputs/CheckBox';
+import { CheckboxList } from '../../../../components/shared/FormInputs/CheckBox';
 
 interface FormCognitiveProps {
   mode: 'register' | 'edit';
-  cognitiveId: any;
-  studentId: any;
+  cognitive?: StudentCognitiveSkills;
+  studentId: number | undefined;
 }
 const CognitiveSkillsForm = (props: FormCognitiveProps) => {
-  const { mode, cognitiveId, studentId } = props;
+  const { mode, cognitive, studentId } = props;
   const {
     register,
     handleSubmit,
@@ -38,6 +38,7 @@ const CognitiveSkillsForm = (props: FormCognitiveProps) => {
   const handleCreate = async () => {
     setLoading(true);
     const selectedCognitiveSkills = createSendData();
+    if (!studentId) return;
     const resp = await StudentCognitiveSkillsService.register(selectedCognitiveSkills, studentId);
     handleResponse(resp);
     setLoading(false);
@@ -45,7 +46,8 @@ const CognitiveSkillsForm = (props: FormCognitiveProps) => {
   const handleUpdate = async () => {
     setLoading(true);
     const selectedCognitiveSkills = createSendData();
-    const resp = await StudentCognitiveSkillsService.update(selectedCognitiveSkills, cognitiveId);
+    if (!cognitive?.id) return;
+    const resp = await StudentCognitiveSkillsService.update(selectedCognitiveSkills, cognitive?.id);
     handleResponse(resp);
     setLoading(false);
   };
@@ -59,31 +61,23 @@ const CognitiveSkillsForm = (props: FormCognitiveProps) => {
   };
   const handleResponse = (resp: any) => {
     if (resp.status === 200) {
-      navigate('/student/cognitive/skills/overview/' + resp.students_cognitive_skills.id);
+      navigate('/student/cognitive/skills/overview/' + resp.data.id);
     } else {
       toast.error(resp.message);
     }
   };
 
-  const loadCognitiveSkills = async () => {
-    setLoading(true);
-    let resp = await StudentCognitiveSkillsService.get(cognitiveId);
-    if (resp.status === 200) {
-      fillSendData(resp.students_cognitive_skills);
-    } else {
-      toast.error(resp.status);
-    }
-    setLoading(false);
-  };
+
   const fillSendData = (data: StudentCognitiveSkills) => {
-    data.cognitive_list.forEach((skillId: number) => {
+    const cognitiveList = typeof data.cognitive_list === 'string' ? JSON.parse(data.cognitive_list) : data.cognitive_list;
+    cognitiveList.forEach((skillId: number) => {
       setValue(`cognitiveSkills_${skillId}`, true);
     });
   };
 
   useEffect(() => {
-    if (mode === 'edit') {
-      loadCognitiveSkills();
+    if (mode === 'edit' && cognitive) {
+      fillSendData(cognitive);
     }
   }, [mode]);
 
@@ -95,7 +89,7 @@ const CognitiveSkillsForm = (props: FormCognitiveProps) => {
           <div className="row mb-2">
             <div className="col-2">
               <div className="col-4 btn-edit">
-                <button className='btn btn-secondary' onClick={() => mode === 'edit' ? navigate(`/student/cognitive/skills/overview/${cognitiveId}`) : navigate(`/student/overview/${studentId}`)} disabled={mode === 'edit' ? !cognitiveId : !studentId} >Volver</button>
+                <button className='btn btn-secondary' onClick={() => mode === 'edit' ? navigate(`/student/cognitive/skills/overview/${studentId}`) : navigate(`/student/overview/${studentId}`)} disabled={mode === 'edit' ? !cognitive : !studentId} >Volver</button>
               </div>
             </div>
           </div>

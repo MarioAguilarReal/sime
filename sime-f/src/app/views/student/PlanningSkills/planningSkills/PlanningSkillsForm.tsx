@@ -1,21 +1,23 @@
 import { useForm } from 'react-hook-form';
 import './PlanningSkillsForm.scss';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useLoader } from '../../../../Global/Context/globalContext';
 import { StudentPlanningSkills } from '../../../../interfaces/student/StudentPlanningSkills';
 import { StudentPlanningSkillsService } from '../../../../services/students/StudentPlanningSkillsService';
 import { toast, ToastContainer } from 'react-toastify';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { studentsData } from '../../../../common/studentEnums';
-import SelectField from '../../FormInputs/SelectFIeld';
+import SelectField from '../../../../components/shared/FormInputs/SelectFIeld';
 
 interface FormPlaningProps {
   mode: 'register' | 'edit';
-  planningId: any;
+  planningId?: StudentPlanningSkills;
   studentId: any;
 }
 const PlanningSkillsForm = (props: FormPlaningProps) => {
-  const { mode, planningId, studentId } = props;
+  const { mode, planningId } = props;
+  const [studentId, setStudentId] = useState(0 as number);
+  const { id } = useParams();
   const {
     handleSubmit,
     formState: { errors },
@@ -37,24 +39,30 @@ const PlanningSkillsForm = (props: FormPlaningProps) => {
   const handleCreate = async (data: StudentPlanningSkills) => {
     setLoading(true);
     const formData = createFormData(data);
+    console.log(formData);
+    console.log(studentId);
     const resp = await StudentPlanningSkillsService.register(formData, studentId);
+    console.log(resp);
     handleResponse(resp);
     setLoading(false);
   };
   const handleUpdate = async (data: StudentPlanningSkills) => {
     setLoading(true);
     const formData = createFormData(data);
-    const resp = await StudentPlanningSkillsService.update(formData, planningId);
+    const resp = await StudentPlanningSkillsService.update(formData, planningId?.id as number);
+    console.log(resp);
     handleResponse(resp);
     setLoading(false);
   };
 
   const createFormData = (data: StudentPlanningSkills) => {
     const formData = new FormData();
+    console.log(data);
     formData.append('focus', data.focus.toString());
     formData.append('detect', data.detect.toString());
     formData.append('correlation', data.correlation.toString());
 
+    console.log(formData);
     return formData;
   };
   const handleResponse = (resp: any) => {
@@ -71,9 +79,9 @@ const PlanningSkillsForm = (props: FormPlaningProps) => {
 
   const loadPlanningSkills = async () => {
     setLoading(true);
-    let resp = await StudentPlanningSkillsService.get(planningId);
+    let resp = await StudentPlanningSkillsService.get(planningId?.id as number);
     if (resp.status === 200) {
-      fillForm(resp.students_planning_skills);
+      fillForm(resp.data);
     } else {
       console.log(resp.status);
     }
@@ -86,10 +94,13 @@ const PlanningSkillsForm = (props: FormPlaningProps) => {
   };
 
   useEffect(() => {
+    if (id) {
+      setStudentId(+id);
+    }
     if (mode === 'edit') {
       loadPlanningSkills();
     }
-  }, [mode]);
+  }, [mode, id]);
 
   return (
     <div className="edit-skills">

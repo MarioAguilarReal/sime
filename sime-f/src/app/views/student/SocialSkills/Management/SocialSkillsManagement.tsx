@@ -4,7 +4,7 @@ import './SocialSkillsManagement.scss';
 import { useEffect, useState } from 'react';
 import { Student } from '../../../../interfaces/student/Student';
 import { StudentService } from '../../../../services/students/StudentsService';
-import SocialSkillsForm from '../../../../components/shared/StudentsForms/socialSkills/SocialSkillsForm';
+import SocialSkillsForm from '../socialSkills/SocialSkillsForm';
 
 const SocialSkillsManagement = () => {
   const { setLoading } = useLoader();
@@ -22,17 +22,16 @@ const SocialSkillsManagement = () => {
 
   useEffect(() => {
     if (id) {
-      let dataId = parseInt(id);
-      getStudent(dataId);
+      getStudent(+id);
     }
   }, [id]);
 
   return (
     <div>
-      {!student?.student_social_skills_id ? (
-        <SocialSkillsForm mode='register' socialId={student?.id} studentId={student?.id} />
+      {!student?.socialSkills ? (
+        <SocialSkillsForm mode='register' studentId={student?.id} />
       ) : (
-        <SocialSkillsForm mode='edit' socialId={student.student_social_skills_id} studentId={student.id} />
+        <SocialSkillsForm mode='edit' socialSkills={student.socialSkills} studentId={student.id} />
       )}
     </div>
   );

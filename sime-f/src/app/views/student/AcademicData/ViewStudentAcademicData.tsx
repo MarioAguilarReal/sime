@@ -4,7 +4,7 @@ import './ViewStudentAcademicData.scss'
 import { useEffect, useState } from 'react';
 import { Student } from '../../../interfaces/student/Student';
 import { StudentService } from '../../../services/students/StudentsService';
-import AcademicForm from '../../../components/shared/StudentsForms/academicData/AcademicForm';
+import AcademicForm from './academicData/AcademicForm';
 
 const ViewStudentAcademicData = () => {
 
@@ -17,23 +17,23 @@ const ViewStudentAcademicData = () => {
     let resp = await StudentService.getStudent(dataId);
     if (resp.status === 200) {
       setStudentData(resp.data);
+      console.log(resp.data);
     }
     setLoading(false);
   };
 
   useEffect(() => {
     if (id) {
-      let dataId = parseInt(id);
-      getStudent(dataId);
+      getStudent(+id);
     }
   }, [id]);
 
   return (
     <div>
-      {!studentData?.student_academic_data_id ? (
-        <AcademicForm mode="register" academicId={studentData?.id} studentId={studentData?.id} />
+      {!studentData?.academicData ? (
+        <AcademicForm mode="register" studentId={studentData?.id} />
       ) : (
-        <AcademicForm mode="edit" academicId={studentData.student_academic_data_id} studentId={studentData.id} />
+        <AcademicForm mode="edit" academicData={studentData.academicData} studentId={studentData.id} />
       )}
     </div>
   );

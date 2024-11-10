@@ -21,7 +21,7 @@ const OverviewGroup = () => {
   const [group, setGroup] = useState<Group | null>(null);
   const [students, setStudent] = useState<Student[]>([]);
   const [subjects, setSubjects] = useState<Classe[]>([]);
-  const [academicData, setAcademicData] = useState<StudentAcademicData[]>([]);
+  // const [academicData, setAcademicData] = useState<StudentAcademicData[]>([]);
   const [studentGroup, setStudentGroup] = useState<Student[]>([]);
   const [users, setUsers] = useState<User[]>([]);
   const [showModal, setShowModal] = useState(false);
@@ -39,7 +39,7 @@ const OverviewGroup = () => {
     setLoading(false);
   }
 
-  const loadStudent = async () => {
+  const loadStudentsByGroup = async () => {
     setLoading(true);
     let resp = await StudentService.getAll();
     if (resp.status === 200) {
@@ -47,13 +47,13 @@ const OverviewGroup = () => {
     } else {
       console.log(resp.message);
     }
-    let resp2 = await StudentAcademicDataService.getAll();
-    //console.log(resp2.students_academic_data);
-    if (resp2.status === 200) {
-      setAcademicData(resp2.students_academic_data);
-    } else {
-      console.log(resp2.message);
-    }
+    // let resp2 = await StudentAcademicDataService.getAll();
+    // //console.log(resp2.students_academic_data);
+    // if (resp2.status === 200) {
+    //   setAcademicData(resp2.students_academic_data);
+    // } else {
+    //   console.log(resp2.message);
+    // }
     let resp3 = await UsersService.getUsers();
     console.log(resp3.users);
     if (resp3.status === 200) {
@@ -64,18 +64,10 @@ const OverviewGroup = () => {
     setLoading(false);
   }
 
-  const studentsGropu = async () => {
-    console.log(students);
-    console.log(academicData);
+  const studentsGroup = async () => {
     console.log(group);
     if (group) {
-      let academic = academicData.filter(academ => academ.group_id === group.group && academ.grade_level === group.grade);
-      console.log(academic);
-
-      let academicIds = academic.map(academId => academId.id);
-
-      let studentG = students.filter(student => academicIds.includes(student.student_academic_data_id));
-      console.log(studentG);
+      let studentG = students.filter(student => student.academicData?.group_id === group.group && student.academicData?.grade_level === group.grade);
       setStudentGroup(studentG);
     } else {
       console.log("No hay datos");
@@ -88,17 +80,16 @@ const OverviewGroup = () => {
 
   useEffect(() => {
     if (id) {
-      let groupId = parseInt(id);
-      loadGroup(groupId);
-      loadStudent();
+      loadGroup(+id);
+      loadStudentsByGroup();
     }
   }, [id]);
 
   useEffect(() => {
-    if (students.length && academicData.length && students) {
-      studentsGropu();
+    if (students) {
+      studentsGroup();
     }
-  }, [students, academicData, students]);
+  }, [students]);
 
 
   return (

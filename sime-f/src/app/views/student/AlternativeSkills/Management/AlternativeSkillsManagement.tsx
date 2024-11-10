@@ -4,7 +4,7 @@ import './AlternativeSkillsManagement.scss';
 import { useEffect, useState } from 'react';
 import { Student } from '../../../../interfaces/student/Student';
 import { StudentService } from '../../../../services/students/StudentsService';
-import AlternativeSkillsForm from '../../../../components/shared/StudentsForms/alternativeSkills/AlternativeSkillsForm';
+import AlternativeSkillsForm from '../alternativeSkills/AlternativeSkillsForm';
 
 const AlternativeSkillsManagement = () => {
   const { setLoading } = useLoader();
@@ -22,17 +22,16 @@ const AlternativeSkillsManagement = () => {
 
   useEffect(() => {
     if (id) {
-      let dataId = parseInt(id);
-      getStudent(dataId);
+      getStudent(+id);
     }
   }, [id]);
 
   return (
     <div>
-      {!student?.student_alternative_skills_id ? (
-        <AlternativeSkillsForm mode='register' alternativeId={student?.id} studentId={student?.id} />
+      {!student?.alternativeSkills ? (
+        <AlternativeSkillsForm mode='register' studentId={student?.id} />
       ) : (
-        <AlternativeSkillsForm mode='edit' alternativeId={student.student_alternative_skills_id} studentId={student.id} />
+        <AlternativeSkillsForm mode='edit' alternativeSkills={student.alternativeSkills} studentId={student.id} />
       )}
     </div>
   );

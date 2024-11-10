@@ -12,8 +12,9 @@ class StudentAcademicData extends Model
     protected $table = 'student_academic_datas';
 
     protected $fillable = [
-        'grade_level',
         'student_id',
+        'matricula',
+        'grade_level',
         'last_grade_average',
         'actual_grade_average',
         'behavior',

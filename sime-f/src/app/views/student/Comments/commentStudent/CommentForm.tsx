@@ -13,11 +13,11 @@ import { toast } from 'react-toastify';
 
 interface FormCommentProps {
   mode: 'register' | 'edit';
-  commentId: any;
+  comment?: StudentComments;
   studentId: any;
 }
 const CommentForm = (props: FormCommentProps) => {
-  const { mode, commentId, studentId } = props;
+  const { mode, comment, studentId } = props;
   const {
     register,
     handleSubmit,
@@ -60,7 +60,7 @@ const CommentForm = (props: FormCommentProps) => {
   const handleUpdate = async (data: StudentComments) => {
     setLoading(true);
     const formData = createFormData(data);
-    const resp = await StudentCommentsService.update(formData, commentId);
+    const resp = await StudentCommentsService.update(formData, comment?.id || 0);
     handleResponse(resp);
     setLoading(false);
   };
@@ -87,14 +87,16 @@ const CommentForm = (props: FormCommentProps) => {
   const loadCommentAndUsers = async () => {
     setLoading(true);
     const [commentResp, usersResp] = await Promise.all([
-      StudentCommentsService.get(commentId),
+      StudentCommentsService.get(comment?.id || 0),
       UsersService.getUsers(),
     ]);
     if (commentResp.status === 200 && usersResp.status === 200) {
       //setStudentComment(commentResp.comments);
-      const uComment = usersResp.users.find((u: { id: number | undefined; }) => u.id === commentResp.comments.by);
+      console.log('commentResp:', commentResp);
+      console.log('usersResp:', usersResp);
+      const uComment = usersResp.users.find((u: { id: number | undefined; }) => u.id === commentResp.data.by);
       setUserComment(uComment);
-      fillForm(commentResp.comments);
+      fillForm(commentResp.data);
     } else {
       console.log('Error al cargar los datos:', commentResp.status, usersResp.status);
     }
@@ -129,6 +131,7 @@ const CommentForm = (props: FormCommentProps) => {
 
   useEffect(() => {
     if (studentId) {
+      console.log('studentId:', studentId);
       loadStudent(studentId);
     }
   }, [studentId]);

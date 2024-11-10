@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import StudentForm from "../../../components/shared/StudentsForms/formManagement/StudentForm";
+import StudentForm from "./formManagement/StudentForm";
 
 const StudentManagement = () => {
   const { id } = useParams();

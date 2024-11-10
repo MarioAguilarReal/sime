@@ -13,7 +13,7 @@ class ApiPlanningSkillsController extends Controller
         $response = [
             'status' => 0,
             'message' => '',
-            'students_planning_skills' => ''
+            'data' => ''
         ];
 
         $request->validate([
@@ -28,20 +28,19 @@ class ApiPlanningSkillsController extends Controller
             $response['message'] = 'No student found';
             return response()->json($response, $response['status']);
         }
-        
-        $student_planning_skills = StudentPlanningSkills::create ([
+
+        $student_planning_skills = new StudentPlanningSkills ([
             'focus' => $request->focus,
             'detect' => $request->detect,
             'correlation' => $request->correlation,
         ]);
-        
+
         if ($student_planning_skills){
-            $student->student_planning_skills_id = $student_planning_skills->id;
-            $student->save();
+            $student->planningSkills()->save($student_planning_skills);
 
             $response['status'] = 200;
             $response['message'] = 'Student planning skills registered successfully';
-            $response['students_planning_skills'] = $student_planning_skills;
+            $response['data'] = $student_planning_skills;
         }
         else {
             $response['status'] = 201;
@@ -54,14 +53,16 @@ class ApiPlanningSkillsController extends Controller
         $response = [
             'status' => 0,
             'message' => '',
-            'students_planning_skills' => ''
+            'data' => ''
         ];
 
-        $student_planning_skills = StudentPlanningSkills::find($id);
+        $student = Student::find($id);
+
+        $student_planning_skills = $student->planningSkills()->first();
         if($student_planning_skills){
             $response['status'] = 200;
             $response['message'] = 'Planning skills found';
-            $response['students_planning_skills'] = $student_planning_skills;
+            $response['data'] = $student_planning_skills;
         } else {
             $response['status'] = 201;
             $response['message'] = 'No planning skills found';
@@ -73,7 +74,7 @@ class ApiPlanningSkillsController extends Controller
         $response = [
             'status' => 0,
             'message' => '',
-            'students_planning_skills' => ''
+            'data' => ''
         ];
 
         $request->validate([
@@ -82,17 +83,18 @@ class ApiPlanningSkillsController extends Controller
             'correlation' => 'required',
         ]);
 
-        $student_planning_skills = StudentPlanningSkills::find($id);
+        $student_planning_skills = StudentPlanningSkills::where('student_id', $id)->first();
 
         if($student_planning_skills){
-            $student_planning_skills->focus = $request->focus;
-            $student_planning_skills->detect = $request->detect;
-            $student_planning_skills->correlation = $request->correlation;
-            $student_planning_skills->save();
-            
+            $student_planning_skills->update([
+                'focus' => $request->focus,
+                'detect' => $request->detect,
+                'correlation' => $request->correlation,
+            ]);
+
             $response['status'] = 200;
             $response['message'] = 'Planning skills updated successfully';
-            $response['students_planning_skills'] = $student_planning_skills;
+            $response['data'] = $student_planning_skills;
         } else {
             $response['status'] = 201;
             $response['message'] = 'No planning skills found';

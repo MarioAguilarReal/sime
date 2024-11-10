@@ -1,3 +1,11 @@
+import { StudentAcademicData } from "./StudentAcademicData";
+import { StudentComments } from "./StudentComments";
+import { StudentSpecialNeeds } from "./StudentSpecialNeeds";
+import { StudentSocialSkills } from "./StudentSocialSkills";
+import { StudentCognitiveSkills } from "./StudentCognitiveSkills";
+import { StudentPlanningSkills } from "./StudentPlanningSkills";
+import { StudentAlternativeSkills } from "./StudentAlternativeSkills";
+
 export interface Student{
     //Student
     id?: number;
@@ -33,13 +41,18 @@ export interface Student{
     emergency_contact_name_2: string;
     emergency_contact_phone_2: string;
     emergency_contact_relationship_2: string;
-    //More
-    comments_id?: number;
-    student_cognitive_skills_id?: number;
-    student_alternative_skills_id?: number;
-    student_academic_data_id?: number;
-    student_learning_type_id?: number;
-    student_special_needs_id?: number;
-    student_social_skills_id?: number;
-    student_planning_skills_id?: number;
+    //More Info
+    academicData?: StudentAcademicData
+    alternativeSkills?: StudentAlternativeSkills;
+    cognitiveSkills?: StudentCognitiveSkills;
+    comments: StudentComments;
+    planningSkills?: StudentPlanningSkills;
+    socialSkills?: StudentSocialSkills;
+    specialNeeds?: StudentSpecialNeeds;
+    learningType?: LearningType;
+}
+
+interface LearningType{
+    id?: number;
+    name?: string;
 }

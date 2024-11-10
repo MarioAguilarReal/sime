@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('student_alternative_skills', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('student_id')->constrained('students')->onDelete('cascade');
             $table->json('alternative_list');
             $table->timestamps();
         });

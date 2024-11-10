@@ -4,7 +4,7 @@ import './CognitiveSkillsManagement.scss';
 import { useEffect, useState } from 'react';
 import { Student } from '../../../../interfaces/student/Student';
 import { StudentService } from '../../../../services/students/StudentsService';
-import CognitiveSkillsForm from '../../../../components/shared/StudentsForms/cognitiveSkills/CognitiveSkillsForm';
+import CognitiveSkillsForm from '../cognitiveSkills/CognitiveSkillsForm';
 
 const CognitiveSkillsManagement = () => {
   const { setLoading } = useLoader();
@@ -22,17 +22,16 @@ const CognitiveSkillsManagement = () => {
 
   useEffect(() => {
     if (id) {
-      let dataId = parseInt(id);
-      getStudent(dataId);
+      getStudent(+id);
     }
   }, [id]);
 
   return (
     <div>
-      {!student?.student_cognitive_skills_id ? (
-        <CognitiveSkillsForm mode='register' cognitiveId={student?.id} studentId={student?.id} />
+      {!student?.cognitiveSkills ? (
+        <CognitiveSkillsForm mode='register' studentId={student?.id} />
       ) : (
-        <CognitiveSkillsForm mode='edit' cognitiveId={student.student_cognitive_skills_id} studentId={student.id} />
+        <CognitiveSkillsForm mode='edit' cognitive={student.cognitiveSkills} studentId={student.id} />
       )}
     </div>
   );

@@ -1,7 +1,7 @@
 export interface StudentAcademicData{
     id?: number;
     grade_level: number;
-    student_id: string;
+    matricula: string;
     last_grade_average: number;
     actual_grade_average: number;
     behavior: string;

@@ -1,15 +1,15 @@
 import "./StudentForm.scss";
 import { useEffect, useState } from 'react';
-import { Student } from './../../../../interfaces/student/Student';
+import { Student } from '../../../../interfaces/student/Student';
 import { useForm } from 'react-hook-form';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { StudentService } from '../../../../services/students/StudentsService';
 import { useLoader } from '../../../../Global/Context/globalContext';
 import { toast, ToastContainer } from 'react-toastify';
-import SelectField from '../../FormInputs/SelectFIeld';
-import TextField from '../../FormInputs/TextField';
+import TextField from "../../../../components/shared/FormInputs/TextField";
+import SelectField from "../../../../components/shared/FormInputs/SelectFIeld";
 import { studentsData } from '../../../../common/studentEnums';
-import { PATTERNS } from '../../FormInputs/patterns';
+import { PATTERNS } from "../../../../components/shared/FormInputs/patterns";
 import { generalData } from '../../../../common/generalEnums';
 
 interface FormStudenProps {

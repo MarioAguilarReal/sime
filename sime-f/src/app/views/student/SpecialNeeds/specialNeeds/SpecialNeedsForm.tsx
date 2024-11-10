@@ -6,13 +6,13 @@ import { useLoader } from '../../../../Global/Context/globalContext';
 import { StudentSpecialNeedsService } from '../../../../services/students/StudentSpecialNeedsService';
 import { toast, ToastContainer } from 'react-toastify';
 import { useEffect } from 'react';
-import TextField from '../../FormInputs/TextField';
+import TextField from '../../../../components/shared/FormInputs/TextField';
 import { studentsData } from '../../../../common/studentEnums';
-import SelectField from '../../FormInputs/SelectFIeld';
+import SelectField from '../../../../components/shared/FormInputs/SelectFIeld';
 
 interface FormNeedsProps {
   mode: 'register' | 'edit';
-  needsId: any;
+  needsId?: StudentSpecialNeeds;
   studentId: any;
 };
 const SpecialNeedsForm = (props: FormNeedsProps) => {
@@ -46,7 +46,7 @@ const SpecialNeedsForm = (props: FormNeedsProps) => {
   const handleUpdate = async (data: StudentSpecialNeeds) => {
     setLoading(true);
     const formData = createFormData(data);
-    const resp = await StudentSpecialNeedsService.update(formData, needsId);
+    const resp = await StudentSpecialNeedsService.update(formData, needsId?.id as number);
     handleResponse(resp);
     setLoading(false);
   };
@@ -75,9 +75,9 @@ const SpecialNeedsForm = (props: FormNeedsProps) => {
 
   const loadSpecialNeeds = async () => {
     setLoading(true);
-    let resp = await StudentSpecialNeedsService.get(needsId);
+    let resp = await StudentSpecialNeedsService.get(needsId?.id as number);
     if (resp.status === 200) {
-      fillForm(resp.students_special_needs);
+      fillForm(resp.data);
     } else {
       console.log(resp.status);
     }

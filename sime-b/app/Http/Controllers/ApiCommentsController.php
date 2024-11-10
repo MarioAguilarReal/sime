@@ -13,7 +13,7 @@ class ApiCommentsController extends Controller
 		$response = [
 			'status' => 0,
 			'message' => '',
-			'comments' => ''
+			'data' => ''
 		];
 
 		$request->validate([
@@ -21,7 +21,6 @@ class ApiCommentsController extends Controller
 			'comment' => 'required',
 			'by' => 'required',
 			'userRoleCreator' => 'required',
-			'idStudent' => 'required',
 		]);
 
 		$student = Student::find($id);
@@ -31,11 +30,10 @@ class ApiCommentsController extends Controller
 			return response()->json($response, $response['status']);
 		}
 
-		$comments = Comments::create ([
+		$comments = new Comments ([
 			'comment' => $request->comment,
 			'by' => $request->by,
 			'userRoleCreator' => $request->userRoleCreator,
-			'idStudent' => $request->idStudent,
 		]);
 
 		if ($request->has('commentType')){
@@ -43,12 +41,11 @@ class ApiCommentsController extends Controller
 		}
 
 		if ($comments){
-			$student->comments_id = $comments->id;
-			$student->save();
-			
+			$student->comments()->save($comments);
+
 			$response['status'] = 200;
 			$response['message'] = 'Comment registered successfully';
-			$response['comments'] = $comments;
+			$response['data'] = $comments;
 		}
 		else {
 			$response['status'] = 201;
@@ -61,14 +58,16 @@ class ApiCommentsController extends Controller
 		$response = [
 			'status' => 0,
 			'message' => '',
-			'comments' => ''
+			'data' => ''
 		];
 
-		$comments = Comments::find($id_student);
+		$student = Student::find($id_student);
+
+		$comments = $student->comments()->first();
 		if($comments){
 			$response['status'] = 200;
 			$response['message'] = 'Comments found';
-			$response['comments'] = $comments;
+			$response['data'] = $comments;
 		}
 		else {
 			$response['status'] = 201;
@@ -81,7 +80,7 @@ class ApiCommentsController extends Controller
 		$response = [
 			'status' => 0,
 			'message' => '',
-			'comments' => ''
+			'data' => ''
 		];
 
 		$request->validate([
@@ -89,25 +88,25 @@ class ApiCommentsController extends Controller
 			'comment' => 'required',
 			'by' => 'required',
 			'userRoleCreator' => 'required',
-			'idStudent' => 'required',
 		]);
 
-		$comments = Comments::find($id);
+		$comments = Comments::where('student_id', $id)->first();
 
 		if($comments){
-			$comments->comment = $request->comment;
-			$comments->by = $request->by;
-			$comments->userRoleCreator = $request->userRoleCreator;
-			$comments->idStudent = $request->idStudent;
-	
+			$comments->update([
+				'comment' => $request->comment,
+				'by' => $request->by,
+				'userRoleCreator' => $request->userRoleCreator,
+			]);
+
 			if ($request->has('commentType')){
 				$comments->commentType = $request->commentType;
+				$comments->save();
 			}
-			$comments->save();
-			
+
 			$response['status'] = 200;
 			$response['message'] = 'Comment updated successfully';
-			$response['comments'] = $comments;
+			$response['data'] = $comments;
 		}
 		else {
 			$response['status'] = 201;

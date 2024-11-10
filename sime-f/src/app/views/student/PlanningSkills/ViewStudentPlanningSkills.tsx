@@ -4,7 +4,7 @@ import './ViewStudentPlanningSkills.scss';
 import { useEffect, useState } from 'react';
 import { Student } from '../../../interfaces/student/Student';
 import { StudentService } from '../../../services/students/StudentsService';
-import PlanningSkillsForm from '../../../components/shared/StudentsForms/planningSkills/PlanningSkillsForm';
+import PlanningSkillsForm from './planningSkills/PlanningSkillsForm';
 
 const ViewStudentPlanningSkills = () => {
 
@@ -23,17 +23,16 @@ const ViewStudentPlanningSkills = () => {
 
   useEffect(() => {
     if (id) {
-      let dataId = parseInt(id);
-      getStudent(dataId);
+      getStudent(+id);
     }
   }, [id]);
 
   return (
     <div>
-      {!student?.student_planning_skills_id ? (
-        <PlanningSkillsForm mode="register" planningId={student?.id} studentId={student?.id} />
+      {!student?.planningSkills ? (
+        <PlanningSkillsForm mode="register" studentId={student?.id} />
       ) : (
-        <PlanningSkillsForm mode="edit" planningId={student.student_planning_skills_id} studentId={student.id} />
+        <PlanningSkillsForm mode="edit" planningId={student.planningSkills} studentId={student.id} />
       )}
     </div>
   );

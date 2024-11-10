@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import './ViewStudentSpecialNeeds.scss'
 import { Student } from "../../../interfaces/student/Student";
 import { StudentService } from "../../../services/students/StudentsService";
-import SpecialNeedsForm from "../../../components/shared/StudentsForms/specialNeeds/SpecialNeedsForm";
+import SpecialNeedsForm from "./specialNeeds/SpecialNeedsForm";
 
 const ViewStudentSpecialNeeds = () => {
 
@@ -23,17 +23,16 @@ const ViewStudentSpecialNeeds = () => {
 
 	useEffect(() => {
 		if (id) {
-			let dataId = parseInt(id);
-			getStudent(dataId);
+			getStudent(+id);
 		}
 	}, [id]);
 
 	return (
 		<div>
-			{!student?.student_special_needs_id ? (
-				<SpecialNeedsForm mode="register" needsId={student?.id} studentId={student?.id} />
+			{!student?.specialNeeds ? (
+				<SpecialNeedsForm mode="register" studentId={student?.id} />
 			) : (
-				<SpecialNeedsForm mode="edit" needsId={student.student_special_needs_id} studentId={student.id} />
+				<SpecialNeedsForm mode="edit" needsId={student.specialNeeds} studentId={student.id} />
 			)}
 		</div>
 	);

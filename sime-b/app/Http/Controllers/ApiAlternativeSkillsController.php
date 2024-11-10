@@ -13,7 +13,7 @@ class ApiAlternativeSkillsController extends Controller
         $response = [
             'status' => 0,
             'message' => '',
-            'students_alternative_skills' => ''
+            'data' => ''
         ];
 
         $request->validate([
@@ -26,18 +26,17 @@ class ApiAlternativeSkillsController extends Controller
             $response['message'] = 'No student found';
             return response()->json($response, $response['status']);
         }
-        
-        $student_alternative_skills = StudentAlternativeSkills::create ([
+
+        $student_alternative_skills = new StudentAlternativeSkills ([
             'alternative_list' => json_encode($request->alternative_list),
         ]);
-        
+
         if ($student_alternative_skills){
-            $student->student_alternative_skills_id = $student_alternative_skills->id;
-            $student->save();
+            $student->alternativeSkills()->save($student_alternative_skills);
 
             $response['status'] = 200;
             $response['message'] = 'Student alternative skills registered successfully';
-            $response['students_alternative_skills'] = $student_alternative_skills;
+            $response['data'] = $student_alternative_skills;
         }
         else {
             $response['status'] = 201;
@@ -50,16 +49,18 @@ class ApiAlternativeSkillsController extends Controller
         $response = [
             'status' => 0,
             'message' => '',
-            'students_alternative_skills' => ''
+            'data' => ''
         ];
 
-        $student_alternative_skills = StudentAlternativeSkills::find($id);
+        $student = Student::find($id);
+
+        $student_alternative_skills = $student->alternativeSkills()->first();
         if($student_alternative_skills){
             $student_alternative_skills->alternative_list = json_decode($student_alternative_skills->alternative_list, true);
-            
+
             $response['status'] = 200;
             $response['message'] = 'Student alternative skills found';
-            $response['students_alternative_skills'] = $student_alternative_skills;
+            $response['data'] = $student_alternative_skills;
         }
         else {
             $response['status'] = 201;
@@ -72,21 +73,22 @@ class ApiAlternativeSkillsController extends Controller
         $response = [
             'status' => 0,
             'message' => '',
-            'students_alternative_skills' => ''
+            'data' => ''
         ];
 
         $request->validate([
             'alternative_list' => 'required|array',
         ]);
 
-        $student_alternative_skills = StudentAlternativeSkills::find($id);
+        $student_alternative_skills = StudentAlternativeSkills::where('student_id', $id)->first();
         if($student_alternative_skills){
-            $student_alternative_skills->alternative_list = json_encode($request->alternative_list);
-            $student_alternative_skills->save();
+            $student_alternative_skills->update([
+                'alternative_list' => json_encode($request->alternative_list),
+            ]);
 
             $response['status'] = 200;
             $response['message'] = 'Student alternative skills updated successfully';
-            $response['students_alternative_skills'] = $student_alternative_skills;
+            $response['data'] = $student_alternative_skills;
         }
         else {
             $response['status'] = 201;
