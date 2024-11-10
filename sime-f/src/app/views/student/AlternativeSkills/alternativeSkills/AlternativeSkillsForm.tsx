@@ -7,7 +7,7 @@ import { StudentAlternativeSkillsService } from '../../../../services/students/S
 import { studentsData } from '../../../../common/studentEnums';
 import { toast, ToastContainer } from 'react-toastify';
 import { useEffect } from 'react';
-import { CheckboxList } from '../../FormInputs/CheckBox';
+import { CheckboxList } from '../../../../components/shared/FormInputs/CheckBox';
 
 interface FormAlternativeProps {
   mode: 'register' | 'edit';
@@ -40,7 +40,7 @@ const AlternativeSkillsForm = (props: FormAlternativeProps) => {
   const handleCreate = async () => {
     setLoading(true);
     const selectedAlternativeSkills = createSendData();
-    if(!studentId) return;
+    if (!studentId) return;
     const resp = await StudentAlternativeSkillsService.register(selectedAlternativeSkills, studentId);
     handleResponse(resp);
     setLoading(false);
@@ -49,7 +49,8 @@ const AlternativeSkillsForm = (props: FormAlternativeProps) => {
   const handleUpdate = async () => {
     setLoading(true);
     const selectedAlternativeSkills = createSendData();
-    if(!alternativeSkills?.id) return;
+    if (!alternativeSkills?.id) return;
+    console.log(selectedAlternativeSkills);
     const resp = await StudentAlternativeSkillsService.update(selectedAlternativeSkills, alternativeSkills?.id);
     handleResponse(resp);
     setLoading(false);
@@ -64,21 +65,24 @@ const AlternativeSkillsForm = (props: FormAlternativeProps) => {
   };
   const handleResponse = (resp: any) => {
     if (resp.status === 200) {
-      navigate('/student/alternative/skills/overview/' + resp.students_alternative_skills.id);
+      navigate('/student/alternative/skills/overview/' + resp.data.id);
     } else {
-      toast.error(resp.status);
+      toast.error(resp.message);
     }
   };
 
   const fillSendData = (data: StudentAlternativeSkills) => {
-    data.alternative_list.forEach((skillId: number) => {
+    console.log(data);
+    const alternativeList = typeof data.alternative_list === "string" ? JSON.parse(data.alternative_list) : data.alternative_list;
+    alternativeList.forEach((skillId: number) => {
       setValue(`alternativeSkills_${skillId}`, true);
     });
   };
 
   useEffect(() => {
     if (mode === 'edit' && alternativeSkills) {
-      fillSendData(alternativeSkills as StudentAlternativeSkills);
+      console.log(alternativeSkills);
+      fillSendData(alternativeSkills);
     }
   }, [mode]);
 

@@ -6,8 +6,8 @@ import { useLoader } from '../../../../Global/Context/globalContext';
 import { useEffect, useState } from 'react';
 import { StudentAcademicDataService } from '../../../../services/students/StudentAcademicDataService';
 import { toast, ToastContainer } from 'react-toastify';
-import TextField from '../../FormInputs/TextField';
-import SelectField from '../../FormInputs/SelectFIeld';
+import SelectField from '../../../../components/shared/FormInputs/SelectFIeld';
+import TextField from '../../../../components/shared/FormInputs/TextField';
 import { studentsData } from '../../../../common/studentEnums';
 
 interface FormAcademicDataProps {
@@ -18,7 +18,7 @@ interface FormAcademicDataProps {
 const AcademicForm = (props: FormAcademicDataProps) => {
   const { mode, academicData } = props;
 
-  const [studentId, setStudentId] = useState( 0 as number);
+  const [studentId, setStudentId] = useState(0 as number);
 
   const { id } = useParams();
 

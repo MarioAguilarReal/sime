@@ -7,15 +7,15 @@ import { StudentSocialSkillsService } from '../../../../services/students/Studen
 import { studentsData } from '../../../../common/studentEnums';
 import { toast, ToastContainer } from 'react-toastify';
 import { useEffect } from 'react';
-import { CheckboxList } from '../../FormInputs/CheckBox';
+import { CheckboxList } from '../../../../components/shared/FormInputs/CheckBox';
 
 interface FormSocialProps {
   mode: 'register' | 'edit';
-  socialId: any;
-  studentId: any;
+  socialSkills?: StudentSocialSkills;
+  studentId: number | undefined;
 }
 const SocialSkillsForm = (props: FormSocialProps) => {
-  const { mode, socialId, studentId } = props;
+  const { mode, socialSkills, studentId } = props;
   const {
     register,
     handleSubmit,
@@ -38,6 +38,7 @@ const SocialSkillsForm = (props: FormSocialProps) => {
   const handleCreate = async () => {
     setLoading(true);
     const selectedSocialSkills = createSendData();
+    if (!studentId) return;
     const resp = await StudentSocialSkillsService.register(selectedSocialSkills, studentId);
     handleResponse(resp);
     setLoading(false);
@@ -45,7 +46,8 @@ const SocialSkillsForm = (props: FormSocialProps) => {
   const handleUpdate = async () => {
     setLoading(true);
     const selectedSocialSkills = createSendData();
-    const resp = await StudentSocialSkillsService.update(selectedSocialSkills, socialId);
+    if (!socialSkills?.id) return;
+    const resp = await StudentSocialSkillsService.update(selectedSocialSkills, socialSkills.id);
     handleResponse(resp);
     setLoading(false);
   };
@@ -88,46 +90,36 @@ const SocialSkillsForm = (props: FormSocialProps) => {
   };
   const handleResponse = (resp: any) => {
     if (resp.status === 200) {
-      navigate('/student/social/skills/overview/' + resp.students_social_skills.id);
+      navigate('/student/social/skills/overview/' + resp.data.id);
     } else {
       toast.error(resp.message);
     }
   };
 
-  const loadSocialSkills = async () => {
-    setLoading(true);
-    let resp = await StudentSocialSkillsService.get(socialId);
-    if (resp.status === 200) {
-      fillSendData(resp.students_social_skills);
-    } else {
-      toast.error(resp.status);
-    }
-    setLoading(false);
-  };
   const fillSendData = (data: StudentSocialSkills) => {
-    data.basic.forEach((skillId: number) => {
-      setValue(`socialSkillsBasic_${skillId}`, true);
-    });
-    data.advanced.forEach((skillId: number) => {
-      setValue(`socialSkillsAdvanced_${skillId}`, true);
-    });
-    data.feelings.forEach((skillId: number) => {
-      setValue(`socialSkillsFeelings_${skillId}`, true);
-    });
-    data.assault.forEach((skillId: number) => {
-      setValue(`socialSkillsAssault_${skillId}`, true);
-    });
-    data.stress.forEach((skillId: number) => {
-      setValue(`socialSkillsStress_${skillId}`, true);
-    });
-    data.planning.forEach((skillId: number) => {
-      setValue(`socialSkillsPlanning_${skillId}`, true);
+    const parseList = (list: string | any[]) => {
+      return typeof list === 'string' ? JSON.parse(list) : list;
+    }
+    const socialCategories = [
+      { key: 'basic', prefix: 'socialSkillsBasic' },
+      { key: 'advanced', prefix: 'socialSkillsAdvanced' },
+      { key: 'feelings', prefix: 'socialSkillsFeelings' },
+      { key: 'assault', prefix: 'socialSkillsAssault' },
+      { key: 'stress', prefix: 'socialSkillsStress' },
+      { key: 'planning', prefix: 'socialSkillsPlanning' }
+    ];
+
+    socialCategories.forEach(({ key, prefix }) => {
+      const list = parseList((data as any)[key]);
+      list.forEach((skillId: number) => {
+        setValue(`${prefix}_${skillId}`, true);
+      });
     });
   };
 
   useEffect(() => {
-    if (mode === 'edit') {
-      loadSocialSkills();
+    if (mode === 'edit' && socialSkills) {
+      fillSendData(socialSkills);
     }
   }, [mode]);
 
@@ -139,7 +131,7 @@ const SocialSkillsForm = (props: FormSocialProps) => {
           <div className="row mb-2">
             <div className="col-2">
               <div className="col-4 btn-edit">
-                <button className='btn btn-secondary' onClick={() => (mode === 'edit' && socialId) ? navigate(`/student/social/skills/overview/${socialId}`) : studentId && navigate(`/student/overview/${studentId}`)} disabled={mode === 'edit' ? !socialId : !studentId}>Volver</button>
+                <button className='btn btn-secondary' onClick={() => (mode === 'edit' && studentId) ? navigate(`/student/social/skills/overview/${studentId}`) : studentId && navigate(`/student/overview/${studentId}`)} disabled={mode === 'edit' ? !studentId : !studentId}>Volver</button>
               </div>
             </div>
           </div>

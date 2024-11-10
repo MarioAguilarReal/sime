@@ -95,6 +95,11 @@ class ApiStudentsController extends Controller
             $student->academicData = $academicData;
         }
 
+        $alternativeSkills = $student->alternativeSkills()->first();
+        if($alternativeSkills){
+            $student->alternativeSkills = $alternativeSkills;
+        }
+
         $learningType = $student->learningType()->first();
         if($learningType){
             $student->learningType = $learningType;

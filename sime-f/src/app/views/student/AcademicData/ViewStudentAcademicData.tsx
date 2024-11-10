@@ -4,7 +4,7 @@ import './ViewStudentAcademicData.scss'
 import { useEffect, useState } from 'react';
 import { Student } from '../../../interfaces/student/Student';
 import { StudentService } from '../../../services/students/StudentsService';
-import AcademicForm from '../../../components/shared/StudentsForms/academicData/AcademicForm';
+import AcademicForm from './academicData/AcademicForm';
 
 const ViewStudentAcademicData = () => {
 

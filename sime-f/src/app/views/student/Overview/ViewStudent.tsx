@@ -276,7 +276,7 @@ const ViewStudent = () => {
                     if (student.cognitiveSkills) {
                       console.log(student.cognitiveSkills);
                       navigate(
-                        `/student/cognitive/skills/overview/${student.cognitiveSkills}`
+                        `/student/cognitive/skills/overview/${student.id}`
                       );
                     } else {
                       console.log(student.cognitiveSkills);
