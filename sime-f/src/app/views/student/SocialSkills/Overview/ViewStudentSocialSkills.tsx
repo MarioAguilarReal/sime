@@ -2,7 +2,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useLoader } from '../../../../Global/Context/globalContext';
 import './ViewStudentSocialSkills.scss';
 import { useEffect, useState } from 'react';
-import { StudentSocialSkillsService } from '../../../../services/students/StudentSocialSkillsService';
 import { studentsData } from '../../../../common/studentEnums';
 import { Student } from '../../../../interfaces/student/Student';
 import { StudentService } from '../../../../services/students/StudentsService';
@@ -13,14 +12,7 @@ const ViewStudentSocialSkills = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const [studentSocial, setStudentSocial] = useState({
-    basic: [] as any[],
-    advanced: [] as any[],
-    feelings: [] as any[],
-    assault: [] as any[],
-    stress: [] as any[],
-    planning: [] as any[],
-  });
+  const [studentId, setStudentId] = useState(Number);
 
   const [selectedSkills, setSelectedSkills] = useState({
     basic: [] as any[],
@@ -36,63 +28,40 @@ const ViewStudentSocialSkills = () => {
   // Creo que este metodo se va a tener que modificar
   const getStudent = async (dataId: number) => {
     setLoading(true);
-    let resp = await StudentService.getAll();
-    let returnStudent = resp.data.find((student: Student) => student.socialSkills?.id === dataId);
+    let resp = await StudentService.getStudent(dataId);
     if (resp.status === 200) {
-      setStudent(returnStudent.id);
-    }
-    setLoading(false);
-  }
-
-  const loadStudentSocial = async (dataId: number) => {
-    setLoading(true);
-    let resp = await StudentSocialSkillsService.get(dataId);
-    console.log(resp);
-
-    if (resp.status === 200) {
-      const socialSkills = {
-        basic: resp.students_social_skills.basic.map(Number),
-        advanced: resp.students_social_skills.advanced.map(Number),
-        feelings: resp.students_social_skills.feelings.map(Number),
-        assault: resp.students_social_skills.assault.map(Number),
-        stress: resp.students_social_skills.stress.map(Number),
-        planning: resp.students_social_skills.planning.map(Number)
-      };
-
-      setStudentSocial(socialSkills);
-
-    } else {
-      console.log(resp.status);
+      setStudent(resp.data);
     }
     setLoading(false);
   }
 
   useEffect(() => {
     if (id) {
-      let dataId = parseInt(id);
-      loadStudentSocial(dataId);
-      getStudent(dataId);
+      getStudent(+id);
+      setStudentId(+id);
     }
   }, [id]);
 
   useEffect(() => {
-    if (studentSocial.basic.length > 0 ||
-      studentSocial.advanced.length > 0 ||
-      studentSocial.feelings.length > 0 ||
-      studentSocial.assault.length > 0 ||
-      studentSocial.stress.length > 0 ||
-      studentSocial.planning.length > 0) {
+    const studentsSocial = student?.socialSkills;
+    if (!studentsSocial) return;
+    if (studentsSocial.basic.length > 0 ||
+      studentsSocial.advanced.length > 0 ||
+      studentsSocial.feelings.length > 0 ||
+      studentsSocial.assault.length > 0 ||
+      studentsSocial.stress.length > 0 ||
+      studentsSocial.planning.length > 0) {
 
       setSelectedSkills({
-        basic: studentsData.socialBasic.filter(skill => studentSocial.basic.includes(skill.value)),
-        advanced: studentsData.socialAdvanced.filter(skill => studentSocial.advanced.includes(skill.value)),
-        feelings: studentsData.socialFeelings.filter(skill => studentSocial.feelings.includes(skill.value)),
-        assault: studentsData.socialAssault.filter(skill => studentSocial.assault.includes(skill.value)),
-        stress: studentsData.socialStress.filter(skill => studentSocial.stress.includes(skill.value)),
-        planning: studentsData.socialPlanning.filter(skill => studentSocial.planning.includes(skill.value))
+        basic: studentsData.socialBasic.filter(skill => studentsSocial.basic.includes(skill.value)),
+        advanced: studentsData.socialAdvanced.filter(skill => studentsSocial.advanced.includes(skill.value)),
+        feelings: studentsData.socialFeelings.filter(skill => studentsSocial.feelings.includes(skill.value)),
+        assault: studentsData.socialAssault.filter(skill => studentsSocial.assault.includes(skill.value)),
+        stress: studentsData.socialStress.filter(skill => studentsSocial.stress.includes(skill.value)),
+        planning: studentsData.socialPlanning.filter(skill => studentsSocial.planning.includes(skill.value))
       });
     }
-  }, [studentSocial]);
+  }, [student]);
 
   return (
     <div className='student-skills'>
@@ -100,10 +69,10 @@ const ViewStudentSocialSkills = () => {
       <div className="form">
         <div className="row mb-2">
           <div className="col-2">
-            <button className='btn btn-secondary' onClick={() => navigate(`/student/overview/${student}`)} disabled={!student}>Volver</button>
+            <button className='btn btn-secondary' onClick={() => navigate(`/student/overview/${studentId}`)} disabled={!studentId}>Volver</button>
           </div>
           <div className="col-4 btn-edit">
-            <button className='btn' onClick={() => navigate(`/student/social/skills/management/${student}`)} disabled={!student}>Editar Datos</button>
+            <button className='btn' onClick={() => navigate(`/student/social/skills/management/${studentId}`)} disabled={!studentId}>Editar Datos</button>
           </div>
         </div>
         <div className="row mb-2 mt-3">

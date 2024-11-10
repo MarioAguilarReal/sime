@@ -2,7 +2,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useLoader } from "../../../../Global/Context/globalContext";
 import "./ViewStudentAlternativeSkills.scss";
 import { useEffect, useState } from "react";
-import { StudentAlternativeSkillsService } from "../../../../services/students/StudentAlternativeSkillsService";
 import { studentsData } from "../../../../common/studentEnums";
 import { Student } from "../../../../interfaces/student/Student";
 import { StudentService } from "../../../../services/students/StudentsService";
@@ -13,7 +12,7 @@ const ViewStudentAlternativeSkills = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const [studentAlternative, setStudentAlternative] = useState<any>([]);
+  const [studentId, setStudentId] = useState(Number);
   const [selectedSkills, setSelectedSkills] = useState<any[]>([]);
 
   const [student, setStudent] = useState<Student>();
@@ -23,7 +22,8 @@ const ViewStudentAlternativeSkills = () => {
 
     const resp = await StudentService.getStudent(dataId);
     if (resp.status === 200) {
-      setStudent(resp.data as Student);
+      console.log("Student", resp.data);
+      setStudent(resp.data);
     }
     setLoading(false);
   }
@@ -31,13 +31,16 @@ const ViewStudentAlternativeSkills = () => {
   useEffect(() => {
     if (id) {
       getStudent(+id);
+      setStudentId(+id);
     }
   }, [id]);
 
   useEffect(() => {
-    if(!student?.alternativeSkills?.alternative_list)return;
-    if (student?.alternativeSkills?.alternative_list.length > 0) {
-      console.log(student);
+    const studentsAlternativeS = student?.alternativeSkills?.alternative_list;
+    if (!studentsAlternativeS) return;
+    if (studentsAlternativeS.length > 0) {
+      const filteredSkills = studentsData.alternativeSkills.filter(skill => studentsAlternativeS.includes(skill.value));
+      setSelectedSkills(filteredSkills);
     }
   }, [student]);
 
@@ -47,10 +50,10 @@ const ViewStudentAlternativeSkills = () => {
       <div className="form">
         <div className="row mb-2">
           <div className="col-2">
-            <button className='btn btn-secondary' onClick={() => navigate(`/student/overview/${student}`)} disabled={!student}>Volver</button>
+            <button className='btn btn-secondary' onClick={() => navigate(`/student/overview/${studentId}`)} disabled={!studentId}>Volver</button>
           </div>
           <div className="col-4 btn-edit">
-            <button className='btn' onClick={() => navigate(`/student/alternative/skills/management/${student}`)} disabled={!student}>Editar Datos</button>
+            <button className='btn' onClick={() => navigate(`/student/alternative/skills/management/${studentId}`)} disabled={!studentId}>Editar Datos</button>
           </div>
         </div>
         <div className="row mb-2 mt-3">

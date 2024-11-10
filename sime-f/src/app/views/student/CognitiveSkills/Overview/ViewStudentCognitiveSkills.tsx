@@ -13,7 +13,7 @@ const ViewStudentCognitiveSkills = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const [studentCognitive, setStudentCognitive] = useState<any>([]);
+  const [studentId, setStudentId] = useState(Number);
   const [selectedSkills, setSelectedSkills] = useState<any[]>([]);
 
   const [student, setStudent] = useState<Student>();
@@ -27,38 +27,21 @@ const ViewStudentCognitiveSkills = () => {
     setLoading(false);
   }
 
-  const loadStudentCognitive = async (dataId: number) => {
-    setLoading(true);
-    let resp = await StudentCognitiveSkillsService.get(dataId);
-    console.log(resp);
-
-    console.log(resp.students_cognitive_skills.cognitive_list);
-    console.log(selectedSkills);
-
-    if (resp.status === 200) {
-      const cognitiveList = resp.students_cognitive_skills.cognitive_list.map(Number);
-      setStudentCognitive(cognitiveList);
-      console.log(studentCognitive);
-    } else {
-      console.log(resp.status);
-    }
-    setLoading(false);
-  }
-
   useEffect(() => {
     if (id) {
-      let dataId = parseInt(id);
-      loadStudentCognitive(dataId);
-      getStudent(dataId);
+      getStudent(+id);
+      setStudentId(+id);
     }
   }, [id]);
 
   useEffect(() => {
+    const studentCognitive = student?.cognitiveSkills?.cognitive_list;
+    if (!studentCognitive) return;
     if (studentCognitive.length > 0) {
       const filteredSkills = studentsData.cognitiveSkills.filter(skill => studentCognitive.includes(skill.value));
       setSelectedSkills(filteredSkills);
     }
-  }, [studentCognitive]);
+  }, [student]);
 
   return (
     <div className="student-skills">
@@ -66,10 +49,10 @@ const ViewStudentCognitiveSkills = () => {
       <div className="form">
         <div className="row mb-2">
           <div className="col-2">
-            <button className='btn btn-secondary' onClick={() => navigate(`/student/overview/${student?.id}`)} disabled={!student?.id}>Volver</button>
+            <button className='btn btn-secondary' onClick={() => navigate(`/student/overview/${studentId}`)} disabled={!studentId}>Volver</button>
           </div>
           <div className="col-4 btn-edit">
-            <button className='btn' onClick={() => navigate(`/student/cognitive/skills/management/${student?.id}`)} disabled={!student?.id}>Editar Datos</button>
+            <button className='btn' onClick={() => navigate(`/student/cognitive/skills/management/${studentId}`)} disabled={!studentId}>Editar Datos</button>
           </div>
         </div>
         <div className="row mb-2 mt-3">

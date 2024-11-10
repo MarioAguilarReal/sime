@@ -4,7 +4,7 @@ import './CognitiveSkillsManagement.scss';
 import { useEffect, useState } from 'react';
 import { Student } from '../../../../interfaces/student/Student';
 import { StudentService } from '../../../../services/students/StudentsService';
-import CognitiveSkillsForm from '../../../../components/shared/StudentsForms/cognitiveSkills/CognitiveSkillsForm';
+import CognitiveSkillsForm from '../cognitiveSkills/CognitiveSkillsForm';
 
 const CognitiveSkillsManagement = () => {
   const { setLoading } = useLoader();
@@ -15,15 +15,14 @@ const CognitiveSkillsManagement = () => {
     setLoading(true);
     let resp = await StudentService.getStudent(dataId);
     if (resp.status === 200) {
-      setStudent(resp.student);
+      setStudent(resp.data);
     }
     setLoading(false);
   };
 
   useEffect(() => {
     if (id) {
-      let dataId = parseInt(id);
-      getStudent(dataId);
+      getStudent(+id);
     }
   }, [id]);
 

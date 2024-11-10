@@ -94,9 +94,9 @@ const CommentForm = (props: FormCommentProps) => {
       //setStudentComment(commentResp.comments);
       console.log('commentResp:', commentResp);
       console.log('usersResp:', usersResp);
-      const uComment = usersResp.data.find((u: { id: number | undefined; }) => u.id === commentResp.comments.by);
+      const uComment = usersResp.users.find((u: { id: number | undefined; }) => u.id === commentResp.data.by);
       setUserComment(uComment);
-      fillForm(commentResp.comments);
+      fillForm(commentResp.data);
     } else {
       console.log('Error al cargar los datos:', commentResp.status, usersResp.status);
     }
@@ -112,7 +112,7 @@ const CommentForm = (props: FormCommentProps) => {
     setLoading(true);
     let resp = await StudentService.getStudent(studentId);
     if (resp.status === 200) {
-      setStudent(resp.student);
+      setStudent(resp.data);
     } else {
       console.log(resp.status);
     }

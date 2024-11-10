@@ -4,7 +4,7 @@ import './SocialSkillsManagement.scss';
 import { useEffect, useState } from 'react';
 import { Student } from '../../../../interfaces/student/Student';
 import { StudentService } from '../../../../services/students/StudentsService';
-import SocialSkillsForm from '../../../../components/shared/StudentsForms/socialSkills/SocialSkillsForm';
+import SocialSkillsForm from '../socialSkills/SocialSkillsForm';
 
 const SocialSkillsManagement = () => {
   const { setLoading } = useLoader();
@@ -15,24 +15,23 @@ const SocialSkillsManagement = () => {
     setLoading(true);
     let resp = await StudentService.getStudent(dataId);
     if (resp.status === 200) {
-      setStudent(resp.student);
+      setStudent(resp.data);
     }
     setLoading(false);
   };
 
   useEffect(() => {
     if (id) {
-      let dataId = parseInt(id);
-      getStudent(dataId);
+      getStudent(+id);
     }
   }, [id]);
 
   return (
     <div>
       {!student?.socialSkills ? (
-        <SocialSkillsForm mode='register' socialId={student?.id} studentId={student?.id} />
+        <SocialSkillsForm mode='register' studentId={student?.id} />
       ) : (
-        <SocialSkillsForm mode='edit' socialId={student.socialSkills} studentId={student.id} />
+        <SocialSkillsForm mode='edit' socialSkills={student.socialSkills} studentId={student.id} />
       )}
     </div>
   );
