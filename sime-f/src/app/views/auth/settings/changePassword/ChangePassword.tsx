@@ -49,9 +49,7 @@ const ChangePassword = () => {
 
     let payload = { ...data, email: user?.email };
     let resp = await AuthService.changePassword(payload);
-    console.log(resp);
     if (resp.status === 200) {
-      console.log("Contraseña cambiada");
       toast.success(
         "Contraseña cambiada. Por favor, inicie sesión nuevamente."
       );
@@ -69,7 +67,6 @@ const ChangePassword = () => {
       dispatchUser({ type: "LOGOUT" });
       navigate("/");
     } else {
-      console.log(resp.message);
     }
     setLoading(false);
   };

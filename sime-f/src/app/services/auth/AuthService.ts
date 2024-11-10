@@ -5,6 +5,7 @@ export class AuthService{
 
   public static async login(obj: any):Promise<any>{
       let resp = await SimeService.post('/login', obj);
+      console.log(resp);
       if(resp.status === 200){
         localStorage.setItem('token', resp.data.token);
         sessionStorage.setItem('user', JSON.stringify(resp.data.user));

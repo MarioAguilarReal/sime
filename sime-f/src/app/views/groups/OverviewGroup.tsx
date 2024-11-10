@@ -12,6 +12,7 @@ import { StudentAcademicDataService } from "../../services/students/StudentAcade
 import { studentsData } from "../../common/studentEnums";
 import { User } from "../../interfaces/user/User";
 import { UsersService } from "../../services/users/UsersService";
+import { toast } from "react-toastify";
 
 const OverviewGroup = () => {
   const { setLoading } = useLoader();
@@ -31,7 +32,6 @@ const OverviewGroup = () => {
       setGroup(resp.data);
       setSubjects(resp.data.subjects);
     } else {
-      console.log(resp.message);
     }
     setLoading(false);
   }
@@ -42,32 +42,26 @@ const OverviewGroup = () => {
     if (resp.status === 200) {
       setStudent(resp.data);
     } else {
-      console.log(resp.message);
     }
     // let resp2 = await StudentAcademicDataService.getAll();
-    // //console.log(resp2.students_academic_data);
     // if (resp2.status === 200) {
     //   setAcademicData(resp2.students_academic_data);
     // } else {
-    //   console.log(resp2.message);
     // }
     let resp3 = await UsersService.getUsers();
-    console.log(resp3.users);
     if (resp3.status === 200) {
       setUsers(resp3.users);
     } else {
-      console.log(resp3.message);
     }
     setLoading(false);
   }
 
   const studentsGroup = async () => {
-    console.log(group);
     if (group) {
       let studentG = students.filter(student => student.academicData?.group_id === group.group && student.academicData?.grade_level === group.grade);
       setStudentGroup(studentG);
     } else {
-      console.log("No hay datos");
+      toast.error("No se ha podido cargar los estudiantes del grupo");
     }
   }
 

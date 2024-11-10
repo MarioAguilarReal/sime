@@ -79,7 +79,21 @@ export class StudentService{
         if(!localStorage.getItem('token')){
             return resp = {data: [], success: false, status: 401, message: 'Token not found'} as ApiResponse;
         } else {
-            resp = await SimeService.post('/students/set-learning-type/' + id, {name: learningType}, { Authorization: 'Bearer ' + localStorage.getItem('token') });
+            resp = await SimeService.post('/students/set-learning-type/' + id, {learning_type: learningType}, { Authorization: 'Bearer ' + localStorage.getItem('token') });
+            if (resp.status === 200){
+                return resp.data;
+            } else {
+                return resp.data;
+            }
+        }
+    }
+
+    public static async updateLearningType(learningType: string, id: number):Promise<any>{
+        let resp;
+        if(!localStorage.getItem('token')){
+            return resp = {data: [], success: false, status: 401, message: 'Token not found'} as ApiResponse;
+        } else {
+            resp = await SimeService.post('/students/update-learning-type/' + id, {learning_type: learningType}, { Authorization: 'Bearer ' + localStorage.getItem('token') });
             if (resp.status === 200){
                 return resp.data;
             } else {

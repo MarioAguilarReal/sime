@@ -3,7 +3,7 @@ import { ApiResponse } from "../../interfaces/response/ApiResponse";
 
 export class StudentCommentsService{
 
-  public static async register(obj: FormData, id: number):Promise<any>{
+  public static async register(obj: any, id: number):Promise<any>{
     let resp;
     if (!localStorage.getItem('token')){
       return  resp = {data: [], success: false, status: 401, message: "Token not found"} as ApiResponse;
@@ -17,7 +17,7 @@ export class StudentCommentsService{
     }
   }
 
-  public static async update(obj: FormData, id: number):Promise<any>{
+  public static async update(obj: any, id: number):Promise<any>{
     let resp;
     if(!localStorage.getItem('token')){
       return resp = {data: [], success: false, status: 401, message: 'Token not found'} as ApiResponse;

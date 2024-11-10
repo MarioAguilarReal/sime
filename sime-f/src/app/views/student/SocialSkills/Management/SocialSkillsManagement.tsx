@@ -29,9 +29,9 @@ const SocialSkillsManagement = () => {
   return (
     <div>
       {!student?.socialSkills ? (
-        <SocialSkillsForm mode='register' studentId={student?.id} />
+        <SocialSkillsForm mode='register' student={student as Student} />
       ) : (
-        <SocialSkillsForm mode='edit' socialSkills={student.socialSkills} studentId={student.id} />
+        <SocialSkillsForm mode='edit' socialSkills={student.socialSkills} student={student} />
       )}
     </div>
   );

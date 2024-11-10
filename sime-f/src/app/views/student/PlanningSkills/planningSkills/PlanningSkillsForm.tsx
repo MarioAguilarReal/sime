@@ -8,21 +8,22 @@ import { toast, ToastContainer } from 'react-toastify';
 import { useEffect, useState } from 'react';
 import { studentsData } from '../../../../common/studentEnums';
 import SelectField from '../../../../components/shared/FormInputs/SelectFIeld';
+import { Student } from '../../../../interfaces/student/Student';
 
 interface FormPlaningProps {
   mode: 'register' | 'edit';
-  planningId?: StudentPlanningSkills;
-  studentId: any;
+  planning?: StudentPlanningSkills;
+  student: Student;
 }
 const PlanningSkillsForm = (props: FormPlaningProps) => {
-  const { mode, planningId } = props;
-  const [studentId, setStudentId] = useState(0 as number);
+  const { mode, planning, student } = props;
   const { id } = useParams();
   const {
     handleSubmit,
     formState: { errors },
     control,
     setValue,
+    reset,
   } = useForm<StudentPlanningSkills>();
   const navigate = useNavigate();
   const { setLoading } = useLoader();
@@ -36,57 +37,30 @@ const PlanningSkillsForm = (props: FormPlaningProps) => {
     }
     setLoading(false);
   };
+
   const handleCreate = async (data: StudentPlanningSkills) => {
-    setLoading(true);
-    const formData = createFormData(data);
-    console.log(formData);
-    console.log(studentId);
-    const resp = await StudentPlanningSkillsService.register(formData, studentId);
-    console.log(resp);
+    const resp = await StudentPlanningSkillsService.register(data, student.id as number);
     handleResponse(resp);
-    setLoading(false);
   };
+
   const handleUpdate = async (data: StudentPlanningSkills) => {
-    setLoading(true);
-    const formData = createFormData(data);
-    const resp = await StudentPlanningSkillsService.update(formData, planningId?.id as number);
-    console.log(resp);
+    const resp = await StudentPlanningSkillsService.update(data, planning?.id as number);
     handleResponse(resp);
-    setLoading(false);
   };
 
-  const createFormData = (data: StudentPlanningSkills) => {
-    const formData = new FormData();
-    console.log(data);
-    formData.append('focus', data.focus.toString());
-    formData.append('detect', data.detect.toString());
-    formData.append('correlation', data.correlation.toString());
-
-    console.log(formData);
-    return formData;
-  };
   const handleResponse = (resp: any) => {
     if (resp.status === 200) {
-      if (mode === 'register') {
-        window.location.reload();
-      }
       toast.success(resp.message);
     } else {
+      if (mode === 'edit') {
+        fillForm(planning as StudentPlanningSkills);
+      }else {
+        reset();
+      }
       toast.error(resp.message);
-      console.log(resp.status);
     }
   };
 
-  const loadPlanningSkills = async () => {
-    setLoading(true);
-    let resp = await StudentPlanningSkillsService.get(planningId?.id as number);
-    if (resp.status === 200) {
-      fillForm(resp.data);
-    } else {
-      console.log(resp.status);
-    }
-    setLoading(false);
-  };
   const fillForm = (data: StudentPlanningSkills) => {
     setValue('focus', data.focus);
     setValue('detect', data.detect);
@@ -94,13 +68,10 @@ const PlanningSkillsForm = (props: FormPlaningProps) => {
   };
 
   useEffect(() => {
-    if (id) {
-      setStudentId(+id);
-    }
     if (mode === 'edit') {
-      loadPlanningSkills();
+      fillForm(planning as StudentPlanningSkills);
     }
-  }, [mode, id]);
+  }, [mode]);
 
   return (
     <div className="edit-skills">
@@ -108,7 +79,7 @@ const PlanningSkillsForm = (props: FormPlaningProps) => {
       <div className="form">
         <div className="row mb-2">
           <div className="col-2">
-            <button className='btn btn-secondary' onClick={() => navigate(`/student/overview/${studentId}`)} disabled={!studentId}>Volver</button>
+            <button className='btn btn-secondary' onClick={() => navigate(`/student/overview/${student.id}`)} disabled={!student}>Volver</button>
           </div>
         </div>
         <div className="row mb-2 mt-3">

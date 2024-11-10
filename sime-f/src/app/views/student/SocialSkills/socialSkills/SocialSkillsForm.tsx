@@ -8,14 +8,15 @@ import { studentsData } from '../../../../common/studentEnums';
 import { toast, ToastContainer } from 'react-toastify';
 import { useEffect } from 'react';
 import { CheckboxList } from '../../../../components/shared/FormInputs/CheckBox';
+import { Student } from '../../../../interfaces/student/Student';
 
 interface FormSocialProps {
   mode: 'register' | 'edit';
   socialSkills?: StudentSocialSkills;
-  studentId: number | undefined;
+  student: Student;
 }
 const SocialSkillsForm = (props: FormSocialProps) => {
-  const { mode, socialSkills, studentId } = props;
+  const { mode, socialSkills, student } = props;
   const {
     register,
     handleSubmit,
@@ -36,20 +37,14 @@ const SocialSkillsForm = (props: FormSocialProps) => {
     setLoading(false);
   };
   const handleCreate = async () => {
-    setLoading(true);
     const selectedSocialSkills = createSendData();
-    if (!studentId) return;
-    const resp = await StudentSocialSkillsService.register(selectedSocialSkills, studentId);
+    const resp = await StudentSocialSkillsService.register(selectedSocialSkills, student.id as number);
     handleResponse(resp);
-    setLoading(false);
   };
   const handleUpdate = async () => {
-    setLoading(true);
     const selectedSocialSkills = createSendData();
-    if (!socialSkills?.id) return;
-    const resp = await StudentSocialSkillsService.update(selectedSocialSkills, socialSkills.id);
+    const resp = await StudentSocialSkillsService.update(selectedSocialSkills, socialSkills?.id as number);
     handleResponse(resp);
-    setLoading(false);
   };
 
   const createSendData = () => {
@@ -131,7 +126,7 @@ const SocialSkillsForm = (props: FormSocialProps) => {
           <div className="row mb-2">
             <div className="col-2">
               <div className="col-4 btn-edit">
-                <button className='btn btn-secondary' onClick={() => (mode === 'edit' && studentId) ? navigate(`/student/social/skills/overview/${studentId}`) : studentId && navigate(`/student/overview/${studentId}`)} disabled={mode === 'edit' ? !studentId : !studentId}>Volver</button>
+                <button className='btn btn-secondary' onClick={() => (mode === 'edit' && student) ? navigate(`/student/social/skills/overview/${student.id}`) : student && navigate(`/student/overview/${student.id}`)} disabled={mode === 'edit' ? !student : !student}>Volver</button>
               </div>
             </div>
           </div>

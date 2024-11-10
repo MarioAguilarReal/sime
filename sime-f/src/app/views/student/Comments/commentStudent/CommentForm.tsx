@@ -14,10 +14,10 @@ import { toast } from 'react-toastify';
 interface FormCommentProps {
   mode: 'register' | 'edit';
   comment?: StudentComments;
-  studentId: any;
+  student: Student;
 }
 const CommentForm = (props: FormCommentProps) => {
-  const { mode, comment, studentId } = props;
+  const { mode, comment, student } = props;
   const {
     register,
     handleSubmit,
@@ -27,8 +27,6 @@ const CommentForm = (props: FormCommentProps) => {
   const navigate = useNavigate();
   const { setLoading } = useLoader();
 
-  const [student, setStudent] = useState<Student>();
-  //const [studentComment, setStudentComment] = useState<StudentComments>();
   const [user, setUser] = useState<User>();
   const [userComment, setUserComment] = useState<User>();
 
@@ -41,7 +39,6 @@ const CommentForm = (props: FormCommentProps) => {
   };
 
   const handleOnSubmit = async (data: StudentComments) => {
-    console.log(data);
     setLoading(true);
     if (mode === 'register') {
       await handleCreate(data);
@@ -50,28 +47,26 @@ const CommentForm = (props: FormCommentProps) => {
     }
     setLoading(false);
   };
+
   const handleCreate = async (data: StudentComments) => {
-    setLoading(true);
-    const formData = createFormData(data);
-    const resp = await StudentCommentsService.register(formData, studentId);
+    let dataToCreate = {
+      comment: data.comment,
+      idStudent: student?.id,
+      by: user?.id,
+      userRoleCreator: user?.role,
+    };
+    const resp = await StudentCommentsService.register(dataToCreate, student?.id || 0);
     handleResponse(resp);
-    setLoading(false);
   };
   const handleUpdate = async (data: StudentComments) => {
-    setLoading(true);
-    const formData = createFormData(data);
-    const resp = await StudentCommentsService.update(formData, comment?.id || 0);
+    let dataToUpdate = {
+      comment: data.comment,
+      idStudent: student?.id,
+      by: data.by,
+      userRoleCreator: user?.role,
+    };
+    const resp = await StudentCommentsService.update(dataToUpdate, comment?.id || 0);
     handleResponse(resp);
-    setLoading(false);
-  };
-
-  const createFormData = (data: StudentComments) => {
-    const formData = new FormData();
-    formData.append('comment', data.comment);
-    formData.append('idStudent', studentId.toString() || '');
-    formData.append('by', mode === 'edit' ? data.by.toString() : user?.id?.toString() || '');
-    formData.append('userRoleCreator', user?.role.toString() || '');
-    return formData;
   };
 
   const handleResponse = (resp: any) => {
@@ -79,28 +74,8 @@ const CommentForm = (props: FormCommentProps) => {
       toast.success(resp.message);
       //window.location.reload();
     } else {
-      console.log(resp.status);
       toast.error(resp.message);
     }
-  };
-
-  const loadCommentAndUsers = async () => {
-    setLoading(true);
-    const [commentResp, usersResp] = await Promise.all([
-      StudentCommentsService.get(comment?.id || 0),
-      UsersService.getUsers(),
-    ]);
-    if (commentResp.status === 200 && usersResp.status === 200) {
-      //setStudentComment(commentResp.comments);
-      console.log('commentResp:', commentResp);
-      console.log('usersResp:', usersResp);
-      const uComment = usersResp.users.find((u: { id: number | undefined; }) => u.id === commentResp.data.by);
-      setUserComment(uComment);
-      fillForm(commentResp.data);
-    } else {
-      console.log('Error al cargar los datos:', commentResp.status, usersResp.status);
-    }
-    setLoading(false);
   };
 
   const fillForm = (comment: StudentComments) => {
@@ -108,16 +83,20 @@ const CommentForm = (props: FormCommentProps) => {
     setValue('by', comment.by);
   };
 
-  const loadStudent = async (studentId: number) => {
+  const loadUserComment = async (id: number) => {
     setLoading(true);
-    let resp = await StudentService.getStudent(studentId);
+    const resp = await UsersService.getUser(id);
     if (resp.status === 200) {
-      setStudent(resp.data);
-    } else {
-      console.log(resp.status);
+      setUserComment(resp.user);//this is the unique case where the response is an object with a user property
     }
     setLoading(false);
   };
+
+  useEffect(() => {
+    if (comment) {
+      loadUserComment(comment.by);
+    }
+  }, [comment]);
 
   useEffect(() => {
     loadUser();
@@ -125,16 +104,9 @@ const CommentForm = (props: FormCommentProps) => {
 
   useEffect(() => {
     if (mode === 'edit') {
-      loadCommentAndUsers();
+      fillForm(comment || {} as StudentComments);
     }
   }, [mode]);
-
-  useEffect(() => {
-    if (studentId) {
-      console.log('studentId:', studentId);
-      loadStudent(studentId);
-    }
-  }, [studentId]);
 
   return (
     <div className='student-comments'>
@@ -143,7 +115,7 @@ const CommentForm = (props: FormCommentProps) => {
       <div className="form">
         <div className="row mb-2">
           <div className="col-2">
-            <button className='btn btn-secondary' onClick={() => navigate(`/student/overview/${studentId}`)} disabled={!studentId}>Volver</button>
+            <button className='btn btn-secondary' onClick={() => navigate(`/student/overview/${student.id}`)} disabled={!student}>Volver</button>
           </div>
         </div>
         <div className="row mb-2 mt-3">

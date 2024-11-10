@@ -62,7 +62,6 @@ const ModalCreate = (props: ModalProps) => {
     setUsers(users);
     if (funct === "edit") {
       setValue("user_id", propClass.user_id);
-      console.log(propClass);
       if (type === "group") {
         const group = propClass as Group;
         setValue("grade", group.grade);
