@@ -80,7 +80,9 @@ const Login = () => {
   return (
     <div className="login">
       <div className="login-wrapper">
-        <div className="login-image"></div>
+        <div className="login-image">
+          <img src="/assets/images/Site_logo.png" alt="login" />
+        </div>
         <div className="login-form">
           <h1 style={{ color: "white", textAlign: 'center' }}>Iniciar Sesión</h1>
           <form>

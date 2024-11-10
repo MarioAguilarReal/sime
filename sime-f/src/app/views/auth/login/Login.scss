@@ -3,7 +3,7 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background: #812a1a;
+  background: #6b2316;
   margin: 0;
   padding: 0;
   .login-wrapper {
@@ -12,17 +12,17 @@
     align-items: center;
     background-color: #3d000b5b;
     border-radius: 10px;
-    box-shadow: 5px 10px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 1);
     padding: 0 2rem;
     .login-image {
       width: 20rem;
       height: 20rem;
-      padding: 10rem 10rem;
-      background: url("../../../assets/images/Site_logo.png") no-repeat center;
-      background-size: contain;
-      background-position: center;
-      background-position-x: center;
-      background-position-y: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      img{
+        height: 100%;
+      }
     }
     .login-form {
       width: 30rem;
