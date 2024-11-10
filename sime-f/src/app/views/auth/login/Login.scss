@@ -82,27 +82,38 @@
         justify-content: flex-end;
         margin-bottom: 0.5rem;
         p {
-          color: #007bff;
+          color: #b89c00;
           text-decoration: none;
           font-size: 14px;
           margin: 0;
           padding: 0;
+          cursor: pointer;
+          transition: all 0.3s;
+
+          &:hover {
+            text-decoration: underline;
+            scale: 1.1;
+            color: #ffffff;
+          }
         }
       }
       .btn-xl {
         padding: 10px;
-        background: #007bff;
-        color: #fff;
+        background: #ffffff;
+        color: #000000;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 1);
         border: none;
         border-radius: 5px;
         cursor: pointer;
         transition: 0.3s;
         width: 100%;
         &:hover {
-          background: #0056b3;
+          background: #834131;
+          color: #ffffff;
         }
         &:disabled {
-          background: #ccc;
+          background: #6b6b6b;
+          color: rgb(131, 131, 131);
           cursor: not-allowed;
         }
       }

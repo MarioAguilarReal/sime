@@ -14,7 +14,6 @@ const Profile = () => {
     navigate(`/auth/change-password/${user.id}`);
     // setLoading(true);
     // let resp = await AuthService.sendEmailToChangePassword(user?.id);
-    // console.log('resp: ', resp);
     // if(resp.status === 200){
     //   toast.success('Se ha enviado un correo para cambiar la contraseña');
     // }else{

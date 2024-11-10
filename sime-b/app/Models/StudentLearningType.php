@@ -10,7 +10,7 @@ class StudentLearningType extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name',
+        'learning_type',
     ];
 
     //belongsto student

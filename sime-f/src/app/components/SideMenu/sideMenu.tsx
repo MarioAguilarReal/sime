@@ -22,7 +22,6 @@ const SideMenu = (user: User) => {
       dispatchUser({ type: "LOGOUT" });
       navigate("/");
     } else {
-      console.log(resp.message);
     }
     setLoading(false);
   };

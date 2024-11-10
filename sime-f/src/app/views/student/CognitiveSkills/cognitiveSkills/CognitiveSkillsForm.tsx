@@ -8,14 +8,15 @@ import { studentsData } from '../../../../common/studentEnums';
 import { toast, ToastContainer } from 'react-toastify';
 import { useEffect } from 'react';
 import { CheckboxList } from '../../../../components/shared/FormInputs/CheckBox';
+import { Student } from '../../../../interfaces/student/Student';
 
 interface FormCognitiveProps {
   mode: 'register' | 'edit';
   cognitive?: StudentCognitiveSkills;
-  studentId: number | undefined;
+  student: Student;
 }
 const CognitiveSkillsForm = (props: FormCognitiveProps) => {
-  const { mode, cognitive, studentId } = props;
+  const { mode, cognitive, student } = props;
   const {
     register,
     handleSubmit,
@@ -35,21 +36,18 @@ const CognitiveSkillsForm = (props: FormCognitiveProps) => {
     }
     setLoading(false);
   };
+
   const handleCreate = async () => {
-    setLoading(true);
     const selectedCognitiveSkills = createSendData();
-    if (!studentId) return;
-    const resp = await StudentCognitiveSkillsService.register(selectedCognitiveSkills, studentId);
+    const resp = await StudentCognitiveSkillsService.register(selectedCognitiveSkills, student.id as number);
     handleResponse(resp);
-    setLoading(false);
   };
+
   const handleUpdate = async () => {
-    setLoading(true);
     const selectedCognitiveSkills = createSendData();
     if (!cognitive?.id) return;
     const resp = await StudentCognitiveSkillsService.update(selectedCognitiveSkills, cognitive?.id);
     handleResponse(resp);
-    setLoading(false);
   };
 
   const createSendData = () => {
@@ -59,6 +57,7 @@ const CognitiveSkillsForm = (props: FormCognitiveProps) => {
       cognitive_list: selectedCognitiveSkills
     };
   };
+
   const handleResponse = (resp: any) => {
     if (resp.status === 200) {
       navigate('/student/cognitive/skills/overview/' + resp.data.id);
@@ -66,7 +65,6 @@ const CognitiveSkillsForm = (props: FormCognitiveProps) => {
       toast.error(resp.message);
     }
   };
-
 
   const fillSendData = (data: StudentCognitiveSkills) => {
     const cognitiveList = typeof data.cognitive_list === 'string' ? JSON.parse(data.cognitive_list) : data.cognitive_list;
@@ -89,7 +87,7 @@ const CognitiveSkillsForm = (props: FormCognitiveProps) => {
           <div className="row mb-2">
             <div className="col-2">
               <div className="col-4 btn-edit">
-                <button className='btn btn-secondary' onClick={() => mode === 'edit' ? navigate(`/student/cognitive/skills/overview/${studentId}`) : navigate(`/student/overview/${studentId}`)} disabled={mode === 'edit' ? !cognitive : !studentId} >Volver</button>
+                <button className='btn btn-secondary' onClick={() => mode === 'edit' ? navigate(`/student/cognitive/skills/overview/${student.id}`) : navigate(`/student/overview/${student}`)} disabled={mode === 'edit' ? !cognitive : !student} >Volver</button>
               </div>
             </div>
           </div>

@@ -9,14 +9,15 @@ import { useEffect } from 'react';
 import TextField from '../../../../components/shared/FormInputs/TextField';
 import { studentsData } from '../../../../common/studentEnums';
 import SelectField from '../../../../components/shared/FormInputs/SelectFIeld';
+import { Student } from '../../../../interfaces/student/Student';
 
 interface FormNeedsProps {
   mode: 'register' | 'edit';
-  needsId?: StudentSpecialNeeds;
-  studentId: any;
+  needs?: StudentSpecialNeeds;
+  student: Student;
 };
 const SpecialNeedsForm = (props: FormNeedsProps) => {
-  const { mode, needsId, studentId } = props;
+  const { mode, needs, student } = props;
   const {
     register,
     handleSubmit,
@@ -29,60 +30,26 @@ const SpecialNeedsForm = (props: FormNeedsProps) => {
 
   const handleOnSubmit = async (data: StudentSpecialNeeds) => {
     setLoading(true);
+    let resp;
     if (mode === 'register') {
-      await handleCreate(data);
+      resp = await StudentSpecialNeedsService.register(data, student.id as number);
     } else {
-      await handleUpdate(data);
+      resp = await StudentSpecialNeedsService.update(data, needs?.id as number);
     }
-    setLoading(false);
-  };
-  const handleCreate = async (data: StudentSpecialNeeds) => {
-    setLoading(true);
-    const formData = createFormData(data);
-    const resp = await StudentSpecialNeedsService.register(formData, studentId);
-    handleResponse(resp);
-    setLoading(false);
-  };
-  const handleUpdate = async (data: StudentSpecialNeeds) => {
-    setLoading(true);
-    const formData = createFormData(data);
-    const resp = await StudentSpecialNeedsService.update(formData, needsId?.id as number);
-    handleResponse(resp);
-    setLoading(false);
-  };
 
-  const createFormData = (data: StudentSpecialNeeds) => {
-    const formData = new FormData();
-    formData.append('usaer_status', data.usaer_status.toString());
-    formData.append('learning_problems', data.learning_problems);
-    formData.append('diseases', data.diseases);
-    formData.append('treatment_place', data.treatment_place);
-    formData.append('special_treatment', data.special_treatment);
-
-    return formData;
-  };
-  const handleResponse = (resp: any) => {
     if (resp.status === 200) {
-      if (mode === 'register') {
-        window.location.reload();
-      }
       toast.success(resp.message);
     } else {
       toast.error(resp.message);
-      console.log(resp.status);
-    }
-  };
-
-  const loadSpecialNeeds = async () => {
-    setLoading(true);
-    let resp = await StudentSpecialNeedsService.get(needsId?.id as number);
-    if (resp.status === 200) {
-      fillForm(resp.data);
-    } else {
-      console.log(resp.status);
+      if (mode === 'register') {
+        clearForm();
+      } else {
+        fillForm(needs as StudentSpecialNeeds);
+      }
     }
     setLoading(false);
   };
+
   const fillForm = (data: StudentSpecialNeeds) => {
     setValue('usaer_status', data.usaer_status);
     setValue('learning_problems', data.learning_problems);
@@ -91,9 +58,17 @@ const SpecialNeedsForm = (props: FormNeedsProps) => {
     setValue('special_treatment', data.special_treatment);
   };
 
+  const clearForm = () => {
+    setValue('usaer_status', null as any);
+    setValue('learning_problems', '');
+    setValue('diseases', '');
+    setValue('treatment_place', '');
+    setValue('special_treatment', '');
+  }
+
   useEffect(() => {
     if (mode === 'edit') {
-      loadSpecialNeeds();
+      fillForm(needs as StudentSpecialNeeds);
     }
   }, [mode]);
 
@@ -103,7 +78,7 @@ const SpecialNeedsForm = (props: FormNeedsProps) => {
       <div className="form">
         <div className="row mb-2">
           <div className="col-2">
-            <button className='btn btn-secondary' onClick={() => navigate(`/student/overview/${studentId}`)} disabled={!studentId}>Volver</button>
+            <button className='btn btn-secondary' onClick={() => navigate(`/student/overview/${student.id}`)} disabled={!student}>Volver</button>
           </div>
         </div>
         <div className="row mb-2 mt-3">
