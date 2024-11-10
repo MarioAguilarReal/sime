@@ -29,9 +29,11 @@ const CognitiveSkillsManagement = () => {
   return (
     <div>
       {!student?.cognitive_skills ? (
-        <CognitiveSkillsForm mode='register' studentId={student?.id} />
+        !student ? null : (
+          <CognitiveSkillsForm mode='register' student={student} />
+        )
       ) : (
-        <CognitiveSkillsForm mode='edit' cognitive={student.cognitive_skills} studentId={student.id} />
+        <CognitiveSkillsForm mode='edit' cognitive={student.cognitive_skills} student={student} />
       )}
     </div>
   );

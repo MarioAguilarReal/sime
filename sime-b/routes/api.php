@@ -15,6 +15,7 @@ use App\Http\Controllers\ApiSocialSkillsController;
 use App\Http\Controllers\ApiCognitiveSkillsController;
 use App\Http\Controllers\ApiAlternativeSkillsController;
 use App\Http\Controllers\ApiCommentsController;
+use App\Http\Controllers\ApiLearningTypeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -87,7 +88,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/update/{id}',[ApiStudentsController::class, 'update']);
         Route::delete('/delete/{id}',[ApiStudentsController::class, 'delete']);
 
-        Route::post('/set-learning-type/{id}', [ApiStudentsController::class, 'setLearningType']);
+        Route::post('/set-learning-type/{id}', [ApiLearningTypeController::class, 'setLearningType']);
+        Route::post('/update-learning-type/{id}', [ApiLearningTypeController::class, 'updateLearningType']);
 
         Route::prefix('academic-data')->group(function () {
             Route::post('/register/{id}',[ApiStudentsAcademicDataController::class, 'register']);

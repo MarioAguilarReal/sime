@@ -17,7 +17,6 @@ const ViewStudentAcademicData = () => {
     let resp = await StudentService.getStudent(dataId);
     if (resp.status === 200) {
       setStudentData(resp.data);
-      console.log(resp.data);
     }
     setLoading(false);
   };
@@ -31,9 +30,10 @@ const ViewStudentAcademicData = () => {
   return (
     <div>
       {!studentData?.student_academic_data ? (
-        <AcademicForm mode="register" studentId={studentData?.id} />
+        !studentData ? null :
+          <AcademicForm mode="register" student={studentData} />
       ) : (
-        <AcademicForm mode="edit" academicData={studentData.student_academic_data} studentId={studentData.id} />
+        <AcademicForm mode="edit" academicData={studentData.student_academic_data} student={studentData} />
       )}
     </div>
   );

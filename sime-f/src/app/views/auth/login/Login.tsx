@@ -51,7 +51,6 @@ const Login = () => {
     setLoading(true);
     if (email) {
       let resp = await AuthService.sendEmailToForgetPassword(email);
-      console.log("resp: ", resp);
       if (resp.status === 200) {
         toast.success(resp.message + ": " + email);
       } else {
@@ -91,6 +90,7 @@ const Login = () => {
                 className="form-control"
                 id="email"
                 aria-describedby="emailHelp"
+                autoComplete="email"
                 placeholder="Correo Electrónico"
                 {...register("email", {
                   required: true,
@@ -111,6 +111,7 @@ const Login = () => {
                   className="form-control"
                   id="password"
                   placeholder="Contraseña"
+                  autoComplete="password"
                   {...register("password", { required: true })}
                 />
                 <i

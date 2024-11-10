@@ -9,17 +9,15 @@ import { toast, ToastContainer } from 'react-toastify';
 import SelectField from '../../../../components/shared/FormInputs/SelectFIeld';
 import TextField from '../../../../components/shared/FormInputs/TextField';
 import { studentsData } from '../../../../common/studentEnums';
+import { Student } from '../../../../interfaces/student/Student';
 
 interface FormAcademicDataProps {
   mode: 'register' | 'edit';
   academicData?: StudentAcademicData;
-  studentId: any;
+  student: Student;
 }
 const AcademicForm = (props: FormAcademicDataProps) => {
-  const { mode, academicData } = props;
-
-  const [studentId, setStudentId] = useState(0 as number);
-
+  const { mode, academicData, student } = props;
   const { id } = useParams();
 
   const {
@@ -44,57 +42,38 @@ const AcademicForm = (props: FormAcademicDataProps) => {
   };
 
   const handleCreate = async (data: StudentAcademicData) => {
-    setLoading(true);
-    const formData = createFormData(data);
-    const resp = await StudentAcademicDataService.register(formData, studentId);
+    let dataToRegister = { ...data };
+    const resp = await StudentAcademicDataService.register(dataToRegister, student.id as number);
     handleResponse(resp);
-    setLoading(false);
   };
 
   const handleUpdate = async (data: StudentAcademicData) => {
-    setLoading(true);
-    const formData = createFormData(data);
-    console.log(formData);
-    const resp = await StudentAcademicDataService.update(formData, academicData?.id as number);
+    let dataToUpdate = { ...academicData, ...data };
+    const resp = await StudentAcademicDataService.update(dataToUpdate, academicData?.id as number);
     handleResponse(resp);
-    setLoading(false);
-  };
-
-  const createFormData = (data: StudentAcademicData) => {
-    const formData = new FormData();
-    formData.append('matricula', data.matricula);
-    formData.append('grade_level', data.grade_level.toString());
-    formData.append('group_id', data.group_id.toString());
-    formData.append('last_grade_average', data.last_grade_average.toString());
-    formData.append('actual_grade_average', data.actual_grade_average.toString());
-    formData.append('behavior', data.behavior.toString());
-    formData.append('attendance', data.attendance);
-
-    return formData;
   };
 
   const handleResponse = (resp: any) => {
     if (resp.status === 200) {
-      if (mode === 'register') {
-        window.location.reload();
-      }
       toast.success(resp.message);
     } else {
+      if (mode === 'edit') {
+        fillForm(academicData as StudentAcademicData);
+      } else {
+        clearForm();
+      }
       toast.error(resp.message);
-      console.log(resp.status);
     }
   };
 
-  const loadAcademicData = async () => {
-    setLoading(true);
-    const resp = await StudentAcademicDataService.get(academicData?.id as number);
-    console.log(resp);
-    if (resp.status === 200) {
-      fillForm(resp.data);
-    } else {
-      console.log(resp.status);
-    }
-    setLoading(false);
+  const clearForm = () => {
+    setValue('matricula', '');
+    setValue('grade_level', null as any);
+    setValue('group_id', null as any);
+    setValue('last_grade_average', null as any);
+    setValue('actual_grade_average', null as any);
+    setValue('behavior', '');
+    setValue('attendance', '');
   };
 
   const fillForm = (data: StudentAcademicData) => {
@@ -108,23 +87,11 @@ const AcademicForm = (props: FormAcademicDataProps) => {
   };
 
   useEffect(() => {
-
-    if (id) {
-      setStudentId(+id);
-    }
-
-    if (mode === 'edit') {
-      loadAcademicData();
+    if (mode === 'edit' && academicData) {
+      fillForm(academicData);
     }
 
   }, [mode, id]);
-
-
-  useEffect(() => {
-    if (mode === 'edit' && academicData) {
-      console.log(academicData);
-    }
-  }, [academicData]);
 
   return (
     <div className="edit-data">
@@ -132,7 +99,7 @@ const AcademicForm = (props: FormAcademicDataProps) => {
       <div className="form">
         <div className="row mb-2">
           <div className="col-2">
-            <button className='btn btn-secondary' onClick={() => navigate(`/student/overview/${studentId}`)} disabled={!studentId}>Volver</button>
+            <button className='btn btn-secondary' onClick={() => navigate(`/student/overview/${student.id}`)} disabled={!student}>Volver</button>
           </div>
         </div>
         <div className="row mb-2 mt-3">

@@ -43,10 +43,7 @@ const Groups = () => {
 
   const handleUpdate = async (data: Group) => {
     setLoading(true);
-    console.log(data);
     const resp = await GroupsService.update(data, data.id as number);
-    console.log("data", resp);
-    console.log(resp);
     if (resp.status === 200) {
       toast.success("Grupo actualizado correctamente");
       const newGroups = groups.map((group) => {

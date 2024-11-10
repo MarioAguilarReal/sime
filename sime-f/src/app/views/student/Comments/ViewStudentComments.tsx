@@ -17,7 +17,6 @@ const ViewStudentComments = () => {
     setLoading(true);
     let resp = await StudentService.getStudent(studentId);
     if (resp.status === 200) {
-      console.log(resp.data);
       setStudent(resp.data);
     }
     setLoading(false);
@@ -33,9 +32,13 @@ const ViewStudentComments = () => {
   return (
     <div>
       {!student?.comments ? (
-        <CommentForm mode="register" studentId={student?.id} />
+        student ? (
+        <CommentForm mode="register" student={student} />
+        ) : (
+          <div>Student not found</div>
+        )
       ) : (
-        <CommentForm mode="edit" comment={student.comments} studentId={student.id} />
+        <CommentForm mode="edit" comment={student.comments} student={student} />
       )}
     </div>
   );

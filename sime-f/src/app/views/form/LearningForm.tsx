@@ -1,4 +1,4 @@
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import SelectField from "../../components/shared/FormInputs/SelectFIeld";
 import "./learningForm.scss";
 import { useEffect, useState } from "react";
@@ -39,14 +39,14 @@ const LearningForm = () => {
   const { setLoading } = useLoader();
   const { id } = useParams();
   const navigate = useNavigate();
-
+  const location = useLocation();
   const {
     handleSubmit,
     formState: { errors },
     control,
   } = useForm<any>();
 
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: any) => {
     setLoading(true);
 
     const results = {
@@ -61,12 +61,31 @@ const LearningForm = () => {
       if (data[key] === "k") results.k++;
     });
 
-    if (results.v > results.a && results.v > results.k) setLearningStyle("Visual");
-    if (results.a > results.v && results.a > results.k) setLearningStyle("Auditivo");
-    if (results.k > results.v && results.k > results.a) setLearningStyle("Kinestésico");
+    let learningStyle = "";
 
+    if (results.v > results.a && results.v > results.k) learningStyle = "Visual";
+    if (results.a > results.v && results.a > results.k) learningStyle = "Auditivo";
+    if (results.k > results.v && results.k > results.a) learningStyle = "Kinestésico";
+
+    setLearningStyle(learningStyle);
     setResults(results);
     setSubmitted(true);
+    setLoading(false);
+
+    // Save results
+    setLoading(true);
+    let resp;
+    if (student.learningType) {
+      resp = await StudentService.updateLearningType(learningStyle, student.id as number);
+    } else {
+      resp = await StudentService.setLearningType(learningStyle, student.id as number);
+    }
+    console.log(resp);
+    if (resp.status === 200) {
+      toast.success("Datos guardados correctamente");
+    } else {
+      toast.error("Ocurrió un error al guardar los datos");
+    }
     setLoading(false);
   };
 
@@ -75,7 +94,6 @@ const LearningForm = () => {
     const resp = await StudentService.getStudent(studentId);
     if (resp.status === 200) {
       let studentInfo: Student = resp.data;
-      console.log(studentInfo);
       if (!studentInfo.student_academic_data) {
         toast.info("El alumno no tiene datos académicos registrados. Por favor registre los datos académicos del alumno");
         navigate(`/student/data/overview/${studentId}`);
@@ -136,6 +154,18 @@ const LearningForm = () => {
   return (
     <div className="learningForm">
       <div className="form">
+        {location.pathname.includes("private") ? (
+          <div className="back-button-area">
+            <button
+              className="btn btn-secondary"
+              onClick={() => navigate(-1)}
+            >
+              <i className="bi bi-chevron-left" />
+              &nbsp;
+              Regresar
+            </button>
+          </div>
+        ) : null}
         <div className="form-header">
           <img
             src={require("../../assets/images/Site_logo.png")}
@@ -177,6 +207,17 @@ const LearningForm = () => {
           INSTRUCCIONES: Elige una opción con la que más te identifiques de cada
           una de las preguntas.
         </h3>
+
+        {
+          student.learningType ? (
+            <div>
+              <br />
+              <p className="last-results">
+                Resultado de la prueba anterior: <b>{student?.learningType.learning_type}</b>
+              </p>
+            </div>
+          ) : null
+        }
 
         <div className=" formGroup">
           <div className="row">

@@ -30,9 +30,11 @@ const ViewStudentSpecialNeeds = () => {
 	return (
 		<div>
 			{!student?.special_needs ? (
-				<SpecialNeedsForm mode="register" studentId={student?.id} />
+				!student ? null : (
+					<SpecialNeedsForm mode="register" student={student} />
+				)
 			) : (
-				<SpecialNeedsForm mode="edit" needsId={student.special_needs} studentId={student.id} />
+				<SpecialNeedsForm mode="edit" needs={student.special_needs} student={student} />
 			)}
 		</div>
 	);

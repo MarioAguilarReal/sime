@@ -54,5 +54,5 @@ export interface Student{
 
 interface LearningType{
     id?: number;
-    name?: string;
+    learning_type?: string;
 }

@@ -80,7 +80,6 @@ const FormUser = () => {
     }else{
       resp = await UsersService.register(formData);
     }
-    console.log(resp);
     if (resp.status === 200) {
       toast.success(resp.message);
       navigate("/user/overview/" + resp.user.id);

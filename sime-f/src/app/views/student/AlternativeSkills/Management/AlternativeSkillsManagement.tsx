@@ -29,9 +29,11 @@ const AlternativeSkillsManagement = () => {
   return (
     <div>
       {!student?.alternative_skills ? (
-        <AlternativeSkillsForm mode='register' studentId={student?.id} />
+        !student ? null : (
+          <AlternativeSkillsForm mode='register' student={student} />
+        )
       ) : (
-        <AlternativeSkillsForm mode='edit' alternativeSkills={student.alternative_skills} studentId={student.id} />
+        <AlternativeSkillsForm mode='edit' alternativeSkills={student.alternative_skills} student={student} />
       )}
     </div>
   );

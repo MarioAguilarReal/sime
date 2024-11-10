@@ -40,7 +40,6 @@ const StudentForm = (props: FormStudenProps) => {
   }
 
   const handleOnSubmit = async (data: Student) => {
-    console.log(data);
     if (mode === 'register') {
       await handleCreate(data);
     } else {
@@ -49,7 +48,6 @@ const StudentForm = (props: FormStudenProps) => {
   };
 
   const handleCreate = async (data: Student) => {
-    console.log(data);
     setLoading(true);
     const formData = createFormData(data);
     const resp = await StudentService.register(formData);
@@ -58,7 +56,6 @@ const StudentForm = (props: FormStudenProps) => {
   };
 
   const handleUpdate = async (data: Student) => {
-    console.log(data);
     const formData = createFormData(data);
     const resp = await StudentService.update(formData, studentId);
     handleResponse(resp);
@@ -66,7 +63,6 @@ const StudentForm = (props: FormStudenProps) => {
 
   const createFormData = (data: Student) => {
     const formData = new FormData();
-    console.log(data);
     formData.append('first_name', data.first_name);
     formData.append('maternal_surname', data.maternal_surname);
     formData.append('paternal_surname', data.paternal_surname);
@@ -107,7 +103,6 @@ const StudentForm = (props: FormStudenProps) => {
   };
 
   const handleResponse = (resp: any) => {
-    console.log(resp);
     if (resp.status === 200) {
       toast.success(resp.message);
       navigate("/student/overview/" + resp.data.id);
@@ -171,7 +166,6 @@ const StudentForm = (props: FormStudenProps) => {
 
   useEffect(() => {
     if (pathname === '/manage/student') {
-      console.log("Path name???");
       reset({
         'first_name': '',
         'maternal_surname': '',

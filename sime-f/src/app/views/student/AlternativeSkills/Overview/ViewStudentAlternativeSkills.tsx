@@ -22,7 +22,6 @@ const ViewStudentAlternativeSkills = () => {
 
     const resp = await StudentService.getStudent(dataId);
     if (resp.status === 200) {
-      console.log("Student", resp.data);
       setStudent(resp.data);
     }
     setLoading(false);

@@ -36,7 +36,6 @@ const ViewStudent = () => {
   const loadStudent = async (studentId: number) => {
     setLoading(true);
     let resp = await StudentService.getStudent(studentId);
-    console.log(resp.data);
     let gender = generalData.gender.find(
       (obj) => obj.value === Number(resp.data.gender)
     );
@@ -57,7 +56,6 @@ const ViewStudent = () => {
       setTransportIndex(trans?.label);
       setLiveStudent(live?.label);
     } else {
-      console.log(resp.status);
     }
     setLoading(false);
   };
@@ -68,7 +66,6 @@ const ViewStudent = () => {
     if (resp.status === 200) {
       navigate("/list/students");
     } else {
-      console.log(resp.status);
     }
     setLoading(false);
     setShowDeleteModal(false);
@@ -274,12 +271,10 @@ const ViewStudent = () => {
                   className="btn btn-more"
                   onClick={() => {
                     if (student.cognitive_skills) {
-                      console.log(student.cognitive_skills);
                       navigate(
                         `/student/cognitive/skills/overview/${student.id}`
                       );
                     } else {
-                      console.log(student.cognitive_skills);
                       navigate(
                         `/student/cognitive/skills/management/${student.id}`
                       );
