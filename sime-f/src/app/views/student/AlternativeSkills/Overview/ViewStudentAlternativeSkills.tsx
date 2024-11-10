@@ -36,7 +36,7 @@ const ViewStudentAlternativeSkills = () => {
   }, [id]);
 
   useEffect(() => {
-    const studentsAlternativeS = student?.alternativeSkills?.alternative_list;
+    const studentsAlternativeS = student?.alternative_skills?.alternative_list;
     if (!studentsAlternativeS) return;
     if (studentsAlternativeS.length > 0) {
       const filteredSkills = studentsData.alternativeSkills.filter(skill => studentsAlternativeS.includes(skill.value));

@@ -43,7 +43,7 @@ const ViewStudentSocialSkills = () => {
   }, [id]);
 
   useEffect(() => {
-    const studentsSocial = student?.socialSkills;
+    const studentsSocial = student?.social_skills;
     if (!studentsSocial) return;
     if (studentsSocial.basic.length > 0 ||
       studentsSocial.advanced.length > 0 ||

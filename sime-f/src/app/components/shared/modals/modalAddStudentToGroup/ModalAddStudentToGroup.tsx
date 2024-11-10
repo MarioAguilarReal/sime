@@ -15,6 +15,12 @@ const ModalAddStudentToGroup = (props: AddStudentToGroupProps) => {
   const { show, studentsList, group, grade, onClose } = props;
   const navigate = useNavigate();
 
+  console.log(studentsList);
+
+  const changeGroup = async (student: Student) => {
+    console.log(student);
+  }
+
   if (!show) return null;
   return (
     <div className='modal-add-student'>
@@ -32,16 +38,16 @@ const ModalAddStudentToGroup = (props: AddStudentToGroupProps) => {
             return (
               <div key={index} className="student">
                 <div className="student-info">
-                  <h4>{students.first_name} {students.paternal_surname} {students.maternal_surname}</h4>
+                  <h5>{students.first_name} {students.paternal_surname} {students.maternal_surname}</h5>
                 </div>
-                {!students.student_academic_data_id ?
+                {!students.student_academic_data ?
                   <button className="btn btn-add-data" onClick={() => {
                     navigate(`/student/data/overview/${students.id}`);
                   }}>
                     <i className={`bi bi-plus`}></i>&nbsp;{'Agregar Datos'}
                   </button>
                   :
-                  <button className="btn btn-add" onClick={() => console.log(`Agregar alumno ${students.first_name} al grupo ${studentsData.group[group - 1].label} del grado ${studentsData.grade[grade - 1].label}`)}>
+                  <button className="btn btn-add" onClick={() => changeGroup(students)}>
                     <i className={`bi bi-plus`}></i>&nbsp;{'Agregar'}
                   </button>
                 }

@@ -24,7 +24,16 @@ class ApiStudentsController extends Controller
     }
 
     public function all(){
-        $students = Student::all();
+        $students = Student::with([
+            'studentAcademicData',
+            'alternativeSkills',
+            'learningType',
+            'comments',
+            'socialSkills',
+            'cognitiveSkills',
+            'specialNeeds',
+            'planningSkills'
+        ])->get();
 
         if($students->isNotEmpty()){
             return $this->createResponse(200, 'Estudiantes encontrados', $students);

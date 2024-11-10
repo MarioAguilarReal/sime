@@ -34,7 +34,7 @@ const ViewStudentCognitiveSkills = () => {
   }, [id]);
 
   useEffect(() => {
-    const studentCognitive = student?.cognitiveSkills?.cognitive_list;
+    const studentCognitive = student?.cognitive_skills?.cognitive_list;
     if (!studentCognitive) return;
     if (studentCognitive.length > 0) {
       const filteredSkills = studentsData.cognitiveSkills.filter(skill => studentCognitive.includes(skill.value));

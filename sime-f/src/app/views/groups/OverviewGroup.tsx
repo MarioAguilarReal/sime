@@ -7,8 +7,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useLoader } from "../../Global/Context/globalContext";
 import { GroupsService } from "../../services/school/GroupsService";
 import { StudentService } from "../../services/students/StudentsService";
-import { StudentAcademicData } from "../../interfaces/student/StudentAcademicData";
-import { StudentAcademicDataService } from "../../services/students/StudentAcademicDataService";
 import { studentsData } from "../../common/studentEnums";
 import { User } from "../../interfaces/user/User";
 import { UsersService } from "../../services/users/UsersService";
@@ -25,7 +23,6 @@ const OverviewGroup = () => {
   const [studentGroup, setStudentGroup] = useState<Student[]>([]);
   const [users, setUsers] = useState<User[]>([]);
   const [showModal, setShowModal] = useState(false);
-  const [addStudentsData, setAddStudentsData] = useState<Student[]>([]);
 
   const loadGroup = async (groupId: number) => {
     setLoading(true);
@@ -42,6 +39,7 @@ const OverviewGroup = () => {
   const loadStudentsByGroup = async () => {
     setLoading(true);
     let resp = await StudentService.getAll();
+    console.log(resp);
     if (resp.status === 200) {
       setStudent(resp.data);
     } else {
@@ -67,7 +65,7 @@ const OverviewGroup = () => {
   const studentsGroup = async () => {
     console.log(group);
     if (group) {
-      let studentG = students.filter(student => student.academicData?.group_id === group.group && student.academicData?.grade_level === group.grade);
+      let studentG = students.filter(student => student.student_academic_data?.group_id === group.group && student.student_academic_data?.grade_level === group.grade);
       setStudentGroup(studentG);
     } else {
       console.log("No hay datos");

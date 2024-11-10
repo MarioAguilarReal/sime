@@ -13,11 +13,13 @@
   .modal-content {
     display: flex;
     align-items: center;
+    height: 95%;
     .modal-header{
       display: flex;
       flex-direction: row;
       justify-content: space-around;
       width: 100%;
+      margin-bottom: 5px;
       .btn-close-modal {
         background-color: #460a00;
         color: #ffffff;
@@ -52,7 +54,7 @@
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
-        padding: 1rem;
+        padding: 0.8rem;
         margin-bottom: 1%;
         background-color: #ffffff;
         border-radius: 5px;
@@ -70,8 +72,8 @@
           color: #ffffff;
           border: none;
           border-radius: 5px;
-          padding: 0.5rem 1rem;
-          font-size: 1rem;
+          padding: 0.2rem 1rem;
+          font-size: 0.9rem;
           font-weight: 400;
           cursor: pointer;
           transition: background-color 0.5s;

@@ -56,9 +56,9 @@ const LearningForm = () => {
     };
 
     Object.keys(data).forEach((key) => {
-      if(data[key] === "v") results.v++;
-      if(data[key] === "a") results.a++;
-      if(data[key] === "k") results.k++;
+      if (data[key] === "v") results.v++;
+      if (data[key] === "a") results.a++;
+      if (data[key] === "k") results.k++;
     });
 
     if (results.v > results.a && results.v > results.k) setLearningStyle("Visual");
@@ -76,7 +76,7 @@ const LearningForm = () => {
     if (resp.status === 200) {
       let studentInfo: Student = resp.data;
       console.log(studentInfo);
-      if(!studentInfo.academicData) {
+      if (!studentInfo.student_academic_data) {
         toast.info("El alumno no tiene datos académicos registrados. Por favor registre los datos académicos del alumno");
         navigate(`/student/data/overview/${studentId}`);
       };
@@ -161,15 +161,13 @@ const LearningForm = () => {
             <p className="student-group">
               GRADO Y GRUPO:
               <b>
-                {` ${
-                  studentsData.grade.find(
-                    (g) => g.value === student?.academicData?.grade_level
+                {` ${studentsData.grade.find(
+                  (g) => g.value === student?.student_academic_data?.grade_level
+                )?.label
+                  } ${studentsData.group.find(
+                    (g) => g.value === student?.student_academic_data?.group_id
                   )?.label
-                } ${
-                  studentsData.group.find(
-                    (g) => g.value === student?.academicData?.group_id
-                  )?.label
-                }`}
+                  }`}
               </b>
             </p>
           </div>
@@ -204,7 +202,7 @@ const LearningForm = () => {
                   errors={errors}
                   control={control}
                   options={[
-                    { value: "v",label: "V: Observar a las demás personas." },
+                    { value: "v", label: "V: Observar a las demás personas." },
                     { value: "a", label: "A: Escuchar y platicar con 2 ó 3 personas al mismo tiempo." },
                     { value: "k", label: "K: Bailar, jugar o participar en alguna actividad." },
                   ]}
@@ -302,9 +300,9 @@ const LearningForm = () => {
                   errors={errors}
                   control={control}
                   options={[
-                    {value: "v", label: "V: Leer la receta"},
-                    {value: "a", label: "A: Que alguien me de las instrucciones."},
-                    {value: "k", label: "K: Usar mis utensilios de cocina frecuentemente y probar."},
+                    { value: "v", label: "V: Leer la receta" },
+                    { value: "a", label: "A: Que alguien me de las instrucciones." },
+                    { value: "k", label: "K: Usar mis utensilios de cocina frecuentemente y probar." },
                   ]}
                   rules={{ required: true }}
                 />
@@ -316,9 +314,9 @@ const LearningForm = () => {
                   errors={errors}
                   control={control}
                   options={[
-                    {value: "v", label: "V: Mi expresión facial"},
-                    {value: "a", label: "A: Mi tono de voz"},
-                    {value: "k", label: "K: Mi postura corportal"},
+                    { value: "v", label: "V: Mi expresión facial" },
+                    { value: "a", label: "A: Mi tono de voz" },
+                    { value: "k", label: "K: Mi postura corportal" },
                   ]}
                   rules={{ required: true }}
                 />
@@ -332,7 +330,7 @@ const LearningForm = () => {
                   options={[
                     { value: "v", label: "V: Prefiero el silecio para poderme concentrar." },
                     { value: "a", label: "A: Prendo el radio en cuanto me subo al carro." },
-                    { value: "k", label: "K: Cambio continuamente de posición para evitar el cansacio."},
+                    { value: "k", label: "K: Cambio continuamente de posición para evitar el cansacio." },
                   ]}
                   rules={{ required: true }}
                 />

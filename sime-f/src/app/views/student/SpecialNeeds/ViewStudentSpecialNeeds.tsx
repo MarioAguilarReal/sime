@@ -29,10 +29,10 @@ const ViewStudentSpecialNeeds = () => {
 
 	return (
 		<div>
-			{!student?.specialNeeds ? (
+			{!student?.special_needs ? (
 				<SpecialNeedsForm mode="register" studentId={student?.id} />
 			) : (
-				<SpecialNeedsForm mode="edit" needsId={student.specialNeeds} studentId={student.id} />
+				<SpecialNeedsForm mode="edit" needsId={student.special_needs} studentId={student.id} />
 			)}
 		</div>
 	);

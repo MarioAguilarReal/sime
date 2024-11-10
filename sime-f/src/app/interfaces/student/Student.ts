@@ -42,13 +42,13 @@ export interface Student{
     emergency_contact_phone_2: string;
     emergency_contact_relationship_2: string;
     //More Info
-    academicData?: StudentAcademicData
-    alternativeSkills?: StudentAlternativeSkills;
-    cognitiveSkills?: StudentCognitiveSkills;
+    student_academic_data?: StudentAcademicData
+    alternative_skills?: StudentAlternativeSkills;
+    cognitive_skills?: StudentCognitiveSkills;
     comments: StudentComments;
-    planningSkills?: StudentPlanningSkills;
-    socialSkills?: StudentSocialSkills;
-    specialNeeds?: StudentSpecialNeeds;
+    planning_skills?: StudentPlanningSkills;
+    social_skills?: StudentSocialSkills;
+    special_needs?: StudentSpecialNeeds;
     learningType?: LearningType;
 }
 

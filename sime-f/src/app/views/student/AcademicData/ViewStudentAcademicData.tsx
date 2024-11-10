@@ -30,10 +30,10 @@ const ViewStudentAcademicData = () => {
 
   return (
     <div>
-      {!studentData?.academicData ? (
+      {!studentData?.student_academic_data ? (
         <AcademicForm mode="register" studentId={studentData?.id} />
       ) : (
-        <AcademicForm mode="edit" academicData={studentData.academicData} studentId={studentData.id} />
+        <AcademicForm mode="edit" academicData={studentData.student_academic_data} studentId={studentData.id} />
       )}
     </div>
   );

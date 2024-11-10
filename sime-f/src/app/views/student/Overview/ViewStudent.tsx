@@ -273,13 +273,13 @@ const ViewStudent = () => {
                 <button
                   className="btn btn-more"
                   onClick={() => {
-                    if (student.cognitiveSkills) {
-                      console.log(student.cognitiveSkills);
+                    if (student.cognitive_skills) {
+                      console.log(student.cognitive_skills);
                       navigate(
                         `/student/cognitive/skills/overview/${student.id}`
                       );
                     } else {
-                      console.log(student.cognitiveSkills);
+                      console.log(student.cognitive_skills);
                       navigate(
                         `/student/cognitive/skills/management/${student.id}`
                       );
@@ -293,7 +293,7 @@ const ViewStudent = () => {
                 <button
                   className="btn btn-more"
                   onClick={() => {
-                    if (student.socialSkills) {
+                    if (student.social_skills) {
                       navigate(
                         `/student/social/skills/overview/${student.id}`
                       );
@@ -311,7 +311,7 @@ const ViewStudent = () => {
                 <button
                   className="btn btn-more"
                   onClick={() => {
-                    if (student.alternativeSkills) {
+                    if (student.alternative_skills) {
                       navigate(
                         `/student/alternative/skills/overview/${student.id}`
                       );
