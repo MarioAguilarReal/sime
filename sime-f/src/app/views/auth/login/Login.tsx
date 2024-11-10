@@ -82,7 +82,7 @@ const Login = () => {
       <div className="login-wrapper">
         <div className="login-image"></div>
         <div className="login-form">
-          <h1 style={{ color: "white" }}>Iniciar Sesión</h1>
+          <h1 style={{ color: "white", textAlign: 'center' }}>Iniciar Sesión</h1>
           <form>
             <div className="form-group">
               <input
