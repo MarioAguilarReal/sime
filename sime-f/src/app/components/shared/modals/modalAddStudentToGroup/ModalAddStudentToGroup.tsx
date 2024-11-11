@@ -34,8 +34,8 @@ const ModalAddStudentToGroup = (props: AddStudentToGroupProps) => {
           </button>
         </div>
         <div className="select-students">
-          {studentsList.map((students, index) => {
-            return (
+          {studentsList.map((students, index) => (
+            students.student_academic_data?.grade_level === grade && students.student_academic_data?.group_id === group ? null :
               <div key={index} className="student">
                 <div className="student-info">
                   <h5>{students.first_name} {students.paternal_surname} {students.maternal_surname}</h5>
@@ -52,8 +52,7 @@ const ModalAddStudentToGroup = (props: AddStudentToGroupProps) => {
                   </button>
                 }
               </div>
-            )
-          })}
+          ))}
         </div>
       </div>
     </div>
