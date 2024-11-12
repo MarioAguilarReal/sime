@@ -7,12 +7,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useLoader } from "../../Global/Context/globalContext";
 import { GroupsService } from "../../services/school/GroupsService";
 import { StudentService } from "../../services/students/StudentsService";
-import { StudentAcademicData } from "../../interfaces/student/StudentAcademicData";
-import { StudentAcademicDataService } from "../../services/students/StudentAcademicDataService";
 import { studentsData } from "../../common/studentEnums";
 import { User } from "../../interfaces/user/User";
 import { UsersService } from "../../services/users/UsersService";
 import { toast } from "react-toastify";
+import ModalAddStudentToGroup from "../../components/shared/modals/modalGroup/addStudent/modalAddStudent";
 
 const OverviewGroup = () => {
   const { setLoading } = useLoader();
@@ -21,9 +20,10 @@ const OverviewGroup = () => {
   const [group, setGroup] = useState<Group | null>(null);
   const [students, setStudent] = useState<Student[]>([]);
   const [subjects, setSubjects] = useState<Classe[]>([]);
-  // const [academicData, setAcademicData] = useState<StudentAcademicData[]>([]);
   const [studentGroup, setStudentGroup] = useState<Student[]>([]);
   const [users, setUsers] = useState<User[]>([]);
+  const [showModal, setShowModal] = useState(false);
+  const [filteredStudents, setFilteredStudents] = useState<Student[]>([]);
 
   const loadGroup = async (groupId: number) => {
     setLoading(true);
@@ -32,6 +32,7 @@ const OverviewGroup = () => {
       setGroup(resp.data);
       setSubjects(resp.data.subjects);
     } else {
+      toast.error("Error al cargar el grupo");
     }
     setLoading(false);
   }
@@ -42,6 +43,7 @@ const OverviewGroup = () => {
     if (resp.status === 200) {
       setStudent(resp.data);
     } else {
+      toast.error("Error al cargar estudiantes");
     }
     // let resp2 = await StudentAcademicDataService.getAll();
     // if (resp2.status === 200) {
@@ -52,17 +54,26 @@ const OverviewGroup = () => {
     if (resp3.status === 200) {
       setUsers(resp3.users);
     } else {
+      toast.error("Error al cargar usuarios");
     }
     setLoading(false);
   }
 
   const studentsGroup = async () => {
-    if (group) {
-      let studentG = students.filter(student => student.academicData?.group_id === group.group && student.academicData?.grade_level === group.grade);
+    if (group && students) {
+      let studentG = students.filter(student => student.student_academic_data?.group_id === group.group && student.student_academic_data.grade_level === group.grade);
       setStudentGroup(studentG);
     } else {
       toast.error("No se ha podido cargar los estudiantes del grupo");
     }
+  }
+
+  const addStudent = async () => {
+    const ungroupedStudents = students.filter(
+      student => !studentGroup.some(s => s.id === student.id)
+    );
+    setFilteredStudents(ungroupedStudents);
+    setShowModal(true);
   }
 
   useEffect(() => {
@@ -85,7 +96,12 @@ const OverviewGroup = () => {
       <h4>Tutor: {users.filter(user => user.id === group?.user_id).map(user => `${user.first_name} ${user.paternal_surname} ${user.maternal_surname}`).join(', ')}</h4>
       <div className="container">
         <div className="students-list">
-          <h2>Estudiantes</h2>
+          <div className="content-btn">
+            <h2>Estudiantes</h2>
+            <button className="btn btn-add" onClick={() => addStudent()}>
+              <i className={`bi bi-plus`}></i>&nbsp;{'Agregar Alumno'}
+            </button>
+          </div>
           <div className="row mb-2 mt-3">
             <hr />
           </div>
@@ -171,6 +187,14 @@ const OverviewGroup = () => {
           </div>
         </div>
       </div>
+      <ModalAddStudentToGroup
+        show={showModal}
+        studentsList={filteredStudents}
+        group={group?.group as number}
+        grade={group?.grade as number}
+        onClose={() => setShowModal(false)}
+        updateStudents={(student) => setStudentGroup([...studentGroup, student])}
+      />
     </div>
   );
 };
