@@ -50,6 +50,8 @@ export interface Student{
     socialSkills?: StudentSocialSkills;
     specialNeeds?: StudentSpecialNeeds;
     learningType?: LearningType;
+
+    student_academic_data?: StudentAcademicData;
 }
 
 interface LearningType{
