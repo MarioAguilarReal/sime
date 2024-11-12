@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import './AcademicForm.scss';
 import { StudentAcademicData } from '../../../../interfaces/student/StudentAcademicData';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useLoader } from '../../../../Global/Context/globalContext';
 import { useEffect, useState } from 'react';
 import { StudentAcademicDataService } from '../../../../services/students/StudentAcademicDataService';
@@ -19,6 +19,9 @@ interface FormAcademicDataProps {
 const AcademicForm = (props: FormAcademicDataProps) => {
   const { mode, academicData, student } = props;
   const { id } = useParams();
+
+  const { state } = useLocation();
+  const { group, grade } = state || {};
 
   const {
     register,
@@ -43,6 +46,9 @@ const AcademicForm = (props: FormAcademicDataProps) => {
 
   const handleCreate = async (data: StudentAcademicData) => {
     let dataToRegister = { ...data };
+    if (group && grade) {
+      dataToRegister = { ...data, group_id: group, grade_level: grade };
+    }
     const resp = await StudentAcademicDataService.register(dataToRegister, student.id as number);
     handleResponse(resp);
   };
@@ -89,6 +95,10 @@ const AcademicForm = (props: FormAcademicDataProps) => {
   useEffect(() => {
     if (mode === 'edit' && academicData) {
       fillForm(academicData);
+    }
+    if (mode === 'register' && group && grade) {
+      setValue('group_id', group);
+      setValue('grade_level', grade);
     }
 
   }, [mode, id]);

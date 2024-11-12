@@ -61,7 +61,7 @@ const ModalAddStudentToGroup = (props: AddStudentToGroupProps) => {
                 </div>
                 {!students.student_academic_data ?
                   <button className="btn btn-add-data" onClick={() => {
-                    navigate(`/student/data/overview/${students.id}`);
+                    navigate(`/student/data/overview/${students.id}`, { state: { group: group, grade: grade } });
                   }}>
                     <i className={`bi bi-plus`}></i>&nbsp;{'Agregar Datos'}
                   </button>
