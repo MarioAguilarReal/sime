@@ -180,9 +180,7 @@ const ViewStudent = () => {
                 <b>Dirección:</b> {student.tutor_address}
               </p>
               <p>
-                <b>Fecha de nacimiento:</b>{" "}
-                {new Date().getFullYear() -
-                  new Date(student.tutor_birth_date).getFullYear()}
+                <b>Fecha de nacimiento:</b> {student.tutor_birth_date ? formatDate(student.tutor_birth_date) : ""}
               </p>
               <p>
                 <b>Ocupación:</b> {student.tutor_occupation}
