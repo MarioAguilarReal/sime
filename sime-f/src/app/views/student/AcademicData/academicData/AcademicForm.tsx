@@ -123,7 +123,7 @@ const AcademicForm = (props: FormAcademicDataProps) => {
                 field={'matricula'}
                 register={register}
                 type='text'
-                rules={{ required: 'This field is required' }}
+                rules={{ required: 'Este campo' }}
                 errors={errors}
               />
             </div>
@@ -132,6 +132,7 @@ const AcademicForm = (props: FormAcademicDataProps) => {
                 label={'Grado'}
                 field={'grade_level'}
                 errors={errors}
+                rules={{ required: 'Este campo' }}
                 control={control}
                 options={studentsData.grade}
               />
@@ -141,6 +142,7 @@ const AcademicForm = (props: FormAcademicDataProps) => {
                 label={'Grupo'}
                 field={'group_id'}
                 errors={errors}
+                rules={{ required: 'Este campo' }}
                 control={control}
                 options={studentsData.group}
               />
@@ -153,7 +155,7 @@ const AcademicForm = (props: FormAcademicDataProps) => {
                 field={'last_grade_average'}
                 register={register}
                 type='number'
-                rules={{ required: 'This field is required' }}
+                rules={{ required: 'Este campo' }}
                 errors={errors}
               />
             </div>
@@ -163,7 +165,7 @@ const AcademicForm = (props: FormAcademicDataProps) => {
                 field={'actual_grade_average'}
                 register={register}
                 type='number'
-                rules={{ required: 'This field is required' }}
+                rules={{ required: 'Este campo' }}
                 errors={errors}
               />
             </div>
@@ -172,6 +174,7 @@ const AcademicForm = (props: FormAcademicDataProps) => {
                 label={'Conducta'}
                 field={'behavior'}
                 errors={errors}
+                rules={{ required: 'Este campo' }}
                 control={control}
                 options={studentsData.conduct}
               />
@@ -184,7 +187,7 @@ const AcademicForm = (props: FormAcademicDataProps) => {
                 field={'attendance'}
                 register={register}
                 type='text'
-                rules={{ required: 'This field is required' }}
+                rules={{ required: 'Este campo' }}
                 errors={errors}
               />
             </div>
