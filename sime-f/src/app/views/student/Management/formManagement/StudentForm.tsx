@@ -61,39 +61,54 @@ const StudentForm = (props: FormStudenProps) => {
     handleResponse(resp);
   };
 
+  const isValidDate = (date: string) => {
+    const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+    return dateRegex.test(date);
+  };
+
   const createFormData = (data: Student) => {
     const formData = new FormData();
-    formData.append('first_name', data.first_name);
-    formData.append('maternal_surname', data.maternal_surname);
-    formData.append('paternal_surname', data.paternal_surname);
-    formData.append('birth_date', data.birth_date.toString());
-    formData.append('age', data.age.toString());
-    formData.append('gender', data.gender.toString());
-    formData.append('address', data.address);
-    formData.append('trans_type', data.trans_type.toString());
-    formData.append('civil_status', data.civil_status.toString());
-    formData.append('birth_place', data.birth_place);
-    formData.append('nationality', data.nationality);
-    formData.append('curp', data.curp);
-    formData.append('transport_time', data.transport_time);
+    const appendField = (key: string, value: any) => {
+      if (value !== null && value !== undefined && value !== '') {
+        formData.append(key, value.toString());
+      } else {
+        formData.append(key, '');
+      }
+    };
 
-    formData.append('tutor_name', data.tutor_name);
-    formData.append('tutor_phone', data.tutor_phone);
-    formData.append('tutor_age', data.tutor_age.toString());
-    formData.append('tutor_address', data.tutor_address);
-    formData.append('tutor_email', data.tutor_email);
-    formData.append('tutor_birth_date', data.tutor_birth_date.toString());
-    formData.append('tutor_occupation', data.tutor_occupation);
-    formData.append('tutor_schooling', data.tutor_schooling);
-    formData.append('tutor_live_student', data.tutor_live_student.toString());
-    formData.append('tutor_curp', data.tutor_curp);
+    const tutorBirthDate = data.tutor_birth_date && isValidDate(data.tutor_birth_date.toString()) ? data.tutor_birth_date : '';
 
-    formData.append('emergency_contact_name_1', data.emergency_contact_name_1);
-    formData.append('emergency_contact_phone_1', data.emergency_contact_phone_1);
-    formData.append('emergency_contact_relationship_1', data.emergency_contact_relationship_1);
-    formData.append('emergency_contact_name_2', data.emergency_contact_name_2);
-    formData.append('emergency_contact_phone_2', data.emergency_contact_phone_2);
-    formData.append('emergency_contact_relationship_2', data.emergency_contact_relationship_2);
+    appendField('first_name', data.first_name);
+    appendField('maternal_surname', data.maternal_surname);
+    appendField('paternal_surname', data.paternal_surname);
+    appendField('birth_date', data.birth_date);
+    appendField('age', data.age);
+    appendField('gender', data.gender);
+    appendField('address', data.address);
+    appendField('trans_type', data.trans_type);
+    appendField('civil_status', data.civil_status);
+    appendField('birth_place', data.birth_place);
+    appendField('nationality', data.nationality);
+    appendField('curp', data.curp);
+    appendField('transport_time', data.transport_time);
+
+    appendField('tutor_name', data.tutor_name);
+    appendField('tutor_phone', data.tutor_phone);
+    appendField('tutor_age', data.tutor_age === 0 ? null : data.tutor_age);
+    appendField('tutor_address', data.tutor_address);
+    appendField('tutor_email', data.tutor_email);
+    appendField('tutor_birth_date', tutorBirthDate);
+    appendField('tutor_occupation', data.tutor_occupation);
+    appendField('tutor_schooling', data.tutor_schooling);
+    appendField('tutor_live_student', data.tutor_live_student);
+    appendField('tutor_curp', data.tutor_curp);
+
+    appendField('emergency_contact_name_1', data.emergency_contact_name_1);
+    appendField('emergency_contact_phone_1', data.emergency_contact_phone_1);
+    appendField('emergency_contact_relationship_1', data.emergency_contact_relationship_1);
+    appendField('emergency_contact_name_2', data.emergency_contact_name_2);
+    appendField('emergency_contact_phone_2', data.emergency_contact_phone_2);
+    appendField('emergency_contact_relationship_2', data.emergency_contact_relationship_2);
 
     if (photo) {
       formData.append('photo', photo);
@@ -121,8 +136,8 @@ const StudentForm = (props: FormStudenProps) => {
     setLoading(true);
     const resp = await StudentService.getStudent(studentId);
     if (resp.status === 200) {
-      setStudent(resp.student);
-      fillForm(resp.student);
+      setStudent(resp.data);
+      fillForm(resp.data);
     } else {
       toast.error(resp.message);
     }
@@ -204,6 +219,12 @@ const StudentForm = (props: FormStudenProps) => {
 
   }, [watch('birth_date'), watch('tutor_birth_date'), mode]);
 
+  useEffect(() => {
+    let addressData = getValues('address');
+    let live_student = getValues('tutor_live_student');
+    setValue('tutor_address', live_student === 1 ? addressData : '');
+  }, [watch('address'), watch('tutor_live_student')]);
+
   return (
     <div className='student-register p-3'>
       <h1>{mode === 'register' ? 'Registro de Estudiantes' : 'Editar Estudiante'}</h1>
@@ -227,7 +248,7 @@ const StudentForm = (props: FormStudenProps) => {
           <div className="row mb-4">
             <div className="col-4">
               <TextField
-                label="Nombre"
+                label="Nombre(s)"
                 field="first_name"
                 register={register}
                 type='text'
@@ -251,7 +272,6 @@ const StudentForm = (props: FormStudenProps) => {
                 field="maternal_surname"
                 register={register}
                 type='text'
-                rules={{ required: 'This field is required' }}
                 errors={errors}
               />
             </div>
@@ -322,7 +342,6 @@ const StudentForm = (props: FormStudenProps) => {
                 type='text'
                 maxLength='18'
                 register={register}
-                rules={{ required: 'This field is required' }}
                 errors={errors}
               />
             </div>
@@ -334,7 +353,6 @@ const StudentForm = (props: FormStudenProps) => {
                 field='birth_place'
                 type='text'
                 register={register}
-                rules={{ required: 'This field is required' }}
                 errors={errors}
               />
             </div>
@@ -344,7 +362,6 @@ const StudentForm = (props: FormStudenProps) => {
                 field='address'
                 type='text'
                 register={register}
-                rules={{ required: 'This field is required' }}
                 errors={errors}
               />
             </div>
@@ -358,7 +375,6 @@ const StudentForm = (props: FormStudenProps) => {
                 field='transport_time'
                 type='text'
                 register={register}
-                rules={{ required: 'This field is required' }}
                 errors={errors}
               />
             </div>
@@ -412,7 +428,6 @@ const StudentForm = (props: FormStudenProps) => {
                 field="tutor_name"
                 register={register}
                 type='text'
-                rules={{ required: 'This field is required' }}
                 errors={errors}
               />
             </div>
@@ -423,66 +438,6 @@ const StudentForm = (props: FormStudenProps) => {
                 register={register}
                 type='text'
                 maxLength='10'
-                rules={{ required: 'This field is required' }}
-                errors={errors}
-              />
-            </div>
-            <div className="col-4">
-              <TextField
-                label="CURP"
-                field="tutor_curp"
-                register={register}
-                type='text'
-                maxLength='18'
-                rules={{ required: 'This field is required' }}
-                errors={errors}
-              />
-            </div>
-          </div>
-          <div className="row mb-4">
-            <div className="col-6">
-              <TextField
-                label="Dirección"
-                field="tutor_address"
-                register={register}
-                type='text'
-                rules={{ required: 'This field is required' }}
-                errors={errors}
-              />
-            </div>
-            <div className="col-6">
-              <TextField
-                label="Correo Electronico"
-                field="tutor_email"
-                register={register}
-                type='email'
-                rules={{ required: 'This field is required', pattern: { value: PATTERNS.emailRegEx, message: 'Invalid email address' } }}
-                errors={errors}
-              />
-            </div>
-          </div>
-
-
-          {/* ----------------------------  New Tutor Information   -------------------------- */}
-          <div className="row mb-4">
-            <div className="col-4">
-              <TextField
-                label='Fecha de Nacimiento'
-                field='tutor_birth_date'
-                type='date'
-                register={register}
-                rules={{ required: 'This field is required' }}
-                errors={errors}
-              />
-            </div>
-            <div className="col-4">
-              <TextField
-                label="Edad"
-                disabled
-                field="tutor_age"
-                register={register}
-                type='number'
-                rules={{ required: 'This field is required' }}
                 errors={errors}
               />
             </div>
@@ -499,11 +454,65 @@ const StudentForm = (props: FormStudenProps) => {
           <div className="row mb-4">
             <div className="col-6">
               <TextField
+                label="Dirección"
+                field="tutor_address"
+                register={register}
+                type='text'
+                errors={errors}
+              />
+            </div>
+            <div className="col-6">
+              <TextField
+                label="Correo Electronico"
+                field="tutor_email"
+                register={register}
+                type='email'
+                rules={{ pattern: { value: PATTERNS.emailRegEx, message: 'Invalid email address' } }}
+                errors={errors}
+              />
+            </div>
+          </div>
+
+
+          {/* ----------------------------  New Tutor Information   -------------------------- */}
+          <div className="row mb-4">
+            <div className="col-4">
+              <TextField
+                label='Fecha de Nacimiento'
+                field='tutor_birth_date'
+                type='date'
+                register={register}
+                errors={errors}
+              />
+            </div>
+            <div className="col-4">
+              <TextField
+                label="Edad"
+                disabled
+                field="tutor_age"
+                register={register}
+                type='number'
+                errors={errors}
+              />
+            </div>
+            <div className="col-4">
+              <TextField
+                label="CURP"
+                field="tutor_curp"
+                register={register}
+                type='text'
+                maxLength='18'
+                errors={errors}
+              />
+            </div>
+          </div>
+          <div className="row mb-4">
+            <div className="col-6">
+              <TextField
                 label="Ocupación"
                 field="tutor_occupation"
                 register={register}
                 type='text'
-                rules={{ required: 'This field is required' }}
                 errors={errors}
               />
             </div>
@@ -513,7 +522,6 @@ const StudentForm = (props: FormStudenProps) => {
                 field="tutor_schooling"
                 register={register}
                 type='text'
-                rules={{ required: 'This field is required' }}
                 errors={errors}
               />
             </div>
@@ -532,7 +540,6 @@ const StudentForm = (props: FormStudenProps) => {
                 field="emergency_contact_name_1"
                 register={register}
                 type='text'
-                rules={{ required: 'This field is required' }}
                 errors={errors}
               />
             </div>
@@ -543,7 +550,6 @@ const StudentForm = (props: FormStudenProps) => {
                 register={register}
                 type='text'
                 maxLength='10'
-                rules={{ required: 'This field is required' }}
                 errors={errors}
               />
             </div>
@@ -576,7 +582,6 @@ const StudentForm = (props: FormStudenProps) => {
                 field="emergency_contact_name_2"
                 register={register}
                 type='text'
-                rules={{ required: 'This field is required' }}
                 errors={errors}
               />
             </div>
@@ -587,7 +592,6 @@ const StudentForm = (props: FormStudenProps) => {
                 register={register}
                 type='text'
                 maxLength='10'
-                rules={{ required: 'This field is required' }}
                 errors={errors}
               />
             </div>
