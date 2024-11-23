@@ -54,7 +54,7 @@ const PlanningSkillsForm = (props: FormPlaningProps) => {
     } else {
       if (mode === 'edit') {
         fillForm(planning as StudentPlanningSkills);
-      }else {
+      } else {
         reset();
       }
       toast.error(resp.message);
@@ -92,6 +92,7 @@ const PlanningSkillsForm = (props: FormPlaningProps) => {
                 label={"¿Sabe enfocar correctamente su atención a los puntos importantes de un problema?"}
                 field={"focus"}
                 errors={errors}
+                rules={{ required: 'Este campo' }}
                 control={control}
                 options={studentsData.booleanType}
               />
@@ -101,6 +102,7 @@ const PlanningSkillsForm = (props: FormPlaningProps) => {
                 label={"¿Detecta o no los posibles errores?"}
                 field={"detect"}
                 errors={errors}
+                rules={{ required: 'Este campo' }}
                 control={control}
                 options={studentsData.booleanType}
               />
@@ -110,6 +112,7 @@ const PlanningSkillsForm = (props: FormPlaningProps) => {
                 label={"¿Correlaciona entre lo planeado y lo ejecutado?"}
                 field={"correlation"}
                 errors={errors}
+                rules={{ required: 'Este campo' }}
                 control={control}
                 options={studentsData.booleanType}
               />
