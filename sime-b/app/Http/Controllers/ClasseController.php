@@ -49,7 +49,7 @@ class ClasseController extends Controller
             'user_id' => 'required',
         ]);
 
-        $classe = Classe::create($request->except('status')); // create() is a method to insert a record to the database
+        $classe = Classe::create($request); // create() is a method to insert a record to the database
 
         return $this->createResponse(
             $classe ? 200 : 201,
@@ -64,11 +64,9 @@ class ClasseController extends Controller
             'name' => 'required',
             'description' => 'required',
             'user_id' => 'required',
-            'max_students' => 'required',
         ]);
 
         $classe = Classe::findOrFail($id);
-        $classe->update($request->except('status'));
 
         return $this->createResponse(
             $classe ? 200 : 201,
