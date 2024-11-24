@@ -24,7 +24,16 @@ class ApiStudentsController extends Controller
     }
 
     public function all(){
-        $students = Student::all();
+        $students = Student::with([
+            'studentAcademicData',
+            'alternativeSkills',
+            'learningType',
+            'comments',
+            'socialSkills',
+            'cognitiveSkills',
+            'specialNeeds',
+            'planningSkills'
+        ])->get();
 
         if($students->isNotEmpty()){
             return $this->createResponse(200, 'Estudiantes encontrados', $students);
@@ -37,35 +46,9 @@ class ApiStudentsController extends Controller
     public function register(Request $request){
         $request->validate([
             'first_name' => 'required',
-            'maternal_surname' => 'required',
             'paternal_surname' => 'required',
-            //'photo' => 'required',
             'birth_date' => 'required',
-            'gender' => 'required',
-            'address' => 'required',
-            'trans_type' => 'required',
-            'age' => 'required',
-            'civil_status' => 'required',
-            'birth_place' => 'required',
-            'nationality' => 'required',
-            'curp' => 'required',
-            'transport_time' => 'required',
-            'tutor_name' => 'required',
-            'tutor_phone' => 'required',
-            'tutor_age' => 'required',
-            'tutor_address' => 'required',
-            'tutor_email' => 'required',
-            'tutor_birth_date' => 'required',
-            'tutor_occupation' => 'required',
-            'tutor_schooling' => 'required',
-            'tutor_live_student' => 'required',
-            'tutor_curp' => 'required',
-            'emergency_contact_name_1' => 'required',
-            'emergency_contact_phone_1' => 'required',
-            'emergency_contact_relationship_1' => 'required',
-            'emergency_contact_name_2' => 'required',
-            'emergency_contact_phone_2' => 'required',
-            'emergency_contact_relationship_2' => 'required',
+            'age' => 'required'
         ]);
 
         $student = Student::create($request->except('photo'));
@@ -148,34 +131,9 @@ class ApiStudentsController extends Controller
 
         $request->validate([
             'first_name' => 'required',
-            'maternal_surname' => 'required',
             'paternal_surname' => 'required',
             'birth_date' => 'required',
-            'gender' => 'required',
-            'address' => 'required',
-            'trans_type' => 'required',
-            'age' => 'required',
-            'civil_status' => 'required',
-            'birth_place' => 'required',
-            'nationality' => 'required',
-            'curp' => 'required',
-            'transport_time' => 'required',
-            'tutor_name' => 'required',
-            'tutor_phone' => 'required',
-            'tutor_age' => 'required',
-            'tutor_address' => 'required',
-            'tutor_email' => 'required',
-            'tutor_birth_date' => 'required',
-            'tutor_occupation' => 'required',
-            'tutor_schooling' => 'required',
-            'tutor_live_student' => 'required',
-            'tutor_curp' => 'required',
-            'emergency_contact_name_1' => 'required',
-            'emergency_contact_phone_1' => 'required',
-            'emergency_contact_relationship_1' => 'required',
-            'emergency_contact_name_2' => 'required',
-            'emergency_contact_phone_2' => 'required',
-            'emergency_contact_relationship_2' => 'required',
+            'age' => 'required'
         ]);
 
         $student->update($request->except('photo'));

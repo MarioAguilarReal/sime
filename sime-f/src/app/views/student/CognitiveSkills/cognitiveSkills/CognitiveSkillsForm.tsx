@@ -87,7 +87,7 @@ const CognitiveSkillsForm = (props: FormCognitiveProps) => {
           <div className="row mb-2">
             <div className="col-2">
               <div className="col-4 btn-edit">
-                <button className='btn btn-secondary' onClick={() => mode === 'edit' ? navigate(`/student/cognitive/skills/overview/${student.id}`) : navigate(`/student/overview/${student}`)} disabled={mode === 'edit' ? !cognitive : !student} >Volver</button>
+                <button className='btn btn-secondary' onClick={() => mode === 'edit' ? navigate(`/student/cognitive/skills/overview/${student.id}`) : navigate(`/student/overview/${student.id}`)} disabled={mode === 'edit' ? !cognitive : !student} >Volver</button>
               </div>
             </div>
           </div>

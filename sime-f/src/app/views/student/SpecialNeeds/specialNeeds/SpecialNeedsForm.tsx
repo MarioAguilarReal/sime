@@ -91,6 +91,7 @@ const SpecialNeedsForm = (props: FormNeedsProps) => {
                 label={"¿El alumno asiste a USAER?"}
                 field={'usaer_status'}
                 errors={errors}
+                rules={{ required: 'Este campo' }}
                 control={control}
                 options={studentsData.booleanType}
               />

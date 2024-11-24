@@ -47,7 +47,6 @@ class ClasseController extends Controller
             'name' => 'required',
             'description' => 'required',
             'user_id' => 'required',
-            'max_students' => 'required',
         ]);
 
         $classe = Classe::create($request->except('status')); // create() is a method to insert a record to the database

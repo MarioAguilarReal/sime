@@ -1,7 +1,7 @@
-import { useForm } from 'react-hook-form';
+import { set, useForm } from 'react-hook-form';
 import './AcademicForm.scss';
 import { StudentAcademicData } from '../../../../interfaces/student/StudentAcademicData';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useLoader } from '../../../../Global/Context/globalContext';
 import { useEffect, useState } from 'react';
 import { StudentAcademicDataService } from '../../../../services/students/StudentAcademicDataService';
@@ -20,6 +20,10 @@ const AcademicForm = (props: FormAcademicDataProps) => {
   const { mode, academicData, student } = props;
   const { id } = useParams();
 
+  const { state } = useLocation();
+  const { group, grade } = state || {};
+  const [actualMode, setActualMode] = useState<string>(mode);
+
   const {
     register,
     handleSubmit,
@@ -33,7 +37,7 @@ const AcademicForm = (props: FormAcademicDataProps) => {
 
   const handleOnSubmit = async (data: StudentAcademicData) => {
     setLoading(true);
-    if (mode === 'register') {
+    if (actualMode === 'register') {
       await handleCreate(data);
     } else {
       await handleUpdate(data);
@@ -43,7 +47,11 @@ const AcademicForm = (props: FormAcademicDataProps) => {
 
   const handleCreate = async (data: StudentAcademicData) => {
     let dataToRegister = { ...data };
+    if (group && grade) {
+      dataToRegister = { ...data, group_id: group, grade_level: grade };
+    }
     const resp = await StudentAcademicDataService.register(dataToRegister, student.id as number);
+    if(resp.status === 200) setActualMode('edit');
     handleResponse(resp);
   };
 
@@ -57,7 +65,7 @@ const AcademicForm = (props: FormAcademicDataProps) => {
     if (resp.status === 200) {
       toast.success(resp.message);
     } else {
-      if (mode === 'edit') {
+      if (actualMode === 'edit') {
         fillForm(academicData as StudentAcademicData);
       } else {
         clearForm();
@@ -90,12 +98,17 @@ const AcademicForm = (props: FormAcademicDataProps) => {
     if (mode === 'edit' && academicData) {
       fillForm(academicData);
     }
+    if (mode === 'register' && group && grade) {
+      setValue('group_id', group);
+      setValue('grade_level', grade);
+    }
+    setActualMode(mode);
 
   }, [mode, id]);
 
   return (
     <div className="edit-data">
-      <h1>{mode === 'edit' ? 'Datos Académicos' : 'Registrar Datos Académicos'}</h1>
+      <h1>{actualMode === 'edit' ? 'Datos Académicos' : 'Registrar Datos Académicos'}</h1>
       <div className="form">
         <div className="row mb-2">
           <div className="col-2">
@@ -113,7 +126,7 @@ const AcademicForm = (props: FormAcademicDataProps) => {
                 field={'matricula'}
                 register={register}
                 type='text'
-                rules={{ required: 'This field is required' }}
+                rules={{ required: 'Este campo' }}
                 errors={errors}
               />
             </div>
@@ -122,6 +135,7 @@ const AcademicForm = (props: FormAcademicDataProps) => {
                 label={'Grado'}
                 field={'grade_level'}
                 errors={errors}
+                rules={{ required: 'Este campo' }}
                 control={control}
                 options={studentsData.grade}
               />
@@ -131,6 +145,7 @@ const AcademicForm = (props: FormAcademicDataProps) => {
                 label={'Grupo'}
                 field={'group_id'}
                 errors={errors}
+                rules={{ required: 'Este campo' }}
                 control={control}
                 options={studentsData.group}
               />
@@ -143,7 +158,7 @@ const AcademicForm = (props: FormAcademicDataProps) => {
                 field={'last_grade_average'}
                 register={register}
                 type='number'
-                rules={{ required: 'This field is required' }}
+                rules={{ required: 'Este campo' }}
                 errors={errors}
               />
             </div>
@@ -153,7 +168,7 @@ const AcademicForm = (props: FormAcademicDataProps) => {
                 field={'actual_grade_average'}
                 register={register}
                 type='number'
-                rules={{ required: 'This field is required' }}
+                rules={{ required: 'Este campo' }}
                 errors={errors}
               />
             </div>
@@ -162,6 +177,7 @@ const AcademicForm = (props: FormAcademicDataProps) => {
                 label={'Conducta'}
                 field={'behavior'}
                 errors={errors}
+                rules={{ required: 'Este campo' }}
                 control={control}
                 options={studentsData.conduct}
               />
@@ -174,7 +190,7 @@ const AcademicForm = (props: FormAcademicDataProps) => {
                 field={'attendance'}
                 register={register}
                 type='text'
-                rules={{ required: 'This field is required' }}
+                rules={{ required: 'Este campo' }}
                 errors={errors}
               />
             </div>
@@ -184,7 +200,7 @@ const AcademicForm = (props: FormAcademicDataProps) => {
           </div>
           <div className="row">
             <div className="col-8">
-              <button className="btn btn-edit xl" onClick={handleSubmit((data) => handleOnSubmit(data))}>{mode === 'edit' ? 'Editar' : 'Registrar'}</button>
+              <button className="btn btn-edit xl" onClick={handleSubmit((data) => handleOnSubmit(data))}>{actualMode === 'edit' ? 'Editar' : 'Registrar'}</button>
             </div>
           </div>
         </div>

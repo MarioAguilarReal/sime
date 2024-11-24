@@ -31,7 +31,7 @@ const ViewStudentAcademicData = () => {
     <div>
       {!studentData?.academicData ? (
         !studentData ? null :
-        <AcademicForm mode="register" student={studentData} />
+          <AcademicForm mode="register" student={studentData} />
       ) : (
         <AcademicForm mode="edit" academicData={studentData.academicData} student={studentData} />
       )}
