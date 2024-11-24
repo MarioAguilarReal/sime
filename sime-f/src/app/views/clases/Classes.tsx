@@ -17,6 +17,7 @@ const Classes = () => {
   const [showModal, setShowModal] = useState(false);
   const [funct, setFunct] = useState("create");
   const [propClass, setPropClass] = useState({} as Classe)
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const navigate = useNavigate();
   const { setLoading } = useLoader();
@@ -70,6 +71,7 @@ const Classes = () => {
       toast.success("Materia eliminada correctamente");
       const newClasses = classes.filter((classe) => classe.id !== id);
       setClasses(newClasses);
+      setShowDeleteModal(!showDeleteModal);
     } else {
       toast.error("Error al eliminar la materia");
     }
@@ -98,6 +100,10 @@ const Classes = () => {
     setFunct(funct);
     if (funct === "edit") {
       setPropClass(classe as Classe);
+    }else if(funct === "delete"){
+      setPropClass(classe as Classe);
+      setShowDeleteModal(!showDeleteModal);
+      return;
     }
     setShowModal(!showModal);
   };
@@ -153,7 +159,7 @@ const Classes = () => {
                           </button>
                           <button
                             className="btn btn-outline-danger me-2"
-                            onClick={() => handleDelete(classe.id as number)}
+                            onClick={() => { showModalType("delete", classe) }}
                             >
                             <i className="bi bi-trash"></i>
                           </button>
@@ -182,12 +188,12 @@ const Classes = () => {
           }
         }}
       />
-      {/* <DeleteModal
+      <DeleteModal
         obj="Materia"
         show={showDeleteModal}
         onClose={() => setShowDeleteModal(!showDeleteModal)}
         onDelete={() => handleDelete(propClass.id as number)}
-      /> */}
+      />
     </div>
   );
 };
