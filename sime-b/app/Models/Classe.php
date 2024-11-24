@@ -13,8 +13,6 @@ class Classe extends Model
         'name',
         'description',
         'user_id',
-        'max_students',
-        'status',
     ];
 
     public function user()

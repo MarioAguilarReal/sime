@@ -24,7 +24,6 @@ const Classes = () => {
 
   const handleCreate = async (data: Classe) => {
     setLoading(true);
-    data.status = true;//por defecto la materia se crea activa
     const resp = await ClassesService.register(data);
 
     if (resp.status === 200) {
@@ -90,6 +89,9 @@ const Classes = () => {
     let resp2 = await ClassesService.getClasses();
     if (resp2.status === 200) {
       setClasses(resp2.data);
+    }else if (resp2.status === 201) {
+      setClasses([]);
+      toast.warn("No hay materias registradas");
     } else {
       toast.error("Error al cargar las materias");
     }

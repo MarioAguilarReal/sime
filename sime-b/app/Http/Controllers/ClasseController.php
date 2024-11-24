@@ -24,7 +24,7 @@ class ClasseController extends Controller
         $classes = Classe::all();
 
         return $this->createResponse(
-            $classes->isNotEmpty() ? 200 : 201,
+            $classes-> isNotEmpty() ? 200 : 201,
             $classes->isNotEmpty() ? 'Clases encontradas' : 'No hay clases disponibles',
             $classes
         );
@@ -49,7 +49,7 @@ class ClasseController extends Controller
             'user_id' => 'required',
         ]);
 
-        $classe = Classe::create($request); // create() is a method to insert a record to the database
+        $classe = Classe::create($request->all());
 
         return $this->createResponse(
             $classe ? 200 : 201,
@@ -67,6 +67,7 @@ class ClasseController extends Controller
         ]);
 
         $classe = Classe::findOrFail($id);
+        $classe->update($request->all());
 
         return $this->createResponse(
             $classe ? 200 : 201,
