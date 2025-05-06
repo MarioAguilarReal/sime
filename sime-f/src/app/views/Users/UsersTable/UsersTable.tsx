@@ -28,9 +28,15 @@ const UsersTable = () => {
   }
 
   const formatDate = (date: Date) => {
-    let d = new Date(date);
-    return (d.getDate() < 10 ? `0${d.getDate()}` : d.getDate()) + '-' + ((d.getMonth() + 1) < 10 ? `0${d.getMonth() + 1}` : d.getMonth() + 1) + '-' + d.getFullYear();
-  };
+    let stringDate = date.toString();
+    let d = new Date(stringDate + 'T00:00:00');
+
+    let day = d.getDate() < 10 ? '0' + d.getDate() : d.getDate();
+    let month = (d.getMonth() + 1) < 10 ? '0' + (d.getMonth() + 1) : (d.getMonth() + 1);
+    let year = d.getFullYear();
+    let formattedDate = `${day}/${month}/${year}`;
+    return formattedDate;
+}
 
   useEffect(() => {
     loadData();
