@@ -11,6 +11,8 @@ import ModalCreate from "../../components/shared/modals/modalsSchool/ModalCreate
 import { studentsData } from "../../common/studentEnums";
 import { Classe } from "../../interfaces/school/Classe";
 import ModalGroup from "../../components/shared/modals/modalGroup/ModalGroup";
+import DeleteModal from "../../components/shared/modals/modalDelete/DeleteModal";
+import { Roles } from "../../common/generalData";
 
 const Groups = () => {
   const [groups, setGroups] = useState([] as Group[]);
@@ -18,10 +20,19 @@ const Groups = () => {
   const [showModal, setShowModal] = useState(false);
   const [funct, setFunct] = useState("create");
   const [propGroup, setPropGroup] = useState({} as Group);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [userLogged, setUserLogged] = useState<User>({} as User);
 
   const navigate = useNavigate();
   const { setLoading } = useLoader();
 
+  const loadUser = () => {
+    let user = sessionStorage.getItem("user");
+    if (user) {
+      let userLogged = JSON.parse(user);
+      setUserLogged(userLogged);
+    }
+  };
 
   const handleCreate = async (data: Group) => {
     setLoading(true);
@@ -67,6 +78,7 @@ const Groups = () => {
       toast.success("Grupo eliminado correctamente");
       const newGroups = groups.filter((group) => group.id !== id);
       setGroups(newGroups);
+      setShowDeleteModal(!showDeleteModal);
     } else {
       toast.error("Error al eliminar el grupo");
     }
@@ -93,13 +105,18 @@ const Groups = () => {
   const showModalType = (funct: string, group?: Group) => {
     setFunct(funct);
     if (funct === "edit") {
-      setPropGroup(group as Group);// si se editara un grupo se setea el grupo para enviarlo como prop al modal
+      setPropGroup(group as Group); // si se editara un grupo se setea el grupo para enviarlo como prop al modal
+    } else if (funct === "delete") {
+      setPropGroup(group as Group); // si se eliminara un grupo se setea el grupo para enviarlo como prop al modal
+      setShowDeleteModal(!showDeleteModal); // se muestra el modal
+      return;
     }
-    setShowModal(!showModal);// se muestra el modal
+    setShowModal(!showModal); // se muestra el modal
   };
 
   useEffect(() => {
     loadData();
+    loadUser();
   }, []);
 
   return (
@@ -111,9 +128,9 @@ const Groups = () => {
             className="btn btn-add"
             onClick={() => showModalType("create")}
           >
-            <i className={`bi ${!showModal ? 'bi-plus' : 'bi-x'}`}></i>
+            <i className={`bi ${!showModal ? "bi-plus" : "bi-x"}`}></i>
             &nbsp;
-            { !showModal ? 'Crear Grupo' : 'Cerrar' }
+            {!showModal ? "Crear Grupo" : "Cerrar"}
           </button>
         </div>
         <div className="row">
@@ -150,18 +167,22 @@ const Groups = () => {
                       <td>{group.comments}</td>
                       <td>
                         <div className="btn-actions">
-                          <button
-                            className="btn btn-outline-primary me-2"
-                            onClick={() => showModalType("edit", group)}
-                          >
-                            <i className="bi bi-pencil"></i>
-                          </button>
-                          <button
-                            className="btn btn-outline-danger me-2"
-                            onClick={() => handleDelete(group.id as number)}
-                          >
-                            <i className="bi bi-trash"></i>
-                          </button>
+                          {userLogged.role === Roles.ADMIN && (
+                            <>
+                              <button
+                                className="btn btn-outline-primary me-2"
+                                onClick={() => showModalType("edit", group)}
+                              >
+                                <i className="bi bi-pencil"></i>
+                              </button>
+                              <button
+                                className="btn btn-outline-danger me-2"
+                                onClick={() => showModalType("delete", group)}
+                              >
+                                <i className="bi bi-trash"></i>
+                              </button>
+                            </>
+                          )}
                           <button
                             className="btn btn-outline-primary me-2"
                             onClick={() =>
@@ -185,7 +206,8 @@ const Groups = () => {
         type={funct}
         users={users}
         propGroup={propGroup}
-        onFunction={(data: Group) => {//function to save or edit a group
+        onFunction={(data: Group) => {
+          //function to save or edit a group
           if (funct === "create") {
             handleCreate(data);
           } else {
@@ -193,6 +215,12 @@ const Groups = () => {
           }
         }}
         onClose={() => setShowModal(!showModal)}
+      />
+      <DeleteModal
+        obj="Grupo"
+        show={showDeleteModal}
+        onClose={() => setShowDeleteModal(!showDeleteModal)}
+        onDelete={() => handleDelete(propGroup.id as number)}
       />
     </div>
   );

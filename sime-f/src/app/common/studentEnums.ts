@@ -26,9 +26,9 @@ export const studentsData = {
         { value: 11, label: 'Es capaz de captar con detalle y concentración la información que se le proporcione.'},
     ],
     conduct: [
-        { value: 1, label: 'buena' },
-        { value: 2, label: 'regular' },
-        { value: 3, label: 'mala' },
+        { value: 1, label: 'Buena' },
+        { value: 2, label: 'Regular' },
+        { value: 3, label: 'Mala' },
     ],
     grade: [
         { value: 1, label: '1ro' },

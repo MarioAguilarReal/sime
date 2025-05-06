@@ -18,6 +18,7 @@ const Classes = () => {
   const [showModal, setShowModal] = useState(false);
   const [funct, setFunct] = useState("create");
   const [propClass, setPropClass] = useState({} as Classe)
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const navigate = useNavigate();
   const { setLoading } = useLoader();
@@ -34,7 +35,6 @@ const Classes = () => {
 
   const handleCreate = async (data: Classe) => {
     setLoading(true);
-    data.status = true;//por defecto la materia se crea activa
     const resp = await ClassesService.register(data);
 
     if (resp.status === 200) {
@@ -81,6 +81,7 @@ const Classes = () => {
       toast.success("Materia eliminada correctamente");
       const newClasses = classes.filter((classe) => classe.id !== id);
       setClasses(newClasses);
+      setShowDeleteModal(!showDeleteModal);
     } else {
       toast.error("Error al eliminar la materia");
     }
@@ -117,6 +118,10 @@ const Classes = () => {
     setFunct(funct);
     if (funct === "edit") {
       setPropClass(classe as Classe);
+    } else if (funct === "delete") {
+      setPropClass(classe as Classe);
+      setShowDeleteModal(!showDeleteModal);
+      return;
     }
     setShowModal(!showModal);
   };
@@ -201,12 +206,12 @@ const Classes = () => {
           }
         }}
       />
-      {/* <DeleteModal
+      <DeleteModal
         obj="Materia"
         show={showDeleteModal}
         onClose={() => setShowDeleteModal(!showDeleteModal)}
         onDelete={() => handleDelete(propClass.id as number)}
-      /> */}
+      />
     </div>
   );
 };

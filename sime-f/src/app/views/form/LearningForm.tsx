@@ -93,11 +93,6 @@ const LearningForm = () => {
     setLoading(true);
     const resp = await StudentService.getStudent(studentId);
     if (resp.status === 200) {
-      let studentInfo: Student = resp.data;
-      if(!studentInfo.academicData) {
-        toast.info("El alumno no tiene datos académicos registrados. Por favor registre los datos académicos del alumno");
-        navigate(`/student/data/overview/${studentId}`);
-      };
       setStudent(resp.data);
     }
     setLoading(false);
