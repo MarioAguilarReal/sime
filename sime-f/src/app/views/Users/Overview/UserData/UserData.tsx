@@ -59,7 +59,7 @@ const UserData = (user: User) => {
       </div>
       <div className="classes-table table-section">
         <div className="header-data">
-          <h6>Clases</h6>
+          <h6>Materias</h6>
         </div>
         <div className="table-data">
           <table className='table table-striped'>
