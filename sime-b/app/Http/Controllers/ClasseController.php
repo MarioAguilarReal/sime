@@ -25,7 +25,7 @@ class ClasseController extends Controller
 
         return $this->createResponse(
             $classes->isNotEmpty() ? 200 : 201,
-            $classes->isNotEmpty() ? 'Clases encontradas' : 'No hay clases disponibles',
+            $classes->isNotEmpty() ? 'Materias encontradas' : 'No hay materias disponibles',
             $classes
         );
     }
@@ -36,7 +36,7 @@ class ClasseController extends Controller
 
         return $this->createResponse(
             $classe ? 200 : 201,
-            $classe ? 'Clase encontrada' : 'Clase no encontrada',
+            $classe ? 'Materia encontrada' : 'Materia no encontrada',
             $classe
         );
     }
@@ -54,7 +54,7 @@ class ClasseController extends Controller
 
         return $this->createResponse(
             $classe ? 200 : 201,
-            $classe ? 'Clase registrada' : 'Error al registrar la clase',
+            $classe ? 'Materia registrada' : 'Error al registrar la materia',
             $classe
         );
     }
@@ -73,7 +73,7 @@ class ClasseController extends Controller
 
         return $this->createResponse(
             $classe ? 200 : 201,
-            $classe ? 'Clase actualizada' : 'Error al actualizar la clase',
+            $classe ? 'Materia actualizada' : 'Error al actualizar la materia',
             $classe
         );
     }
@@ -85,7 +85,7 @@ class ClasseController extends Controller
 
         return $this->createResponse(
             200,
-            'Clase eliminada'
+            'Materia eliminada'
         );
     }
 
@@ -97,7 +97,7 @@ class ClasseController extends Controller
 
         return $this->createResponse(
             $classes->isNotEmpty() ? 200 : 201,
-            $classes->isNotEmpty() ? 'Clases encontradas' : 'No hay clases disponibles',
+            $classes->isNotEmpty() ? 'Materias encontradas' : 'No hay materias disponibles',
             $classes
         );
     }
@@ -107,7 +107,7 @@ class ClasseController extends Controller
 
         return $this->createResponse(
             $available_classes->isNotEmpty() ? 200 : 201,
-            $available_classes->isNotEmpty() ? 'Clases disponibles' : 'No hay clases disponibles',
+            $available_classes->isNotEmpty() ? 'Materias disponibles' : 'No hay materias disponibles',
             $available_classes
         );
     }
@@ -118,7 +118,7 @@ class ClasseController extends Controller
 
         return $this->createResponse(
             $classes->isNotEmpty() ? 200 : 201,
-            $classes->isNotEmpty() ? 'Clases encontradas' : 'No hay clases disponibles',
+            $classes->isNotEmpty() ? 'Materias encontradas' : 'No hay materias disponibles',
             $classes
         );
     }

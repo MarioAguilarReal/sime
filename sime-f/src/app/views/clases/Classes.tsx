@@ -12,6 +12,7 @@ import { Group } from "../../interfaces/school/Group";
 import DeleteModal from "../../components/shared/modals/modalDelete/DeleteModal";
 
 const Classes = () => {
+  const [userLogged, setUserLogged] = useState<User>({} as User);
   const [classes, setClasses] = useState([] as Classe[]);
   const [users, setUsers] = useState([] as User[]);
   const [showModal, setShowModal] = useState(false);
@@ -20,6 +21,16 @@ const Classes = () => {
 
   const navigate = useNavigate();
   const { setLoading } = useLoader();
+
+
+  const loadUser = () => {
+    let user = sessionStorage.getItem('user');
+    const parsedUser = user ? JSON.parse(user) : null;
+    if (parsedUser !== user) {
+      setUserLogged(parsedUser);
+      return Promise.resolve(parsedUser);
+    }
+  };
 
   const handleCreate = async (data: Classe) => {
     setLoading(true);
@@ -79,15 +90,23 @@ const Classes = () => {
 
   const loadData = async () => {
     setLoading(true);
-    let resp = await UsersService.getUsers();
+    const user = await loadUser();
+    const resp = await UsersService.getUsers();
     if (resp.status === 200) {
       setUsers(resp.users);
     } else {
       toast.error("Error al cargar los usuarios");
     }
-    let resp2 = await ClassesService.getClasses();
+    const resp2 = await ClassesService.getClasses();
     if (resp2.status === 200) {
-      setClasses(resp2.data);
+      let fillterSubjects = resp2.data.filter((classe: Classe) => {
+        if (user?.role === 1) {
+          return true;
+        }
+        return classe.user_id === user?.id;
+      });
+
+      setClasses(fillterSubjects);
     } else {
       toast.error("Error al cargar las materias");
     }
@@ -111,13 +130,13 @@ const Classes = () => {
       <div className="container">
         <div className="divider">
           <h2 className="title">Materias</h2>
-          <button className="btn btn-add"
+          {userLogged.role === 1 ? <button className="btn btn-add"
             onClick={() => showModalType('create')}
           >
             <i className="bi bi-plus-lg"></i>
             &nbsp;
             Crear Materia
-          </button>
+          </button> : null}
         </div>
         <div className="row">
           <div className="col-12">
@@ -127,7 +146,7 @@ const Classes = () => {
                   <th scope="col">ID</th>
                   <th scope="col">Nombre</th>
                   <th scope="col">Descripción</th>
-                  <th scope="col">Profesor</th>
+                  {userLogged.role === 1 && <th scope="col">Profesor</th>}
                   <th scope="col">Máximo de estudiantes</th>
                   <th scope="col">Estado</th>
                   <th scope="col">Acciones</th>
@@ -140,7 +159,7 @@ const Classes = () => {
                       <td>{classe.id}</td>
                       <td>{classe.name}</td>
                       <td>{classe.description}</td>
-                      <td>{users.find((user) => user?.id === parseInt(classe?.user_id))?.first_name}</td>
+                      {userLogged.role === 1 && <td>{users.find((user) => user?.id === parseInt(classe?.user_id))?.first_name}</td>}
                       <td>{classe.max_students}</td>
                       <td>{classe.status ? "Activo" : "Inactivo"}</td>
                       <td>
@@ -148,13 +167,13 @@ const Classes = () => {
                           <button
                             className="btn btn-outline-primary me-2"
                             onClick={() => showModalType("edit", classe)}
-                            >
+                          >
                             <i className="bi bi-pencil"></i>
                           </button>
                           <button
                             className="btn btn-outline-danger me-2"
                             onClick={() => handleDelete(classe.id as number)}
-                            >
+                          >
                             <i className="bi bi-trash"></i>
                           </button>
                         </div>
