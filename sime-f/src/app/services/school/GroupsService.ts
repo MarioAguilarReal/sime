@@ -73,4 +73,19 @@ export class GroupsService {
       }
     }
   }
+
+  public static async getGroupsWithSubjectsByUser(userId: number){
+    let resp;
+    if (!localStorage.getItem('token')) {
+      return resp = { data: [], success: false, status: 401, message: 'Token not found' } as ApiResponse;
+    } else {
+      resp = await SimeService.get(`/group/with-subjects-by-user/${userId}`, { Authorization: 'Bearer ' + localStorage.getItem('token') });
+      if (resp.status === 200) {
+        return resp.data;
+      } else {
+        return resp.data;
+      }
+    }
+  }
+  
 }

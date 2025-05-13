@@ -87,13 +87,15 @@ const Groups = () => {
 
   const loadData = async () => {
     setLoading(true);
-    let resp = await UsersService.getUsers();
+    const resp = await UsersService.getUsers();
     if (resp.status === 200) {
       setUsers(resp.users);
     } else {
       toast.error("Error al cargar los usuarios");
     }
-    let resp2 = await GroupsService.getGroups();
+
+    const fetchGroups = userLogged.role === 1 ? GroupsService.getGroups : () => GroupsService.getGroupsWithSubjectsByUser(userLogged.id as number);
+    const resp2 = await fetchGroups();
     if (resp2.status === 200) {
       setGroups(resp2.data);
     } else {
@@ -124,14 +126,14 @@ const Groups = () => {
       <div className="container">
         <div className="divider">
           <h1 className="title">Grupos</h1>
-          <button
+          {userLogged.role === 1 && <button
             className="btn btn-add"
             onClick={() => showModalType("create")}
           >
             <i className={`bi ${!showModal ? "bi-plus" : "bi-x"}`}></i>
             &nbsp;
             {!showModal ? "Crear Grupo" : "Cerrar"}
-          </button>
+          </button>}
         </div>
         <div className="row">
           <div className="col-12">
