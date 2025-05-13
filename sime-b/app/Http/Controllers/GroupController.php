@@ -105,4 +105,17 @@ class GroupController extends Controller
             $groups
         );
     }
+
+    public function groups_with_my_subjects($userId)
+    {
+        $groups = Group::whereHas('subjects', function ($query) use ($userId) {
+            $query->where('user_id', $userId);
+        })->get();
+
+        return $this->createResponse(
+            $groups->isNotEmpty() ? 200 : 201,
+            $groups->isNotEmpty() ? 'Grupos encontrados' : 'No hay grupos disponibles',
+            $groups
+        );
+    }
 }

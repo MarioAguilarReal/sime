@@ -15,22 +15,23 @@ import DeleteModal from "../../components/shared/modals/modalDelete/DeleteModal"
 import { Roles } from "../../common/generalData";
 
 const Groups = () => {
+  const [userLogged, setUserLogged] = useState<User>({} as User);
   const [groups, setGroups] = useState([] as Group[]);
   const [users, setUsers] = useState([] as User[]);
   const [showModal, setShowModal] = useState(false);
   const [funct, setFunct] = useState("create");
   const [propGroup, setPropGroup] = useState({} as Group);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [userLogged, setUserLogged] = useState<User>({} as User);
 
   const navigate = useNavigate();
   const { setLoading } = useLoader();
 
   const loadUser = () => {
     let user = sessionStorage.getItem("user");
-    if (user) {
-      let userLogged = JSON.parse(user);
-      setUserLogged(userLogged);
+    const parsedUser = user ? JSON.parse(user) : null;
+    if (parsedUser !== user) {
+      setUserLogged(parsedUser);
+      return Promise.resolve(parsedUser);
     }
   };
 
@@ -87,13 +88,16 @@ const Groups = () => {
 
   const loadData = async () => {
     setLoading(true);
-    let resp = await UsersService.getUsers();
+    const user = await loadUser();
+    const resp = await UsersService.getUsers();
     if (resp.status === 200) {
       setUsers(resp.users);
     } else {
       toast.error("Error al cargar los usuarios");
     }
-    let resp2 = await GroupsService.getGroups();
+
+    const fetchGroups = user.role === 1 ? GroupsService.getGroups : () => GroupsService.getGroupsWithSubjectsByUser(user.id as number);
+    const resp2 = await fetchGroups();
     if (resp2.status === 200) {
       setGroups(resp2.data);
     } else {
@@ -116,7 +120,6 @@ const Groups = () => {
 
   useEffect(() => {
     loadData();
-    loadUser();
   }, []);
 
   return (
@@ -124,14 +127,14 @@ const Groups = () => {
       <div className="container">
         <div className="divider">
           <h1 className="title">Grupos</h1>
-          <button
+          {userLogged.role === 1 && <button
             className="btn btn-add"
             onClick={() => showModalType("create")}
           >
             <i className={`bi ${!showModal ? "bi-plus" : "bi-x"}`}></i>
             &nbsp;
             {!showModal ? "Crear Grupo" : "Cerrar"}
-          </button>
+          </button>}
         </div>
         <div className="row">
           <div className="col-12">
