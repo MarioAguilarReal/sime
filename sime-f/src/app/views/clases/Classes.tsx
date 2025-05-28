@@ -12,6 +12,7 @@ import { Group } from "../../interfaces/school/Group";
 import DeleteModal from "../../components/shared/modals/modalDelete/DeleteModal";
 
 const Classes = () => {
+  const [userLogged, setUserLogged] = useState<User>({} as User);
   const [classes, setClasses] = useState([] as Classe[]);
   const [users, setUsers] = useState([] as User[]);
   const [showModal, setShowModal] = useState(false);
@@ -21,6 +22,16 @@ const Classes = () => {
 
   const navigate = useNavigate();
   const { setLoading } = useLoader();
+
+
+  const loadUser = () => {
+    let user = sessionStorage.getItem('user');
+    const parsedUser = user ? JSON.parse(user) : null;
+    if (parsedUser !== user) {
+      setUserLogged(parsedUser);
+      return Promise.resolve(parsedUser);
+    }
+  };
 
   const handleCreate = async (data: Classe) => {
     setLoading(true);
@@ -80,18 +91,23 @@ const Classes = () => {
 
   const loadData = async () => {
     setLoading(true);
-    let resp = await UsersService.getUsers();
+    const user = await loadUser();
+    const resp = await UsersService.getUsers();
     if (resp.status === 200) {
       setUsers(resp.users);
     } else {
       toast.error("Error al cargar los usuarios");
     }
-    let resp2 = await ClassesService.getClasses();
+    const resp2 = await ClassesService.getClasses();
     if (resp2.status === 200) {
-      setClasses(resp2.data);
-    }else if (resp2.status === 201) {
-      setClasses([]);
-      toast.warn("No hay materias registradas");
+      let fillterSubjects = resp2.data.filter((classe: Classe) => {
+        if (user?.role === 1) {
+          return true;
+        }
+        return classe.user_id === user?.id;
+      });
+
+      setClasses(fillterSubjects);
     } else {
       toast.error("Error al cargar las materias");
     }
@@ -102,7 +118,7 @@ const Classes = () => {
     setFunct(funct);
     if (funct === "edit") {
       setPropClass(classe as Classe);
-    }else if(funct === "delete"){
+    } else if (funct === "delete") {
       setPropClass(classe as Classe);
       setShowDeleteModal(!showDeleteModal);
       return;
@@ -119,13 +135,13 @@ const Classes = () => {
       <div className="container">
         <div className="divider">
           <h2 className="title">Materias</h2>
-          <button className="btn btn-add"
+          {userLogged.role === 1 ? <button className="btn btn-add"
             onClick={() => showModalType('create')}
           >
             <i className="bi bi-plus-lg"></i>
             &nbsp;
             Crear Materia
-          </button>
+          </button> : null}
         </div>
         <div className="row">
           <div className="col-12">
@@ -135,7 +151,7 @@ const Classes = () => {
                   <th scope="col">ID</th>
                   <th scope="col">Nombre</th>
                   <th scope="col">Descripción</th>
-                  <th scope="col">Profesor</th>
+                  {userLogged.role === 1 && <th scope="col">Profesor</th>}
                   <th scope="col">Acciones</th>
                 </tr>
               </thead>
@@ -146,19 +162,19 @@ const Classes = () => {
                       <td>{classe.id}</td>
                       <td>{classe.name}</td>
                       <td>{classe.description}</td>
-                      <td>{users.find((user) => user?.id === parseInt(classe?.user_id))?.first_name}</td>
+                      {userLogged.role === 1 && <td>{users.find((user) => user?.id === parseInt(classe?.user_id))?.first_name}</td>}
                       <td>
                         <div className="btn-actions">
                           <button
                             className="btn btn-outline-primary me-2"
                             onClick={() => showModalType("edit", classe)}
-                            >
+                          >
                             <i className="bi bi-pencil"></i>
                           </button>
                           <button
                             className="btn btn-outline-danger me-2"
-                            onClick={() => { showModalType("delete", classe) }}
-                            >
+                            onClick={() => handleDelete(classe.id as number)}
+                          >
                             <i className="bi bi-trash"></i>
                           </button>
                         </div>

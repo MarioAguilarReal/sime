@@ -15,7 +15,8 @@ const UserCard = (user: User) => {
   const navigate = useNavigate();
 
   const formatDate = (date: Date) => {
-    let d = new Date(date);
+    let stringDate = date?.toString();
+    let d = new Date(stringDate + 'T00:00:00');
     let days = ["Dom", "Lun", "Mar", "Mie", "Jue", "Vie", "Sab"];
     let months = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
     let day = days[d.getDay()];
@@ -23,7 +24,6 @@ const UserCard = (user: User) => {
 
     return `${day} ${d.getDate()} de ${month} de ${d.getFullYear()}`;
   };
-
 
   const getGender = (gender: number) => {
     return generalData.gender.find((g) => g.value === gender)?.label;

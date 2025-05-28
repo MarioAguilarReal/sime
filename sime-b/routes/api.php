@@ -142,6 +142,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/edit/{id}', [GroupController::class, 'edit']);
         Route::get('/{id}', [GroupController::class, 'show']);
         Route::delete('/delete/{id}', [GroupController::class, 'delete']);
+        Route::get('/with-subjects-by-user/{userId}', [GroupController::class, 'groups_with_my_subjects']);
     });
 
 

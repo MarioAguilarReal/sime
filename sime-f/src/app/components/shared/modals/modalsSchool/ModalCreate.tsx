@@ -27,7 +27,7 @@ const ModalCreate = (props: ModalProps) => {
   const [classesOptions, setClassesOptions] = useState([] as Classe[]);
 
   const titleMode = funct === "create" ? "Crear" : "Editar";
-  const title = type === "group" ? `${titleMode} Grupo` : `${titleMode} Clase`;
+  const title = type === "group" ? `${titleMode} Grupo` : `${titleMode} Materia`;
   const {
     register,
     handleSubmit,

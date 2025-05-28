@@ -66,7 +66,7 @@ const SideMenu = (user: User) => {
         division: false,
       },
       {
-        title: "Clases",
+        title: "Materias",
         icon: "bi bi-book",
         link: "/list/classes/",
         visible: user.role === Roles.ADMIN,
