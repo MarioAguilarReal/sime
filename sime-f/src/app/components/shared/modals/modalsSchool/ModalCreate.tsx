@@ -73,46 +73,12 @@ const ModalCreate = (props: ModalProps) => {
         const classe = propClass as Classe; // Add type assertion here
         setValue("name", classe.name);
         setValue("description", classe.description);
-        setValue("max_students", classe.max_students);
-        setValue("status", classe.status);
       }
     } else {
       reset();
     }
   }, [props]);
 
-  const getModalType = () => {
-    if (type === "classe") {
-      return (
-        <div>
-          <div className="row mb-4">
-            <div className="col-12">
-              <TextField
-                label="Maximo de Estudiantes"
-                field="max_students"
-                type="number"
-                visible={false}
-                value="30"
-                register={register}
-                rules={{ required: "Este campo es requerido" }}
-              />
-              <p className="text-danger">{errors.max_students?.message}</p>
-            </div>
-          </div>
-          {/* <div className="row mb-4">
-            <div className="col-12">
-              <Checkbox
-                label="¿Activo?"
-                field="status"
-                register={register}
-              />
-            </div>
-            <p className="text-danger">{errors.status?.message}</p>
-          </div> */}
-        </div>
-      );
-    }
-  };
 
   return (
     <div>
@@ -237,7 +203,6 @@ const ModalCreate = (props: ModalProps) => {
                   </div>
                 </div>}
             </div>
-            {getModalType()}
           </form>
         </Modal.Body>
         <Modal.Footer>

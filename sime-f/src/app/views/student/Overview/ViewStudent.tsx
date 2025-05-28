@@ -83,10 +83,10 @@ const ViewStudent = () => {
       <h1>Informacion del Estudiante</h1>
       <div className="form">
         <div className="header">
-          <Link to="/list/students" className="btn-back">
+          <button className="btn-back" onClick={() => navigate(-1)}>
             <i className="bi bi-chevron-left" />
             Volver
-          </Link>
+          </button>
           <div className="buttons">
             <button
               className="btn-edit"

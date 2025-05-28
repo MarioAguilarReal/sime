@@ -3,7 +3,5 @@ export interface Classe {
     name: string;
     description: string;
     user_id: string;
-    max_students?: number;
-    status?: boolean;
     subject_id?: number[];
 }
