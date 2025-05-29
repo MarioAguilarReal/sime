@@ -104,7 +104,7 @@ const ViewStudent = () => {
       <h1>Informacion del Estudiante</h1>
       <div className="form">
         <div className="header">
-          <button className="btn-back" onClick={() => navigate(-1)}>
+          <button className="btn-back" onClick={() => navigate("/list/students")}>
             <i className="bi bi-chevron-left" />
             Volver
           </button>
