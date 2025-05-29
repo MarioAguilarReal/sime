@@ -154,7 +154,7 @@ const Classes = () => {
                   {userLogged.role === 1 && <th scope="col">Profesor</th>}
                   <th scope="col">Máximo de estudiantes</th>
                   <th scope="col">Estado</th>
-                  <th scope="col">Acciones</th>
+                  {userLogged.role !== 1 && <th scope="col">Acciones</th>}
                 </tr>
               </thead>
               <tbody>
@@ -167,7 +167,7 @@ const Classes = () => {
                       {userLogged.role === 1 && <td>{users.find((user) => user?.id === parseInt(classe?.user_id))?.first_name}</td>}
                       <td>{classe.max_students}</td>
                       <td>{classe.status ? "Activo" : "Inactivo"}</td>
-                      <td>
+                      {userLogged.role !== 1 && <td>
                         <div className="btn-actions">
                           <button
                             className="btn btn-outline-primary me-2"
@@ -182,7 +182,7 @@ const Classes = () => {
                             <i className="bi bi-trash"></i>
                           </button>
                         </div>
-                      </td>
+                      </td>}
                     </tr>
                   );
                 })}
