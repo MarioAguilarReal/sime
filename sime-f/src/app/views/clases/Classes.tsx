@@ -152,8 +152,6 @@ const Classes = () => {
                   <th scope="col">Nombre</th>
                   <th scope="col">Descripción</th>
                   {userLogged.role === 1 && <th scope="col">Profesor</th>}
-                  <th scope="col">Máximo de estudiantes</th>
-                  <th scope="col">Estado</th>
                   <th scope="col">Acciones</th>
                 </tr>
               </thead>
@@ -165,8 +163,6 @@ const Classes = () => {
                       <td>{classe.name}</td>
                       <td>{classe.description}</td>
                       {userLogged.role === 1 && <td>{users.find((user) => user?.id === parseInt(classe?.user_id))?.first_name}</td>}
-                      <td>{classe.max_students}</td>
-                      <td>{classe.status ? "Activo" : "Inactivo"}</td>
                       <td>
                         <div className="btn-actions">
                           <button

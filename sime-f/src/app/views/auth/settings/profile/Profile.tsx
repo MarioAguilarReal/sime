@@ -59,6 +59,7 @@ const Profile = () => {
       <div className="user-information">
         <div className="user-data">
           <p className='name'>{user?.first_name} {user?.paternal_surname} {user.maternal_surname}</p>
+          <p className='mail' style={{textDecoration: 'underline'}} onClick={() => navigate(`/user/overview/${user?.id}`)}>Ver Datos Academicos (Grupos y tutorados)</p>
           <p className='mail'>{user?.email}</p>
           <p className='role'>{user?.role === 1 ? 'Administrador' : 'Usuario'}</p>
         </div>

@@ -64,7 +64,7 @@ const OverviewGroup = () => {
       let studentG = students.filter(student => student.student_academic_data?.group_id === group.group && student.student_academic_data.grade_level === group.grade);
       setStudentGroup(studentG);
     } else {
-      toast.error("No se ha podido cargar los estudiantes del grupo");
+      toast.warn("No hay estudiantes en este grupo");
     }
   }
 

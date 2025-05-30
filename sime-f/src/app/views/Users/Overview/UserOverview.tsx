@@ -5,10 +5,11 @@ import UserData from './UserData/UserData';
 import './UserOverview.scss';
 import { useLoader } from '../../../Global/Context/globalContext';
 import { UsersService } from '../../../services/users/UsersService';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
 const UserOverview = () => {
+  const navigate = useNavigate();
 
   const { setLoading } = useLoader();
   const { id } = useParams();
@@ -34,10 +35,10 @@ const UserOverview = () => {
   return (
     <div className="user-overview">
       <div className="header">
-        <Link to="/list/users" className="back-btn">
+        <button className="back-btn" onClick={() => navigate(-1)}>
           <i className="bi bi-chevron-left" />
           &nbsp; Volver
-        </Link>
+        </button>
         <h1 className="title">
           <i className="bi bi-person" />&nbsp;
           Información del Usuario: {user.first_name + " " + user.paternal_surname + " " + user.maternal_surname}
