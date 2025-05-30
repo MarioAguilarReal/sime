@@ -83,7 +83,7 @@ const SideMenu = (user: User) => {
             to={"/"}
             className="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-light text-decoration-none logo"
           >
-            <img src="/assets/images/Site_logo.png" />
+            <img src="/sime/assets/images/Site_logo.png" />
           </Link>
           <hr className="border border-1 opacity-75" />
           <ul className="nav nav-pills flex-column mb-auto">
