@@ -73,11 +73,11 @@ const FormUser = () => {
       formData.append("photo", photo);
     }
     //print the form data
-    let resp ={} as any;
-    if(id){
+    let resp = {} as any;
+    if (id) {
       formData.append("id", id);
       resp = await UsersService.update(formData, parseInt(id));
-    }else{
+    } else {
       resp = await UsersService.register(formData);
     }
     if (resp.status === 200) {
@@ -135,7 +135,7 @@ const FormUser = () => {
                 field="first_name"
                 type="text"
                 register={register}
-                rules={{ required: "Este campo es requerido"}}
+                rules={{ required: "Este campo es requerido" }}
                 errors={errors}
               />
             </div>
@@ -167,7 +167,7 @@ const FormUser = () => {
                 field="birth_date"
                 type="date"
                 register={register}
-                rules={{ required: "Este campo es requerido"}}
+                rules={{ required: "Este campo es requerido" }}
                 errors={errors}
               />
             </div>
@@ -236,52 +236,52 @@ const FormUser = () => {
           </div>
           {!id && (
             <div className="row mb-2">
-            <div className="col-4">
-              <TextField
-                label="Correo Electronico"
-                field="email"
-                type="email"
-                register={register}
-                rules={{
-                  required: "Este campo es requerido",
-                  pattern: {
-                    value: PATTERNS.emailRegEx,
-                    message: "Invalid email address",
-                  },
-                }}
-                errors={errors}
-              />
+              <div className="col-4">
+                <TextField
+                  label="Correo Electronico"
+                  field="email"
+                  type="email"
+                  register={register}
+                  rules={{
+                    required: "Este campo es requerido",
+                    pattern: {
+                      value: PATTERNS.emailRegEx,
+                      message: "Invalid email address",
+                    },
+                  }}
+                  errors={errors}
+                />
+              </div>
+              <div className="col-4">
+                <TextField
+                  label="Contraseña"
+                  field="password"
+                  type="password"
+                  register={register}
+                  rules={{ required: "Este campo es requerido" }}
+                  errors={errors}
+                />
+              </div>
+              <div className="col-4">
+                <TextField
+                  label="Confirmar Contraseña"
+                  field="confirm_password"
+                  type="password"
+                  register={register}
+                  rules={{
+                    required: "Este campo es requerido",
+                    validate: (val: any) => {
+                      return (
+                        val === watch("password") ||
+                        "Las contraseñas no coinciden"
+                      );
+                    },
+                  }}
+                  errors={errors}
+                />
+                <p className="text-danger">{errors.confirm_password?.message}</p>
+              </div>
             </div>
-            <div className="col-4">
-              <TextField
-                label="Contraseña"
-                field="password"
-                type="password"
-                register={register}
-                rules={{ required: "Este campo es requerido" }}
-                errors={errors}
-              />
-            </div>
-            <div className="col-4">
-              <TextField
-                label="Confirmar Contraseña"
-                field="confirm_password"
-                type="password"
-                register={register}
-                rules={{
-                  required: "Este campo es requerido",
-                  validate: (val: any) => {
-                    return (
-                      val === watch("password") ||
-                      "Las contraseñas no coinciden"
-                    );
-                  },
-                }}
-                errors={errors}
-              />
-              <p className="text-danger">{errors.confirm_password?.message}</p>
-            </div>
-          </div>
           )}
           <div className="row mb-4">
             <div className="col-4">
@@ -291,6 +291,7 @@ const FormUser = () => {
                 errors={errors}
                 control={control}
                 options={generalData.roles}
+                disabled={true}
                 rules={{ required: "Este campo es requerido" }}
               />
             </div>
@@ -329,7 +330,7 @@ const FormUser = () => {
                   Registrar
                 </button>
               </div>
-            ):(
+            ) : (
               <div className="row">
                 <div className="col-2">
                   <button

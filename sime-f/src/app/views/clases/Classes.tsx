@@ -152,7 +152,7 @@ const Classes = () => {
                   <th scope="col">Nombre</th>
                   <th scope="col">Descripción</th>
                   {userLogged.role === 1 && <th scope="col">Profesor</th>}
-                  <th scope="col">Acciones</th>
+                  {userLogged.role !== 1 && <th scope="col">Acciones</th>}
                 </tr>
               </thead>
               <tbody>
@@ -163,7 +163,7 @@ const Classes = () => {
                       <td>{classe.name}</td>
                       <td>{classe.description}</td>
                       {userLogged.role === 1 && <td>{users.find((user) => user?.id === parseInt(classe?.user_id))?.first_name}</td>}
-                      <td>
+                      {userLogged.role !== 1 && <td>
                         <div className="btn-actions">
                           <button
                             className="btn btn-outline-primary me-2"
@@ -178,7 +178,7 @@ const Classes = () => {
                             <i className="bi bi-trash"></i>
                           </button>
                         </div>
-                      </td>
+                      </td>}
                     </tr>
                   );
                 })}
